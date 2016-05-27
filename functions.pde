@@ -138,15 +138,23 @@ void ui_explore()
   xc = (UI_Explore.get("cUp").x + UI_Explore.get("cUp").sx/2);
   text( Img.cDepth, xc, yc);
   
-  xc = UI_Explore.get("auto").x;
-  yc = height/2 + 20;
+  
+  
+  textSize(18);
+  textAlign(LEFT, BOTTOM);
+  text( compactBig(Img.idLimit.add(1)), 735, 325);
+  textAlign(RIGHT, BOTTOM);
+  text( "combinations", 965, 325);
+  
+  
+  // Slider range
   textSize(14);
   textAlign(LEFT, BOTTOM);
-  text( ("Set : "+ compactBig(Img.idLimit)), xc, yc);
+  text( duration(Img.id), 5, height-25);
   
+  textAlign(RIGHT, BOTTOM);
+  text( duration(Img.idLimit.minus(Img.id)), width-5, height-25);
   
-  text( "From A  : "+ duration(Img.id), xc, yc+20);
-  text( "To       B  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
   
   
   
@@ -181,6 +189,18 @@ void ui_explore()
   
   
   
+  if( UI_Explore.get("rUp").click )
+  {
+    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
+    applySample(Sample);
+  }
+  if( UI_Explore.get("rDown").click )
+  {
+    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
+    applySample(Sample);
+  }
+  
+  
   if( UI_Explore.get("xUp").click )
   {
     Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
@@ -194,13 +214,24 @@ void ui_explore()
     
   if( UI_Explore.get("yUp").click )
   {
-    Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
-    applySample(Sample);
+    
+    if( Sample > -1 )
+    {
+      Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
+      applySample(Sample);
+    }
+    else
+      Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
   }
   if( UI_Explore.get("yDown").click )
   {
-    Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
-    applySample(Sample);
+    if( Sample > -1 )
+    {
+      Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
+      applySample(Sample);
+    }
+    else
+      Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
   }
     
   if( UI_Explore.get("cUp").click )
@@ -216,10 +247,7 @@ void ui_explore()
     
 
   if( UI_Explore.get("overlay").click )
-  {
     Overlay = true;
-    update_UI();
-  }
   else
     Overlay = false;
   
@@ -375,9 +403,11 @@ String compactBig( bigInt n )
 
 String duration( bigInt f)
 {
+  if( f.lesser(1) )
+    return( "0" );
   // f in frames
   if( f.lesser(60) )
-    return( "less than a second");
+    return( "Less than a second");
   
   
   // s = t in seconds

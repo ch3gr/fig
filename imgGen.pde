@@ -8,7 +8,7 @@ HashMap UI_Common = new HashMap();
 var RefTime = new Date(1981, 2, 18);
 
 VImage Img ;
-VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
+VImage ImgUser = new VImage(2,2,51); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
 
@@ -130,10 +130,12 @@ void setup ()
   int px3 = px + pw*5.0/6.0;
   int bs = 35;
   UI_Explore.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "rUp", new Button("+", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, baseC, overC, downC) );
   UI_Explore.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
   UI_Explore.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
   py += 80;
   UI_Explore.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "rDown", new Button("-", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, baseC, overC, downC) );
   UI_Explore.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
   UI_Explore.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
   
@@ -156,7 +158,7 @@ void setup ()
   UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
   UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
   
-  UI_Explore.put( "slider", new Slider(0,660, width, 30) );
+  UI_Explore.put( "slider", new Slider(0,height-20-gap, width, 20) );
 
   
   
@@ -218,17 +220,25 @@ void draw()
   else
     scale(float(FrameSize)/Img.w);
   
-  if( Img.w > 50 )
+  if( Img.w > 50 || Img.h > 50)
     Img.drawBitmap();
   else
-    Img.draw(Overlay);
+    Img.draw();
   
   popMatrix();
   
+  // Draw overlay
+  
+  if( Overlay && Img.w <= 50 && Img.h <= 50)
+    Img.overlay();
+  
+  
+  
   
   //// Canvas UI
-  //update_UI();
   ui_common();
+  
+  
   
   if( UI_Common.get("explore").click )
     ui_explore();
@@ -238,7 +248,7 @@ void draw()
   
 
   //// HTML UI to Processing
-  
+  /*
   // when the input chages
   if( HUI_lastId != uivars.id )
   {
@@ -254,13 +264,55 @@ void draw()
     //Img.setIdFromRange(float(mouseX)/float(width));
     update_UI();
   }
+  */
   
   
   
- 
   
   //// Temp text
-  text(Sample, 700, 330);
+  
+  textAlign(LEFT, BOTTOM);
+  fill(color(1,0,0));
+  textSize(18);
+  //text(frameRate, 50, 50);
+  text(Img.msg, 10,540);
+  
+  bigInt a = bigInt(Img.id);
+  
+  text( a.toString(), 50, 100);
+  String aa = a.toString(Img.cDepth);
+  text( aa, 50, 130);
+  
+  String out = "";
+  for(int i=0; i<aa.length(); i++)
+  {
+    if( aa[i] != "<" )
+    {
+      out += bigInt(aa[i], Img.cDepth);
+      out += "_";
+    }
+    else
+    {
+      i++;
+      while( aa[i] != ">" )
+       out += aa[i++];
+      
+      out += "_";
+    }
+  }
+  text( out, 50, 160);
+  
+  
+  
+  
+  
+  
+  
+  //textAlign(RIGHT, TOP);
+  //text( str(mouseX)+":"+str(mouseY+5), mouseX-5, mouseY+5);
+  
+  
+  //text(Sample, 700, 330);
   /*
   float slider = uivars.slider;
   textSize(12);
@@ -272,7 +324,7 @@ void draw()
   
   text(duration(Img.id), 10, 560);
   text(duration(Img.idLimit.minus(Img.id)), 200, 560);
-  text(frameRate, 10, 580);
+  
   
   fill(color(0.7));
   textSize(14);
@@ -386,7 +438,10 @@ void keyPressed()
     UI_Common.get("explore").click = !UI_Common.get("explore").click;
     
   if(key=='o')
+  {
     Overlay = !Overlay;
+    //UI_Common.get("overlay").click = !UI_Common.get("overlay").click;
+  }
     
   if(key=='i')
   {
@@ -415,7 +470,6 @@ void keyPressed()
   {
     var t = bigInt( Img.id );
     //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
-    Img.msg = duration( t );
   }
   if(key=='u')
   {
@@ -445,14 +499,21 @@ void keyPressed()
 /*
 TO DO
 
+really clear img when reset canvas
+when re-set canvas color depth, regenerate img
 
-sliders/id dont update when canvas is adjusted
+optimise step (kateuthian apo to id)
+
 
 touch screen buttons?
-
 HTML UI doesn't update when it's running online
 no characters in id textArea
 clean up javascript/jQuery, check if everything can be on a tab
+
+Finish layout/graphics
+hardcode text coord
+About
+
 
 
 To Del ??
@@ -466,6 +527,8 @@ non square ratio image
 shift backwards
 calculate since / until, in nice text
 slider doesn't update Img when in auto mode
+sliders/id dont update when canvas is adjusted
+combined + / - button
 
 
 Nah

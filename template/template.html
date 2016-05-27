@@ -87,8 +87,8 @@ var bound = false;
 function bindJavascript() {
   var pjs = Processing.getInstanceById('@@id@@');
   if(pjs!=null) {
-	pjs.bindJavascript(this);
-	bound = true;
+  pjs.bindJavascript(this);
+  bound = true;
   }
   if(!bound) setTimeout(bindJavascript, 250);
 }
@@ -102,34 +102,34 @@ function HUI_updateId(id, idSlider, explore, about){
 
   if( about === true )
   {
-	document.getElementById('about').style.display = "block";
+  document.getElementById('about').style.display = "block";
   }
   else
   {
-	document.getElementById('about').style.display = "none";
+  document.getElementById('about').style.display = "none";
   }
 
   if( explore === true )
   {
-	document.getElementById('idField').style.display = "block";
+  document.getElementById('idField').style.display = "block";
   }
   else
   {
-	document.getElementById('idField').style.display = "none";
+  document.getElementById('idField').style.display = "none";
   }
 }
 
-</script>
 
-
-
-<script>
 // create an object to hold variables controlled by the UI
 var uivars = {
-	id: "0",
-	slider : "0"
+  id: "0",
+  slider : "0"
 
 };
+
 </script>
+
+
+
 
 @@scripts@@

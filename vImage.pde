@@ -74,38 +74,12 @@ class VImage
   
   
   
-  // Canvas driven increment
-  void shift()
-  {
-    id = id.add(1);
-    
-    pix[0] ++;
-    propagate(0);
-    //update_UI();
-    
-  }
-  
-  void propagate(int p)
-  {
- 
-    if( pix[p] >= cDepth )
-    {
-      pix[p] = 0;
-      if( p+1<size )
-      {
-        pix[++p] ++;
-        propagate( p );
-      }
-      else
-        clear();
-    }
-    
-  }
+
   
   
   
   // Id driven increment
-  void offset(int o)
+  void offset(bigInt o)
   {
     id = id.add(o);
     
@@ -124,7 +98,7 @@ class VImage
   
   
   
-  void draw(boolean overlay)
+  void draw()
   {
     noStroke();
     int p=0;
@@ -134,18 +108,35 @@ class VImage
         color c = color(pix[p]/float(cDepth-1));
         fill(c);
         rect(x,y,1,1);
-        
-        if( overlay )
-        {
-          fill(color(0.9,0.5,0.4));
-          textSize(0.5);
-          text(pix[p], x, y+1);
-        }
-        
         p++;
       }
   }
   
+  
+  void overlay()
+  {
+    float pixelSize = 1;
+    if( w>h )
+      pixelSize = float(FrameSize)/float(w);
+    else
+      pixelSize = float(FrameSize)/float(h);
+     
+     
+    textSize(pixelSize * 0.5);
+    textAlign(RIGHT, BOTTOM);
+    fill(color(0.9,0.5,0.4));
+    
+    
+    int p=0;
+    for (int y=0; y<h; y++)
+      for (int x=0; x<w; x++)
+      {
+        text(pix[p], x*pixelSize+pixelSize-pixelSize*0.1, y*pixelSize+pixelSize);
+        
+        p++;
+      }
+    
+  }
   
   
   void drawBitmap()
@@ -194,26 +185,33 @@ class VImage
     clear();
     
     String idBaseConvert = bigInt(idIn).toString(depth);
+    msg = idBaseConvert;
     
-    
-    for(int d=0; d<idBaseConvert.length(); d++)
-    {
-      int dInv = idBaseConvert.length()-d-1;
-      
-      // the new color of the itterated digit
-      dColor = bigInt(idBaseConvert[d]);
-      String newColor = dColor.toString();
-      
-      pix[dInv] = int(newColor);
-    }
     
     id = bigInt(idBaseConvert, depth);
+    /*
+    for(int i=0; i<idBaseConvert.length(); i++)
+    {
+      int dInv = idBaseConvert.length()-i-1;
+      
+      if( idBaseConvert[i] != "<" )
+      {
+        pix[dInv] = bigInt(idBaseConvert[i], depth);
+      }
+      else
+      {
+        i++;
+        String tmp = "";
+        while( idBaseConvert[i] != ">" )
+         tmp += aa[i++];
+        
+        pix[dInv] = tmp;
+      }
+    }
+    */
     
-    //update_UI();
     
-    
-    // FIX : extra conversion to support 10+ depth
-    // Warning ean kseperaseis to size
+    id = bigInt(idBaseConvert, depth);
   }
   
   
@@ -255,10 +253,13 @@ class VImage
     for(int p=0; p<nW*nH; ++p)
       imgR.pixels[p] = imgIn.pixels[p]; 
 
-    // calc and set canvas to new size based on the width of the current image    
+    // calc and set canvas to new size based on width of the current image
     float ratio = float(nW)/float(nH);
     nW = w;
     nH = int( float(nW)/ratio );
+
+    
+    
     setCanvas(nW,nH,cDepth);
     clear();
     
@@ -274,7 +275,7 @@ class VImage
     canvasToId();
     
     
-    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
+    //msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   
@@ -344,7 +345,7 @@ class VImage
     bitmap = new PImage(w,h,RGB);
     
     
-    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
+    //msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   

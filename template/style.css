@@ -61,8 +61,10 @@ canvas {
 #uiId {
 	background: #2e2e2e;
 	color: #d0d0d0;
+	width: 990px;
 	border: none;
-	width: 1000px;
+	padding: 5px;
+	font-size: 14px;
 }
 #uiIdSlider {
 	display: none;

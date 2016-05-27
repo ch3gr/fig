@@ -1,3 +1,17 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 LINKS
 http://joseph-harrington.com/2012/03/controlling-processingjs-jqueryui/
@@ -72,5 +86,20 @@ $(function() {
   $("#uiIdSlider").val(uivars.slider);
   
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

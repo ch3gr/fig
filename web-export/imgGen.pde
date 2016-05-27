@@ -8,7 +8,7 @@ HashMap UI_Common = new HashMap();
 var RefTime = new Date(1981, 2, 18);
 
 VImage Img ;
-VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
+VImage ImgUser = new VImage(2,2,51); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
 
@@ -130,10 +130,12 @@ void setup ()
   int px3 = px + pw*5.0/6.0;
   int bs = 35;
   UI_Explore.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "rUp", new Button("+", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, baseC, overC, downC) );
   UI_Explore.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
   UI_Explore.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
   py += 80;
   UI_Explore.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "rDown", new Button("-", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, baseC, overC, downC) );
   UI_Explore.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
   UI_Explore.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
   
@@ -156,7 +158,7 @@ void setup ()
   UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
   UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
   
-  UI_Explore.put( "slider", new Slider(0,660, width, 30) );
+  UI_Explore.put( "slider", new Slider(0,height-20-gap, width, 20) );
 
   
   
@@ -218,17 +220,25 @@ void draw()
   else
     scale(float(FrameSize)/Img.w);
   
-  if( Img.w > 50 )
+  if( Img.w > 50 || Img.h > 50)
     Img.drawBitmap();
   else
-    Img.draw(Overlay);
+    Img.draw();
   
   popMatrix();
   
+  // Draw overlay
+  
+  if( Overlay && Img.w <= 50 && Img.h <= 50)
+    Img.overlay();
+  
+  
+  
   
   //// Canvas UI
-  //update_UI();
   ui_common();
+  
+  
   
   if( UI_Common.get("explore").click )
     ui_explore();
@@ -238,7 +248,7 @@ void draw()
   
 
   //// HTML UI to Processing
-  
+  /*
   // when the input chages
   if( HUI_lastId != uivars.id )
   {
@@ -254,13 +264,55 @@ void draw()
     //Img.setIdFromRange(float(mouseX)/float(width));
     update_UI();
   }
+  */
   
   
   
- 
   
   //// Temp text
-  text(Sample, 700, 330);
+  
+  textAlign(LEFT, BOTTOM);
+  fill(color(1,0,0));
+  textSize(18);
+  //text(frameRate, 50, 50);
+  text(Img.msg, 10,540);
+  
+  bigInt a = bigInt(Img.id);
+  
+  text( a.toString(), 50, 100);
+  String aa = a.toString(Img.cDepth);
+  text( aa, 50, 130);
+  
+  String out = "";
+  for(int i=0; i<aa.length(); i++)
+  {
+    if( aa[i] != "<" )
+    {
+      out += bigInt(aa[i], Img.cDepth);
+      out += "_";
+    }
+    else
+    {
+      i++;
+      while( aa[i] != ">" )
+       out += aa[i++];
+      
+      out += "_";
+    }
+  }
+  text( out, 50, 160);
+  
+  
+  
+  
+  
+  
+  
+  //textAlign(RIGHT, TOP);
+  //text( str(mouseX)+":"+str(mouseY+5), mouseX-5, mouseY+5);
+  
+  
+  //text(Sample, 700, 330);
   /*
   float slider = uivars.slider;
   textSize(12);
@@ -272,7 +324,7 @@ void draw()
   
   text(duration(Img.id), 10, 560);
   text(duration(Img.idLimit.minus(Img.id)), 200, 560);
-  text(frameRate, 10, 580);
+  
   
   fill(color(0.7));
   textSize(14);
@@ -386,7 +438,10 @@ void keyPressed()
     UI_Common.get("explore").click = !UI_Common.get("explore").click;
     
   if(key=='o')
+  {
     Overlay = !Overlay;
+    //UI_Common.get("overlay").click = !UI_Common.get("overlay").click;
+  }
     
   if(key=='i')
   {
@@ -415,7 +470,6 @@ void keyPressed()
   {
     var t = bigInt( Img.id );
     //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
-    Img.msg = duration( t );
   }
   if(key=='u')
   {
@@ -445,14 +499,21 @@ void keyPressed()
 /*
 TO DO
 
+really clear img when reset canvas
+when re-set canvas color depth, regenerate img
 
-sliders/id dont update when canvas is adjusted
+optimise step (kateuthian apo to id)
+
 
 touch screen buttons?
-
 HTML UI doesn't update when it's running online
 no characters in id textArea
 clean up javascript/jQuery, check if everything can be on a tab
+
+Finish layout/graphics
+hardcode text coord
+About
+
 
 
 To Del ??
@@ -466,6 +527,8 @@ non square ratio image
 shift backwards
 calculate since / until, in nice text
 slider doesn't update Img when in auto mode
+sliders/id dont update when canvas is adjusted
+combined + / - button
 
 
 Nah
@@ -779,15 +842,23 @@ void ui_explore()
   xc = (UI_Explore.get("cUp").x + UI_Explore.get("cUp").sx/2);
   text( Img.cDepth, xc, yc);
   
-  xc = UI_Explore.get("auto").x;
-  yc = height/2 + 20;
+  
+  
+  textSize(18);
+  textAlign(LEFT, BOTTOM);
+  text( compactBig(Img.idLimit.add(1)), 735, 325);
+  textAlign(RIGHT, BOTTOM);
+  text( "combinations", 965, 325);
+  
+  
+  // Slider range
   textSize(14);
   textAlign(LEFT, BOTTOM);
-  text( ("Set : "+ compactBig(Img.idLimit)), xc, yc);
+  text( duration(Img.id), 5, height-25);
   
+  textAlign(RIGHT, BOTTOM);
+  text( duration(Img.idLimit.minus(Img.id)), width-5, height-25);
   
-  text( "From A  : "+ duration(Img.id), xc, yc+20);
-  text( "To       B  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
   
   
   
@@ -822,6 +893,18 @@ void ui_explore()
   
   
   
+  if( UI_Explore.get("rUp").click )
+  {
+    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
+    applySample(Sample);
+  }
+  if( UI_Explore.get("rDown").click )
+  {
+    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
+    applySample(Sample);
+  }
+  
+  
   if( UI_Explore.get("xUp").click )
   {
     Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
@@ -835,13 +918,24 @@ void ui_explore()
     
   if( UI_Explore.get("yUp").click )
   {
-    Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
-    applySample(Sample);
+    
+    if( Sample > -1 )
+    {
+      Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
+      applySample(Sample);
+    }
+    else
+      Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
   }
   if( UI_Explore.get("yDown").click )
   {
-    Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
-    applySample(Sample);
+    if( Sample > -1 )
+    {
+      Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
+      applySample(Sample);
+    }
+    else
+      Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
   }
     
   if( UI_Explore.get("cUp").click )
@@ -857,10 +951,7 @@ void ui_explore()
     
 
   if( UI_Explore.get("overlay").click )
-  {
     Overlay = true;
-    update_UI();
-  }
   else
     Overlay = false;
   
@@ -1016,9 +1107,11 @@ String compactBig( bigInt n )
 
 String duration( bigInt f)
 {
+  if( f.lesser(1) )
+    return( "0" );
   // f in frames
   if( f.lesser(60) )
-    return( "less than a second");
+    return( "Less than a second");
   
   
   // s = t in seconds
@@ -1197,6 +1290,12 @@ class Slider
   int x, y, sx, sy;
   float v, vLast;
   Button b;
+  
+  boolean over = false;
+  boolean down = false;
+  boolean click = false;
+  int timer;
+  
   boolean changed = false;
   
   int bs = 10;
@@ -1210,16 +1309,49 @@ class Slider
     
     v = 0;
     vLast = 0;
+    timer = -1;
+    
     
     b = new Button("", false, x, y, bs*2, sy, color(0.1), color(0.2), color(0.3));
   }
   
   
-
+  boolean isOver() 
+  {
+    if ( !OneButtonClicked && MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
+    {
+      over = true;
+      return true;
+    }
+    else
+    {
+      over = false;
+      return false;
+    }
+  }
+  
+  boolean isDown()
+  {
+    if( !down && mousePressed && over )
+    {
+      down = true;
+      OneButtonClicked = true;
+      return true;
+    }
+    // Keep it down even not over
+    if( down && !mousePressed )
+    {
+      down = false;
+      OneButtonClicked = false;
+      return false;
+    }
+  }
+  
   
   
   void update() 
   {
+    // Check button
     b.update();
     changed = false;
     if(b.down)
@@ -1237,6 +1369,54 @@ class Slider
         changed = false;
       
     }
+    
+    
+    
+    // press on the side
+    boolean pDown = down;
+    
+    isOver();
+    isDown();
+    
+    click = false;
+    // first frame down
+    if( !pDown && down )
+    {
+      click = true;
+      timer = millis();
+    }
+    
+    // continious press
+    if( timer>-1 && millis()-timer > 500 )
+      click = true;
+    
+    // last frame down
+    if( pDown && !down )
+    {
+      click = false;
+      timer = -1;
+    }
+
+    if( click )
+    {
+      if( mouseX < b.x )
+      {
+        v -= 1.0/(sx-2*bs) ;
+        changed = true;
+      }
+      else if( mouseX > b.x+b.sx )
+      {
+        v += 1.0/(sx-2*bs) ;
+        changed = true;
+      }
+    }
+    
+    
+    
+    
+    
+    
+    
     // move slider
     b.x = map( v, 0,1, x, x+sx-2*bs );
   }
@@ -1264,9 +1444,13 @@ class Slider
     fill(0.8);
     textAlign(LEFT, TOP);
     textSize(14);
-    text(v, x, y);
+    text(v, b.x, y);
     textAlign(LEFT, BOTTOM);
     text(changed, x, y+sy);
+    
+    text(over, x+100, y+20);
+    text(down, x+150, y+20);
+    text(click, x+200, y+20);
     */
   }
   
@@ -1347,38 +1531,12 @@ class VImage
   
   
   
-  // Canvas driven increment
-  void shift()
-  {
-    id = id.add(1);
-    
-    pix[0] ++;
-    propagate(0);
-    //update_UI();
-    
-  }
-  
-  void propagate(int p)
-  {
- 
-    if( pix[p] >= cDepth )
-    {
-      pix[p] = 0;
-      if( p+1<size )
-      {
-        pix[++p] ++;
-        propagate( p );
-      }
-      else
-        clear();
-    }
-    
-  }
+
   
   
   
   // Id driven increment
-  void offset(int o)
+  void offset(bigInt o)
   {
     id = id.add(o);
     
@@ -1397,7 +1555,7 @@ class VImage
   
   
   
-  void draw(boolean overlay)
+  void draw()
   {
     noStroke();
     int p=0;
@@ -1407,18 +1565,35 @@ class VImage
         color c = color(pix[p]/float(cDepth-1));
         fill(c);
         rect(x,y,1,1);
-        
-        if( overlay )
-        {
-          fill(color(0.9,0.5,0.4));
-          textSize(0.5);
-          text(pix[p], x, y+1);
-        }
-        
         p++;
       }
   }
   
+  
+  void overlay()
+  {
+    float pixelSize = 1;
+    if( w>h )
+      pixelSize = float(FrameSize)/float(w);
+    else
+      pixelSize = float(FrameSize)/float(h);
+     
+     
+    textSize(pixelSize * 0.5);
+    textAlign(RIGHT, BOTTOM);
+    fill(color(0.9,0.5,0.4));
+    
+    
+    int p=0;
+    for (int y=0; y<h; y++)
+      for (int x=0; x<w; x++)
+      {
+        text(pix[p], x*pixelSize+pixelSize-pixelSize*0.1, y*pixelSize+pixelSize);
+        
+        p++;
+      }
+    
+  }
   
   
   void drawBitmap()
@@ -1467,26 +1642,33 @@ class VImage
     clear();
     
     String idBaseConvert = bigInt(idIn).toString(depth);
+    msg = idBaseConvert;
     
-    
-    for(int d=0; d<idBaseConvert.length(); d++)
-    {
-      int dInv = idBaseConvert.length()-d-1;
-      
-      // the new color of the itterated digit
-      dColor = bigInt(idBaseConvert[d]);
-      String newColor = dColor.toString();
-      
-      pix[dInv] = int(newColor);
-    }
     
     id = bigInt(idBaseConvert, depth);
+    /*
+    for(int i=0; i<idBaseConvert.length(); i++)
+    {
+      int dInv = idBaseConvert.length()-i-1;
+      
+      if( idBaseConvert[i] != "<" )
+      {
+        pix[dInv] = bigInt(idBaseConvert[i], depth);
+      }
+      else
+      {
+        i++;
+        String tmp = "";
+        while( idBaseConvert[i] != ">" )
+         tmp += aa[i++];
+        
+        pix[dInv] = tmp;
+      }
+    }
+    */
     
-    //update_UI();
     
-    
-    // FIX : extra conversion to support 10+ depth
-    // Warning ean kseperaseis to size
+    id = bigInt(idBaseConvert, depth);
   }
   
   
@@ -1528,10 +1710,13 @@ class VImage
     for(int p=0; p<nW*nH; ++p)
       imgR.pixels[p] = imgIn.pixels[p]; 
 
-    // calc and set canvas to new size based on the width of the current image    
+    // calc and set canvas to new size based on width of the current image
     float ratio = float(nW)/float(nH);
     nW = w;
     nH = int( float(nW)/ratio );
+
+    
+    
     setCanvas(nW,nH,cDepth);
     clear();
     
@@ -1547,7 +1732,7 @@ class VImage
     canvasToId();
     
     
-    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
+    //msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   
@@ -1617,7 +1802,7 @@ class VImage
     bitmap = new PImage(w,h,RGB);
     
     
-    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
+    //msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   
