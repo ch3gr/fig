@@ -1,8 +1,8 @@
-
-
-
 // UI buttons
-HashMap Buttons = new HashMap();
+HashMap UI_Simple = new HashMap();
+HashMap UI_Explore = new HashMap();
+HashMap UI_Common = new HashMap();
+
 
 // Date( year, month(0-11), date(1-31))
 var RefTime = new Date(1981, 2, 18);
@@ -15,22 +15,24 @@ PImage ImgInput;
 
 
 
-int UI_lastId = uivars.id.length();
-float UI_lastSlider = uivars.slider;
-float LastSlider = 0;
+int HUI_lastId = uivars.id.length();
+float HUI_lastSlider = uivars.slider;
 
-int Mill = 0;
+//int Mill = 0;
 
 
 boolean AutoMode = false;
 boolean Overlay = false;
+boolean Explore = false;
+boolean About = false;
 int Step = 1;
+
 
 int FrameSize = 650;
 
 
 interface JavaScript {
-  void UI_updateId(String t);
+  void HUI_updateId(String t);
 }
 
 void bindJavascript(JavaScript js) {
@@ -55,52 +57,6 @@ void setup ()
   background(0.18);
   frameRate(60);
 
-
-  color baseC = color(0.1,0.1,0.1);
-  color overC = color(0.15,0.15,0.15);
-  color downC = color(0.8,0.8,0.8);
-  
-  
-  int px = 700;
-  int py = 0;
-  int pw = 300;
-  int bh = 50;
-  int gap = 5;
-  Buttons.put( "prev", new Button("-", false, px, py, pw/3-gap, bh*2, baseC, overC, downC) );
-  Buttons.put( "next", new Button("+", false, px+2*(pw/3)+gap, py, pw/3-gap, bh*2, baseC, overC, downC) );
-  
-  Buttons.put( "incUp", new Button("incUp", false, px+(pw/3), py, pw/3, (bh*0.6), baseC, overC, downC) );
-  Buttons.put( "incDown", new Button("incDown", false, px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), baseC, overC, downC) );
-  
-  py += bh*3;
-  int px1 = px + pw/6; 
-  int px2 = px + pw/2;
-  int px3 = px + pw*5.0/6.0;
-  int bs = 35;
-  Buttons.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
-  Buttons.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
-  Buttons.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
-  py += 80;
-  Buttons.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
-  Buttons.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
-  Buttons.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
-  
-  py = 650 - bh;
-  Buttons.put( "about", new Button("about", false, px, py, pw, bh, baseC, overC, downC) );
-  
-  py -= bh*1.5 + gap ;
-  Buttons.put( "samples", new Button("samples", false, px, py, pw, bh*1.5, baseC, overC, downC) );
-  
-  py -= bh + gap;
-  Buttons.put( "random", new Button("random", false, px, py, pw/2-gap, bh, baseC, overC, downC) );
-  Buttons.put( "clear", new Button("clear", false, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
-
-  py -= bh + gap;
-  Buttons.put( "auto", new Button("auto iterate", true, px, py, pw, bh, baseC, overC, downC) );
-  
-  Buttons.put( "slider", new Slider(0,660, width, 30) );
-
- 
 // @pjs preload must be used to preload the image 
 /* @pjs preload="georgios.jpg"; */
   ImgInput = loadImage("georgios.jpg");
@@ -116,7 +72,82 @@ void setup ()
     Img = ImgDate;
   else
     Img = ImgUser;
+    
+    
+    
+    
+    
+  ///////////////////////////////////////////////////////////////
+  // UIs
+
+  ///////////////////////////////////////////////////////////////
+  // UI_Simple
+  int px = 700;
+  int py = 0;
+  int pw = 300;
+  int bh = 50;
+  int gap = 5;
   
+  color baseC = color(0.1,0.1,0.1);
+  color overC = color(0.15,0.15,0.15);
+  color downC = color(0.8,0.8,0.8);
+
+  UI_Simple.put( "next", new Button("next", false, px, py, width-px, bh*2, baseC, overC, downC));
+  
+  
+
+  ///////////////////////////////////////////////////////////////
+  // UI_Explore
+  px = 700;
+  py = 0;
+  pw = 300;
+  bh = 50;
+  gap = 5;
+  UI_Explore.put( "prev", new Button("-", false, px, py, pw/3-gap, bh*2, baseC, overC, downC) );
+  UI_Explore.put( "next", new Button("+", false, px+2*(pw/3)+gap, py, pw/3-gap, bh*2, baseC, overC, downC) );
+  
+  UI_Explore.put( "incUp", new Button("incUp", false, px+(pw/3), py, pw/3, (bh*0.6), baseC, overC, downC) );
+  UI_Explore.put( "incDown", new Button("incDown", false, px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), baseC, overC, downC) );
+  
+  py += bh*3;
+  int px1 = px + pw/6; 
+  int px2 = px + pw/2;
+  int px3 = px + pw*5.0/6.0;
+  int bs = 35;
+  UI_Explore.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  py += 80;
+  UI_Explore.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  
+  py = height - bh*2;
+  
+  py -= bh*1.5 + gap ;
+  UI_Explore.put( "samples", new Button("samples", false, px, py, pw, bh*1.5, baseC, overC, downC) );
+  
+  py -= bh + gap;
+  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Explore.put( "clear", new Button("clear", false, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  
+  
+  
+  
+  py -= bh + gap;
+  UI_Explore.put( "auto", new Button("auto iterate", true, px, py, pw, bh, baseC, overC, downC) );
+  
+  UI_Explore.put( "slider", new Slider(0,660, width, 30) );
+
+  
+  
+  ///////////////////////////////////////////////////////////////
+  // UI_Common
+  
+  
+  py = height - bh*2;
+  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Common.put( "about", new Button("about", false, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
   
@@ -131,10 +162,7 @@ void setup ()
 
 void draw()
 {
-
-
-  
-  
+  ////////////////////////////////////////////////////
   //// Logic
   
   if( AutoMode )
@@ -144,12 +172,13 @@ void draw()
     //Img.setIdFromDate( RefTime );
   }
   
-  background(0.18);
-  smooth();
     
   
-  //// Draw
-
+  ////////////////////////////////////////////////////
+  //// Draw Iamge
+  
+  background(0.18);
+  smooth();
   pushMatrix();
   translate(0,0);
   if( Img.h > Img.w )  // fit img in the frame square
@@ -166,21 +195,28 @@ void draw()
   
   
   //// Canvas UI
-  ui();
+  update_UI();
+  ui_common();
+  
+  if( UI_Common.get("explore").click )
+    ui_explore();
+  else
+    ui_simple();
+  
   
 
   //// HTML UI to Processing
   
   // when the input chages
-  if( UI_lastId != uivars.id )
+  if( HUI_lastId != uivars.id )
   {
-    UI_lastId = uivars.id;
+    HUI_lastId = uivars.id;
     Img.setId(uivars.id, Img.cDepth);
   }
   
-  if( UI_lastSlider != uivars.slider )
+  if( HUI_lastSlider != uivars.slider )
   {
-    UI_lastSlider = uivars.slider;
+    HUI_lastSlider = uivars.slider;
     Img.setIdFromRange(float(uivars.slider));
     //Img.setIdFromRange(float(mouseX)/float(width));
   }
@@ -236,29 +272,66 @@ void draw()
 
 
 
-void ui()
+void ui_common()
 {
-  // Calculate and Update sliders
-  // integer that holds id/idLimit * 1000000
-  bigInt mil = bigInt(Img.id.multiply(1000000)).divide(Img.idLimit.multiply(1));
-  float portion = mil.toString();
-  portion /= 1000000.0;
+  ////////////////////////////////////////////////////
+  // RENDER UI  
   
-  // Update HTML slider
-  if(javascript!=null)
-    javascript.UI_updateId(Img.id.toString(), portion);
+  // Loop through all the buttons
+  Iterator i = UI_Common.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    me.getValue().update();
+    me.getValue().draw();
+  }
+  
+  
+  ////////////////////////////////////////////////////
+  // Button actions
+  
+  //if( UI_Common.get("explore").click )
+  //  Explore = !Explore;
+  
+  if( UI_Common.get("about").click )
+    Img.offset(Step);
 
-  // Update processing slider
-  Buttons.get("slider").v = portion;
+}
+
+
+void ui_simple()
+{
+  ////////////////////////////////////////////////////
+  // RENDER UI  
   
+  // Loop through all the buttons
+  Iterator i = UI_Simple.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    me.getValue().update();
+    me.getValue().draw();
+  }
   
+  ////////////////////////////////////////////////////
+  // Button actions
+  
+  if( UI_Simple.get("next").click )
+    Img.offset(Step);
+}
+
+
+
+void ui_explore()
+{
+
   
   
   ////////////////////////////////////////////////////
   // RENDER UI  
   
   // Loop through all the buttons
-  Iterator i = Buttons.entrySet().iterator();  // Get an iterator
+  Iterator i = UI_Explore.entrySet().iterator();  // Get an iterator
   while (i.hasNext())
   {
     Map.Entry me = (Map.Entry)i.next();
@@ -272,19 +345,19 @@ void ui()
   fill(0.8);
   int xc, yc;
   
-  xc = ((Buttons.get("prev").x + Buttons.get("prev").sx/2) + (Buttons.get("next").x + Buttons.get("next").sx/2))/2;
-  yc = ((Buttons.get("incUp").y + Buttons.get("incUp").sy/2) + (Buttons.get("incDown").y + Buttons.get("incDown").sy/2))/2;
+  xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
+  yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
   text( Step, xc, yc);
   
-  yc = ((Buttons.get("xUp").y + Buttons.get("xUp").sy/2) + (Buttons.get("xDown").y + Buttons.get("xDown").sy/2))/2;
-  xc = (Buttons.get("xUp").x + Buttons.get("xUp").sx/2);
+  yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
+  xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
   text( Img.w, xc, yc);
-  xc = (Buttons.get("yUp").x + Buttons.get("yUp").sx/2);
+  xc = (UI_Explore.get("yUp").x + UI_Explore.get("yUp").sx/2);
   text( Img.h, xc, yc);
-  xc = (Buttons.get("cUp").x + Buttons.get("cUp").sx/2);
+  xc = (UI_Explore.get("cUp").x + UI_Explore.get("cUp").sx/2);
   text( Img.cDepth, xc, yc);
   
-  xc = Buttons.get("auto").x;
+  xc = UI_Explore.get("auto").x;
   yc = height/2;
   textSize(14);
   textAlign(LEFT, BOTTOM);
@@ -300,72 +373,72 @@ void ui()
   ////////////////////////////////////////////////////
   // Button actions
   
-  if( Buttons.get("prev").click )
+  if( UI_Explore.get("prev").click )
     Img.offset(-Step);
-  if( Buttons.get("next").click )
+  if( UI_Explore.get("next").click )
     Img.offset(Step);
-  if( Buttons.get("incUp").click )
+  if( UI_Explore.get("incUp").click )
   {
     Step *= 2;
   }
-  if( Buttons.get("incDown").click )
+  if( UI_Explore.get("incDown").click )
   {
     Step /= 2;
     if( Step<1 )
       Step = 1;
   }
   
-  if( Buttons.get("xUp").click )
+  if( UI_Explore.get("xUp").click )
     Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
-  if( Buttons.get("xDown").click )
+  if( UI_Explore.get("xDown").click )
     Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
     
-  if( Buttons.get("yUp").click )
+  if( UI_Explore.get("yUp").click )
     Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
-  if( Buttons.get("yDown").click )
+  if( UI_Explore.get("yDown").click )
     Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
     
-  if( Buttons.get("cUp").click )
+  if( UI_Explore.get("cUp").click )
     Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-  if( Buttons.get("cDown").click )
+  if( UI_Explore.get("cDown").click )
     Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
     
-  if( Buttons.get("auto").click )
+  if( UI_Explore.get("auto").click )
     Img.offset(Step);
   
-  if( Buttons.get("random").click )
+  if( UI_Explore.get("random").click )
     Img.randomise();
-  if( Buttons.get("clear").click )
+  if( UI_Explore.get("clear").click )
     Img.clear();
     
-  if( Buttons.get("samples").click )  
+  if( UI_Explore.get("samples").click )  
     ImgUser.setIdFromImg(ImgInput);
-  
-  
-  // SHIITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-  /*
-  if( Buttons.get("slider").b.down )
-  {
-    if( Buttons.get("slider").v != LastSlider )
-    {
-      Img.setIdFromRange( Buttons.get("slider").v );
-      LastSlider = Buttons.get("slider").v;
-    }
-  }
-  */
-  if( Buttons.get("slider").changed )
-    Img.setIdFromRange( Buttons.get("slider").v );
-  
-  
-  
-  
-  
-  
 
-  
-  
+  if( UI_Explore.get("slider").changed )
+    Img.setIdFromRange( UI_Explore.get("slider").v );
 }
 
+
+
+
+void update_UI()
+{
+  
+  ////////////////////////////////////////////////////
+  // Calculate and Update sliders
+  // integer that holds id/idLimit * 1000000
+  bigInt mil = bigInt(Img.id.multiply(1000000)).divide(Img.idLimit.multiply(1));
+  float portion = mil.toString();
+  portion /= 1000000.0;
+  
+  // Update HTML slider
+  if(javascript!=null)
+    javascript.HUI_updateId(Img.id.toString(), portion);
+
+  // Update processing slider
+  UI_Explore.get("slider").v = portion;
+  
+}
 
 
 
@@ -406,13 +479,12 @@ void keyPressed()
     {
       Img = ImgUser;
     }
-    Img.updateUI();
   }
   
   
   if(key=='+')
   {
-    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);  
+    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
   }
     if(key=='-')
   {
@@ -427,7 +499,9 @@ void keyPressed()
     Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
   }
   
-  
+  if(key=='e')
+    Explore = !Explore;
+    
   if(key=='o')
     Overlay = !Overlay;
     
@@ -937,12 +1011,14 @@ class Slider
     
     
     // DEBUG
+    /*
     fill(0.8);
     textAlign(LEFT, TOP);
     textSize(14);
     text(v, x, y);
     textAlign(LEFT, BOTTOM);
     text(changed, x, y+sy);
+    */
   }
   
 }
