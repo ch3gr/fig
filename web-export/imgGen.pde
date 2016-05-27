@@ -23,7 +23,7 @@ float HUI_lastSlider = uivars.slider;
 
 boolean AutoMode = false;
 boolean Overlay = false;
-boolean Explore = false;
+boolean Explore = true;
 boolean About = false;
 int Step = 1;
 
@@ -742,7 +742,7 @@ void ui_explore()
   
   xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
   yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
-  text( Step, xc, yc);
+  text( compact(Step), xc, yc);
   
   yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
   xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
@@ -756,7 +756,7 @@ void ui_explore()
   yc = height/2;
   textSize(14);
   textAlign(LEFT, BOTTOM);
-  text( ("limit: "+ Img.idLimit), xc, yc);
+  text( ("limit: "+ compactBig(Img.idLimit)), xc, yc);
   
   
   text( "Start: "+ duration(Img.id), xc, yc+20);
@@ -780,7 +780,8 @@ void ui_explore()
   }
   if( UI_Explore.get("incUp").click )
   {
-    Step *= 2;
+    if( Step < 9*pow(10,306) ) // upper limit
+      Step *= 2;
   }
   if( UI_Explore.get("incDown").click )
   {
@@ -841,6 +842,34 @@ void ui_explore()
 
 
 
+String compact( var n )
+{
+  if( n < 1000000000 )
+    return str(n);
+  else
+  {
+    var out = n.toExponential(0);
+    return out.replace("e+", "x10^");
+  }
+  // limit : 9*10^307
+  
+}
+
+String compactBig( bigInt n )
+{
+  String nStr = n.toString();
+  
+  if( nStr.length() > 20 )
+  {
+    String out = nStr.charAt(0);
+    out += " * 10 ^ ";
+    out += str(nStr.length()-1);
+    return out;
+  }
+  else
+    return n;
+  
+}
 
 
 
@@ -986,7 +1015,7 @@ String duration( bigInt f)
     if( t.lesser(2) )
       return (t.toString() + " cosmic year");
     else
-      return (t.toString() + " cosmic years");
+      return (compactBig(t) + " cosmic years");
   }
 }
 

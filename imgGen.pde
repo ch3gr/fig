@@ -23,7 +23,7 @@ float HUI_lastSlider = uivars.slider;
 
 boolean AutoMode = false;
 boolean Overlay = false;
-boolean Explore = false;
+boolean Explore = true;
 boolean About = false;
 int Step = 1;
 
