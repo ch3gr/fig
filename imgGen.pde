@@ -6,15 +6,14 @@ var RefTime = new Date(1981, 2, 18);
 
 
 VImage Img ;
-VImage ImgUser = new VImage(30,30,5); //(100,100,2) tooooo much
+VImage ImgUser = new VImage(30,20,5); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
 
 
-// @pjs preload must be used to preload the image 
-/* @pjs preload="georgios.jpg"; */
-PImage ImgInput;
 
+PImage ImgInput;
+PImage ImgWeb;
 
 
 
@@ -26,7 +25,7 @@ int Mill = 0;
 boolean SinceMode = false;
 boolean Overlay = false;
 
-
+int FrameSize = 500;
 
 
 interface JavaScript {
@@ -49,13 +48,22 @@ JavaScript javascript;
 
 void setup ()
 {
-  size( 500, 550, JAVA2D );
+  size( 500, 600, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
+
+
+ 
+// @pjs preload must be used to preload the image 
+/* @pjs preload="georgios.jpg"; */
+/* @pjs preload="http://stylesatlife.com/wp-content/uploads/2015/09/Layered-Hairstyles-for-Round-Faces-4.jpg"; */
+
+  ImgInput = loadImage("georgios.jpg");
   
-/* @pjs preload="in/georgios.jpg"; */
-  ImgInput = loadImage("cat.jpg");
+  //ImgWeb = loadImage("georgios.jpg");
+  //ImgWeb = requestImage("http://stylesatlife.com/wp-content/uploads/2015/09/Layered-Hairstyles-for-Round-Faces-4.jpg");
+  ImgWeb = loadImage("http://stylesatlife.com/wp-content/uploads/2015/09/Layered-Hairstyles-for-Round-Faces-4.jpg");
 
 
   ImgDate.setIdFromDate( RefTime );
@@ -103,8 +111,10 @@ void draw()
 
   pushMatrix();
   translate(0,0);
-  scale(500.0/Img.h);  //fit height in 500 pixels
-  
+  if( Img.h > Img.w )  // fit img in the frame square
+    scale(float(FrameSize)/Img.h);
+  else
+    scale(float(FrameSize)/Img.w);
   
   if( Img.w > 50 )
     Img.drawBitmap();
@@ -136,6 +146,16 @@ void draw()
   text(Img.idLimit, 10,520);
   text("4", 10,530);
   text(Img.msg, 10,540);
+  
+  
+  
+  pushMatrix();
+  scale(0.1);
+  image(ImgInput, 200, 200);
+  scale(2);
+  image(ImgWeb, 50, 300);
+  popMatrix();
+  
   
   
   
@@ -243,6 +263,10 @@ void keyPressed()
   if(key=='p')
   {
     ImgUser.setIdFromImg(ImgInput);
+  }
+  if(key=='P')
+  {
+    ImgUser.setIdFromImg(ImgWeb);
   }
   
   if(key=='v')

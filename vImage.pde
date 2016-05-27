@@ -235,17 +235,42 @@ class VImage
   void setIdFromImg(PImage imgIn)
   {
     // make a copy of the input image, to resize without loss of information
-    PImage imgR = new PImage(imgIn.width, imgIn.height);
-    for(int p=0; p<imgR.width*imgR.height; ++p)
-      imgR.pixels[p] = imgIn.pixels[p]; 
+    int nW = imgIn.width;
+    int nH = imgIn.height;
+    PImage imgR = new PImage(nW,nH);
     
-    imgR.resize(w,h);
+    imgIn.loadPixels();
+    msg ="";
+    msg += str(imgIn.width) + "  " ;
+    for(int p=0; p<3; ++p)
+      msg += brightness(imgIn.pixels[p]) + "   ";
+    
+/*    
+    for(int p=0; p<nW*nH; ++p)
+      imgR.pixels[p] = imgIn.pixels[p]; 
+
+    // calc and set canvas to new size based on the width of the current image    
+    float ratio = float(nW)/float(nH);
+    nW = w;
+    nH = int( float(nW)/ratio );
+    setCanvas(nW,nH,cDepth);
+    clear();
+    
+    // resize image to canvas' size and copy values
+    imgR.resize(nW,nH);
     imgR.loadPixels();
     
     for(int p=0; p<size; ++p)
       pix[p] = floor(brightness(imgR.pixels[p]) * (cDepth));
     
+    
+    
     canvasToId();
+*/    
+    
+//    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
+
+    //msg = str(imgIn.width);
   }
   
   
