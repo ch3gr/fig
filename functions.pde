@@ -247,10 +247,10 @@ void ui_explore()
   }
     
 
-  if( UI_Explore.get("overlay").click )
-    Overlay = true;
+  if( UI_Explore.get("values").click )
+    Values = true;
   else
-    Overlay = false;
+    Values = false;
   
   if( UI_Explore.get("random").click )
   {

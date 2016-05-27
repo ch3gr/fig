@@ -186,10 +186,26 @@ class Button
     // Pop up message
     if( over && millis() - overTime > 500 )
     {
-      fill(0.6, 0.5);
-      textAlign(RIGHT, BOTTOM);
-      textSize(14);
-      text( msg, mouseX, mouseY );
+      String hor, ver;
+      if( mouseX > width/2 )
+        hor = RIGHT;
+      else
+        hor = LEFT;
+      
+      if( mouseY < 20 )
+        ver = TOP;
+      else
+        hour = BOTTOM;
+       
+      Overlay.beginDraw();
+      Overlay.textAlign(hor, ver);
+      Overlay.textSize(16);
+      Overlay.fill(0);
+      Overlay.text( msg, mouseX+1, mouseY+1 );
+      Overlay.fill(1);
+      Overlay.text( msg, mouseX, mouseY );
+      Overlay.endDraw();
+      
     }
     
     

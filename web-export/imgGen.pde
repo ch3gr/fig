@@ -32,7 +32,7 @@ VImage ImgDate = new VImage(30,30,3);
 
 
 PImage[] ImgFile = new PImage[4];
-
+PGraphics Overlay;
 
 int HUI_lastId = uivars.id.length();
 
@@ -40,7 +40,7 @@ int HUI_lastId = uivars.id.length();
 
 
 boolean AutoMode = false;
-boolean Overlay = false;
+boolean Values = false;
 boolean About = false;
 boolean Explore = true;
 
@@ -65,12 +65,6 @@ int FrameSize = 650;
 
 
 
-
-
-
-
-
-
 void setup ()
 {
   size( 1000, 700, JAVA2D );
@@ -78,6 +72,10 @@ void setup ()
   colorMode(RGB,1);
   background(0.18);
   frameRate(60);
+
+
+  Overlay = createGraphics(width, height, JAVA2D);
+  Overlay.colorMode(RGB,1);
 
 // @pjs preload must be used to preload the image 
 /* @pjs preload="georgios.jpg"; */
@@ -166,7 +164,7 @@ void setup ()
   
   py -= bh + gap;
   UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, "Auto increment at 60 about iterations per second") );
-  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "Display color values") );
+  UI_Explore.put( "values", new Button("values", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "Display color values") );
   
   UI_Explore.put( "slider", new Slider(0,height-20-gap, width, 20) );
 
@@ -222,6 +220,12 @@ void draw()
   //// Draw Iamge
   
   background(0.18);
+  
+//  Overlay.beginDraw();
+//  Overlay.fill(1,0,0);
+  Overlay.background(0,0);
+//  Overlay.endDraw();
+  
   smooth();
   pushMatrix();
   translate(0,0);
@@ -237,10 +241,10 @@ void draw()
   
   popMatrix();
   
-  // Draw overlay
+  // Draw values
   
-  if( Overlay && Img.w <= 50 && Img.h <= 50)
-    Img.overlay();
+  if( Values && Img.w <= 50 && Img.h <= 50)
+    Img.values();
   
   
   
@@ -254,6 +258,10 @@ void draw()
     ui_explore();
   else
     ui_simple();
+  
+  
+  
+  image(Overlay,0,0);
   
   
 
@@ -452,8 +460,8 @@ void keyPressed()
     
   if(key=='o')
   {
-    Overlay = !Overlay;
-    //UI_Common.get("overlay").click = !UI_Common.get("overlay").click;
+    Values = !Values;
+    //UI_Common.get("values").click = !UI_Common.get("values").click;
   }
     
   if(key=='i')
@@ -789,10 +797,26 @@ class Button
     // Pop up message
     if( over && millis() - overTime > 500 )
     {
-      fill(0.6, 0.5);
-      textAlign(RIGHT, BOTTOM);
-      textSize(14);
-      text( msg, mouseX, mouseY );
+      String hor, ver;
+      if( mouseX > width/2 )
+        hor = RIGHT;
+      else
+        hor = LEFT;
+      
+      if( mouseY < 20 )
+        ver = TOP;
+      else
+        hour = BOTTOM;
+       
+      Overlay.beginDraw();
+      Overlay.textAlign(hor, ver);
+      Overlay.textSize(16);
+      Overlay.fill(0);
+      Overlay.text( msg, mouseX+1, mouseY+1 );
+      Overlay.fill(1);
+      Overlay.text( msg, mouseX, mouseY );
+      Overlay.endDraw();
+      
     }
     
     
@@ -1062,10 +1086,10 @@ void ui_explore()
   }
     
 
-  if( UI_Explore.get("overlay").click )
-    Overlay = true;
+  if( UI_Explore.get("values").click )
+    Values = true;
   else
-    Overlay = false;
+    Values = false;
   
   if( UI_Explore.get("random").click )
   {
@@ -1677,7 +1701,7 @@ class VImage
   }
   
   
-  void overlay()
+  void values()
   {
     float pixelSize = 1;
     if( w>h )

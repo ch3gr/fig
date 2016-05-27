@@ -106,7 +106,7 @@ class VImage
   }
   
   
-  void overlay()
+  void values()
   {
     float pixelSize = 1;
     if( w>h )
