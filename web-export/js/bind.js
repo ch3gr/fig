@@ -9,7 +9,7 @@ function HUI_updateImgInfo( inStep, inX, inY, inCd, inLimit )
 	document.getElementById('xSize').innerHTML = inX;
 	document.getElementById('ySize').innerHTML = inY;
 	document.getElementById('cDepth').innerHTML = inCd;
-	document.getElementById('limit').innerHTML = inLimit;
+	document.getElementById('limit').innerHTML = inLimit + " combinations";
 }
 
 function HUI_updateSlider( inValue, inSince, inUntil )

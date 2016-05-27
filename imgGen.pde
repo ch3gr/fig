@@ -115,7 +115,7 @@ void draw()
   
   
   //// Temp text
-  
+  /*
   textAlign(LEFT, BOTTOM);
   fill(color(1,0,0));
   textSize(18);
@@ -123,7 +123,7 @@ void draw()
   text("AutoMode: "+AutoMode, 50, 530);
   text("Sample: "+Sample, 50, 560);
   text("Msg: "+Img.msg, 50, 590);
-
+  */
   
 }
 

@@ -15,3 +15,7 @@ button.single{
 button.button{
 	background: grey;
 }
+
+#about-modal{
+	color: #2e2e2e;
+}
