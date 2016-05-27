@@ -99,14 +99,16 @@ void cDown()
 }
   
 
-void auto()
+
+void autoMode()
 {
-  AutoMode != AutoMode;
+  AutoMode = !AutoMode;
+  Sample = -1;
 }
 
 void showValues()
 {
-  Values != Values;
+  Values = !Values;
 }
 
 void randomize()
@@ -116,6 +118,7 @@ void randomize()
   update_UI();
   HUI_Update = true;
 }
+
 void clearCanvas()
 {
   resetSamples(-1);
@@ -124,7 +127,16 @@ void clearCanvas()
   HUI_Update = true;
 }
 
-
+void sample(int inSample)
+{
+  if( Sample == inSample )
+    Sample = -1;
+  else
+    Sample = inSample;
+  
+  applySample(Sample);
+  HUI_Update = true;
+}
 
 
 void slider( float value)
@@ -337,7 +349,7 @@ void ui_explore()
   
   textSize(18);
   textAlign(LEFT, BOTTOM);
-  text( compactBig(Img.idLimit.add(1)), 735, 325);
+  text( compactBig(Img.idLimit.add(1)), 435, 325);
   textAlign(RIGHT, BOTTOM);
   text( "combinations", 965, 325);
   
@@ -468,11 +480,12 @@ void ui_explore()
     applySample(Sample);
   }
     
-
+  /*
   if( UI_Explore.get("values").click )
     Values = true;
   else
     Values = false;
+  */
   
   if( UI_Explore.get("random").click )
   {
@@ -501,7 +514,7 @@ void ui_explore()
   
   
   
-  
+  /*
   // Deal with the multiple samples - ma ti poutsa!!!
   boolean pressed = false;
   for(int s=0; s<ImgFile.length(); s++)  
@@ -520,11 +533,12 @@ void ui_explore()
   // reset global if non is pressed
   if(!pressed)
     Sample = -1;
+  */
   ////////////////////
   
   
   
-  
+  /*
   // Sto telos to auto gia na to kanoun over-ride oi ypolipes leitourgies (samples, random, slider)
   if( UI_Explore.get("auto").click )
   {
@@ -533,6 +547,7 @@ void ui_explore()
     
     resetSamples(-1);
   }
+  */
   
   
 
@@ -558,7 +573,7 @@ void applySample(int sample)
 {
   if( sample>-1 )
   {
-    ImgUser.setIdFromImg(ImgFile[sample]);
+    ImgUser.setIdFromImg(ImgFile[sample-1]);
     update_UI();
   }
 }

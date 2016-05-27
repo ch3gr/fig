@@ -55,22 +55,25 @@ function HUI_updateDivs( explore, about )
 ////////////////////////////
 
 
-function HUI_updateImgInfo( inStep, inX, inY, inCd )
+function HUI_updateImgInfo( inStep, inX, inY, inCd, inLimit )
 {
 	document.getElementById('stepSize').innerHTML = inStep;
 	document.getElementById('xSize').innerHTML = inX;
 	document.getElementById('ySize').innerHTML = inY;
 	document.getElementById('cDepth').innerHTML = inCd;
+	document.getElementById('limit').innerHTML = inLimit;
 }
 
-function HUI_updateSlider( theValue )
+function HUI_updateSlider( inValue, inSince, inUntil )
 {
-	document.getElementById('uiIdSlider').value = theValue;
+	document.getElementById('uiIdSlider').value = inValue;
+	document.getElementById('since').innerHTML = inSince;
+	document.getElementById('until').innerHTML = inUntil;
 }
 
-function HUI_updateId( theId )
+function HUI_updateId( inId )
 {
-	document.getElementById('uiId').value = theId;
+	document.getElementById('uiId').value = inId;
 }
 
 
@@ -110,8 +113,8 @@ function processingCall( func )
 		Processing.getInstanceById("imgGen").cUp();
 	else if( func === "cDown" )
 		Processing.getInstanceById("imgGen").cDown();
-	else if( func === "auto" )
-		Processing.getInstanceById("imgGen").auto();
+	else if( func === "autoMode" )
+		Processing.getInstanceById("imgGen").autoMode();
 	else if( func === "showValues" )
 		Processing.getInstanceById("imgGen").showValues();
 	else if( func === "randomize" )
@@ -120,6 +123,14 @@ function processingCall( func )
 		Processing.getInstanceById("imgGen").clearCanvas();
 	else if( func === "slider" )
 		Processing.getInstanceById("imgGen").slider();
+	else if( func === "sample1" )
+		Processing.getInstanceById("imgGen").sample(1);
+	else if( func === "sample2" )
+		Processing.getInstanceById("imgGen").sample(2);
+	else if( func === "sample3" )
+		Processing.getInstanceById("imgGen").sample(3);
+	else if( func === "sample4" )
+		Processing.getInstanceById("imgGen").sample(4);
 
 }
 

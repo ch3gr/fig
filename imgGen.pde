@@ -44,9 +44,9 @@ boolean AutoMode = false;
 boolean Values = false;
 boolean About = false;
 boolean Explore = true;
-boolean HUI_Update = false;
+boolean HUI_Update = true;
 
-
+int Sample = -1;
 
 
 var Step = bigInt(1);
@@ -217,8 +217,11 @@ void draw()
   if( AutoMode )
   {
     //ImgDate.step();
+    
     update_UI();
-    Img.shift();
+    Img.offset(Step);
+    HUI_Update = true;
+    
     
     //Img.setIdFromDate( RefTime );
   }
@@ -296,10 +299,11 @@ void draw()
 
   if( HUI_Update )
   {
-    HUI_updateImgInfo( Step, Img.w, Img.h, Img.cDepth );
-    HUI_updateSlider( Img.getFraction() );
+    HUI_updateImgInfo( compactBig(Step), Img.w, Img.h, Img.cDepth, compactBig(Img.idLimit.add(1)) );
+    HUI_updateSlider( Img.getFraction(), duration(Img.id), duration(Img.idLimit.minus(Img.id)));
     HUI_updateId( Img.getId() );
     HUI_Update = false;
+    
   }
   
   
@@ -310,7 +314,9 @@ void draw()
   textAlign(LEFT, BOTTOM);
   fill(color(1,0,0));
   textSize(18);
-  text(frameRate, 50, 50);
+  text(frameRate, 50, 500);
+  text("AutoMode: "+AutoMode, 50, 530);
+  text("Sample: "+Sample, 50, 560);
   /*
   
   ////////////////////////////////////
