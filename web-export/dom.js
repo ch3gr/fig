@@ -32,24 +32,7 @@ function()
 };
 
 
-    var bound = false;
 
-    function bindJavascript() {
-      var pjs = Processing.getInstanceById('@@id@@');
-      if(pjs!=null) {
-        pjs.bindJavascript(this);
-        bound = true;
-      }
-      if(!bound) setTimeout(bindJavascript, 250);
-    }
-
-    bindJavascript();
-
-
-    function UI_updateId(id, idSlider){
-      document.getElementById('uiId').value = id;
-      document.getElementById('uiIdSlider').value = idSlider;
-    }
 
 /*
 $(function() {

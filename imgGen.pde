@@ -46,7 +46,7 @@ JavaScript javascript;
 
 void setup ()
 {
-  size( 1000, 650, JAVA2D );
+  size( 1000, 700, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
@@ -82,7 +82,7 @@ void setup ()
   Buttons.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
   Buttons.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
   
-  py = height - bh;
+  py = 650 - bh;
   Buttons.put( "about", new Button("about", false, px, py, pw, bh, baseC, overC, downC) );
   
   py -= bh*1.5 + gap ;
@@ -94,6 +94,8 @@ void setup ()
 
   py -= bh + gap;
   Buttons.put( "auto", new Button("auto iterate", true, px, py, pw, bh, baseC, overC, downC) );
+  
+  Buttons.put( "slider", new Slider(0,660, width, 30) );
 
  
 // @pjs preload must be used to preload the image 
@@ -235,6 +237,7 @@ void draw()
 
 void ui()
 {
+  
   // Loop through all the buttons
   Iterator i = Buttons.entrySet().iterator();  // Get an iterator
   while (i.hasNext())

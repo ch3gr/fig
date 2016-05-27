@@ -303,9 +303,13 @@ class VImage
     
     //msg = portion;
     msg = duration(id);
+    
+    // Update HTML slider
     if(javascript!=null)
       javascript.UI_updateId(id.toString(), portion);
   
+    // Update processing slider
+    Buttons.get("slider").v = portion;
   }
   
   
