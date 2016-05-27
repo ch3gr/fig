@@ -43,7 +43,8 @@ int HUI_lastId = uivars.id.length();
 boolean AutoMode = false;
 boolean Values = false;
 boolean About = false;
-boolean Explore = false;
+boolean Explore = true;
+boolean HUI_Update = false;
 
 
 
@@ -52,7 +53,7 @@ var Step = bigInt(1);
 
 
 
-int FrameSize = 650;
+int FrameSize = 350;
 
 
 
@@ -68,7 +69,7 @@ int FrameSize = 650;
 
 void setup ()
 {
-  size( 1000, 700, JAVA2D );
+  size( 700, 700, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
@@ -104,7 +105,7 @@ void setup ()
 
   ///////////////////////////////////////////////////////////////
   // UI_Simple
-  int px = 700;
+  int px = 750;
   int py = 0;
   int pw = 300;
   int bh = 50;
@@ -118,7 +119,7 @@ void setup ()
 
   ///////////////////////////////////////////////////////////////
   // UI_Explore
-  px = 700;
+  px = 400;
   py = 0;
   pw = 300;
   bh = 50;
@@ -293,7 +294,13 @@ void draw()
     update_UI();
   }
 
-  
+  if( HUI_Update )
+  {
+    HUI_updateImgInfo( Step, Img.w, Img.h, Img.cDepth );
+    HUI_updateSlider( Img.getFraction() );
+    HUI_updateId( Img.getId() );
+    HUI_Update = false;
+  }
   
   
   
@@ -417,6 +424,16 @@ void draw()
 
 void keyPressed()
 {
+  if(key=='z')
+  {
+    next();
+  }
+  if(key=='Z')
+  {
+    prev();
+  }
+
+  
   if(key=='c')
   {
     Img.clear();

@@ -159,6 +159,13 @@ class VImage
     return id.toString();
   } 
   
+  float getFraction()
+  {
+    bigInt mil = bigInt(id.multiply(1000000)).divide(idLimit.multiply(1));
+    float fraction = mil.toString();
+    fraction /= 1000000.0;
+    return fraction;
+  }
   
   void setId(String idIn)
   {

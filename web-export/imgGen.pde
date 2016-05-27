@@ -43,7 +43,8 @@ int HUI_lastId = uivars.id.length();
 boolean AutoMode = false;
 boolean Values = false;
 boolean About = false;
-boolean Explore = false;
+boolean Explore = true;
+boolean HUI_Update = false;
 
 
 
@@ -52,7 +53,7 @@ var Step = bigInt(1);
 
 
 
-int FrameSize = 650;
+int FrameSize = 350;
 
 
 
@@ -68,7 +69,7 @@ int FrameSize = 650;
 
 void setup ()
 {
-  size( 1000, 700, JAVA2D );
+  size( 700, 700, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
@@ -104,7 +105,7 @@ void setup ()
 
   ///////////////////////////////////////////////////////////////
   // UI_Simple
-  int px = 700;
+  int px = 750;
   int py = 0;
   int pw = 300;
   int bh = 50;
@@ -118,7 +119,7 @@ void setup ()
 
   ///////////////////////////////////////////////////////////////
   // UI_Explore
-  px = 700;
+  px = 400;
   py = 0;
   pw = 300;
   bh = 50;
@@ -293,7 +294,13 @@ void draw()
     update_UI();
   }
 
-  
+  if( HUI_Update )
+  {
+    HUI_updateImgInfo( Step, Img.w, Img.h, Img.cDepth );
+    HUI_updateSlider( Img.getFraction() );
+    HUI_updateId( Img.getId() );
+    HUI_Update = false;
+  }
   
   
   
@@ -417,6 +424,16 @@ void draw()
 
 void keyPressed()
 {
+  if(key=='z')
+  {
+    next();
+  }
+  if(key=='Z')
+  {
+    prev();
+  }
+
+  
   if(key=='c')
   {
     Img.clear();
@@ -836,6 +853,187 @@ class Button
 }
 
 
+// UI button related functions
+
+void prev()
+{
+  Img.offset(-Step);
+  update_UI();
+  resetSamples(-1);
+  HUI_Update = true;
+}
+void next()
+{
+  Img.offset(Step);
+  update_UI();
+  resetSamples(-1);
+  HUI_Update = true;
+}
+
+
+
+
+void incUp()
+{
+  Step = Step.multiply(2);
+  HUI_Update = true;
+}
+void incDown()
+{
+  Step = Step.divide(2);
+  if( Step.lesser(1) )
+    Step = bigInt(1);
+  HUI_Update = true;
+}
+
+
+
+void rUp()
+{
+  Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
+  applySample(Sample);
+  HUI_Update = true;
+}
+void rDown()
+{
+  Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
+  applySample(Sample);
+  HUI_Update = true;
+}
+
+
+void xUp()
+{
+  Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
+  applySample(Sample);
+  HUI_Update = true;
+}
+void xDown()
+{
+  Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
+  applySample(Sample);
+  HUI_Update = true;
+}
+  
+void yUp()
+{
+  if( Sample > -1 )
+  {
+    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
+    applySample(Sample);
+  }
+  else
+    Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
+  
+  HUI_Update = true;
+}
+void yDown()
+{
+  if( Sample > -1 )
+  {
+    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
+    applySample(Sample);
+  }
+  else
+    Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
+  
+  HUI_Update = true;
+}
+  
+void cUp()
+{
+  Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
+  applySample(Sample);
+  HUI_Update = true;
+}
+void cDown()
+{
+  Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
+  applySample(Sample);
+  HUI_Update = true;
+}
+  
+
+void auto()
+{
+  AutoMode != AutoMode;
+}
+
+void showValues()
+{
+  Values != Values;
+}
+
+void randomize()
+{
+  resetSamples(-1);
+  Img.randomise();
+  update_UI();
+  HUI_Update = true;
+}
+void clearCanvas()
+{
+  resetSamples(-1);
+  Img.clear();
+  update_UI();
+  HUI_Update = true;
+}
+
+
+
+
+void slider( float value)
+{
+  Img.setIdFromRange( value );
+  update_UI();
+  HUI_Update = true;
+  
+  if(Sample > -1)
+    resetSamples(-1);
+}  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void update_UI()
 {
   
@@ -1055,12 +1253,16 @@ void ui_explore()
   if( UI_Explore.get("incUp").click )
   {
     Step = Step.multiply(2);
+    HUI_Update = true;
+    
   }
   if( UI_Explore.get("incDown").click )
   {
     Step = Step.divide(2);
     if( Step.lesser(1) )
       Step = bigInt(1);
+    
+    HUI_Update = true;
   }
   
   
@@ -1146,7 +1348,7 @@ void ui_explore()
   {
     Img.setIdFromRange( UI_Explore.get("slider").v );
     update_UI();
-    
+    HUI_Update = true;
     
     if(Sample > -1)
       resetSamples(-1);
@@ -1938,6 +2140,13 @@ class VImage
     return id.toString();
   } 
   
+  float getFraction()
+  {
+    bigInt mil = bigInt(id.multiply(1000000)).divide(idLimit.multiply(1));
+    float fraction = mil.toString();
+    fraction /= 1000000.0;
+    return fraction;
+  }
   
   void setId(String idIn)
   {

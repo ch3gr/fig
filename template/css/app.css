@@ -1,0 +1,8 @@
+canvas#processing {
+	border: 1px solid black;
+	width: 100%;
+}
+
+button.single {
+	background: gold;
+}

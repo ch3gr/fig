@@ -1,7 +1,10 @@
 <!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
 	<head>
 
-		<link rel="stylesheet" href="style.css"/>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>@@sketch@@ : Built with Processing and Processing.js</title>
@@ -20,64 +23,30 @@
 			<script type="text/javascript">alert("Your browser does not support the canvas tag.");</script>
 		<![endif]-->
 
+
+		<link rel="stylesheet" href="css/style.css"/>
+		<link rel="stylesheet" href="css/foundation.css">
+		<link rel="stylesheet" href="css/app.css">
+
 		<script type="text/javascript" src="processing.js"></script>
-		<script type="text/javascript">
-
-		var uivars =
-		{
-			id: "0"
-		};
-
-
-
-		var bound = false;
-
-		function bindJavascript() {
-		  console.log("1");
-		  var pjs = Processing.getInstanceById("@@id@@");
-		  if(pjs!=null) {
-		  	console.log("2");
-			pjs.bindJavascript(this);
-			bound = true; }
-		  if(!bound)
-		  {
-		  	setTimeout(bindJavascript, 1000);
-		  	console.log("3");
-		  }
-		}
-		console.log("4");
-		bindJavascript();
-		console.log("5");
-
-
-		function HUI_updateId( theId )
-		{
-			document.getElementById('uiId').value = theId;
-		}
-
-		function HUI_updateDivs( explore, about )
-		{
-			if( explore )
-				document.getElementById('idField').style.display = "block";
-			else
-				document.getElementById('idField').style.display = "none";
-
-			if( about )
-				document.getElementById('about').style.display = "block";
-			else
-				document.getElementById('about').style.display = "none";
-		}
-		</script>
-
-
-
-
-
-
-
+		<script type="text/javascript" src="js/bind.js"></script>
 	</head>
+
+
+
+
+
 	<body>
-		<div id="content">
+
+
+		<div class="row">
+		  <div class="large-12 columns">
+			<h1>APP IMG GEN XXXXXXXXXXXXX</h1>
+		  </div>
+		</div>
+
+		<div class="row">
+		  <div class="large-8 small-12 columns">
 			<div id="processing">
 				<canvas id="@@id@@" data-processing-sources="@@sketch@@.pde"
 						width="@@width@@" height="@@height@@">
@@ -88,6 +57,191 @@
 					<p>JavaScript is required to view the contents of this page.</p>
 				</noscript>
 	    	</div>
+		  </div>
+
+
+		  <div class="large-4 small-12 columns">
+			<div class="row">
+				<div class="small-4 columns">
+					<button type="button" onclick="processingCall('prev')" class="large expanded button">Prev</button>
+				</div>
+				<div class="small-4 columns">
+					<button type="button" onclick="processingCall('incUp')" class="large expanded button">Step Up</button>
+				</div>
+				<div class="small-4 columns">
+					<button type="button" onclick="processingCall('next')" class="large expanded button">Next</button>
+				</div>
+				<div class="small-4 columns">
+					<p id="stepSize"> step size</p>
+				</div>
+				<div class="small-4 columns">
+					<button type="button" onclick="processingCall('incDown')" class="large expanded button">Step down</button>
+				</div>
+			</div>
+
+
+
+			<div class="row">
+				<div class="small-2 columns">
+					<button type="button" onclick="processingCall('xUp')" class="small expanded button">X +</button>
+				</div>
+				<div class="small-2 columns">
+					<button type="button" onclick="processingCall('rUp')" class="small expanded button">XY +</button>
+				</div>
+				<div class="small-2 columns">
+					<button type="button" onclick="processingCall('yUp')" class="small expanded button">Y +</button>
+				</div>
+				<div class="small-2 columns">
+					<button type="button" onclick="processingCall('cUp')" class="small expanded button">C +</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="small-2 columns">
+					<p id="xSize"> X </p/>
+				</div>
+				<div class="small-2 columns">
+					<p> . </p/>
+				</div>
+				<div class="small-2 columns">
+					<p id="ySize"> Y </p/>
+				</div>
+				<div class="small-2 columns">
+					<p id="cDepth"> Cd </p/>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="small-2 columns">
+					<button type="button" onclick="processingCall('xDown')" class="small expanded button">X -</button>
+				</div>
+				<div class="small-2 columns">
+					<button type="button" onclick="processingCall('rDown')" class="small expanded button">XY -</button>
+				</div>
+				<div class="small-2 columns">
+					<button type="button" onclick="processingCall('yDown')" class="small expanded button">Y -</button>
+				</div>
+				<div class="small-2 columns">
+					<button type="button" onclick="processingCall('cDown')" class="small expanded button">C -</button>
+				</div>
+			</div>
+
+
+
+
+			<div class="row">
+				<div class="small-6 columns">
+					<button type="button" onclick="processingCall('auto')" class="large expanded button">Auto</button>
+				</div>
+				<div class="small-6 columns">
+					<button type="button" onclick="processingCall('showValues')" class="large expanded button">values</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="small-6 columns">
+					<button type="button" onclick="processingCall('randomize')" class="large expanded button">random</button>
+				</div>
+				<div class="small-6 columns">
+					<button type="button" onclick="processingCall('clearCanvas')" class="large expanded button">clear</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="small-3 columns">
+					<button type="button" onclick="processingCall('LALALA')" class="large expanded button single">s1</button>
+				</div>
+				<div class="small-3 columns">
+					<button type="button" onclick="processingCall('LALALA')" class="large expanded button single">s2</button>
+				</div>
+				<div class="small-3 columns">
+					<button type="button" onclick="processingCall('LALALA')" class="large expanded button single">s3</button>
+				</div>
+				<div class="small-3 columns">
+					<button type="button" onclick="processingCall('LALALA')" class="large expanded button single">s4</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="small-6 columns">
+					<button type="button" onclick="processingCall('LALALA')" class="large expanded button disabled">disabled</button>
+				</div>
+				<div class="small-6 columns">
+					<button type="button" onclick="processingCall('LALALA')" class="large expanded button" data-open="about-modal">About</button>
+				</div>
+			</div>
+
+		  </div>
+		</div>
+
+
+
+		<div class="row">
+		  <div class="large-12 columns">
+			<input id="uiIdSlider" type="range" min="0.0" max="1.0" value="0" step="0.001" oninput="processingSlider(this.value)"/>
+
+
+			<div class="slider" data-slider data-options="start: 0; end: 1; step: 0.0001">
+				<span class="slider-handle"  data-slider-handle role="slider" tabindex="1" onchange="processingSlider(this.value)"></span>
+				<span class="slider-fill" data-slider-fill></span>
+				<input>
+			</div>
+		  </div>
+		</div>
+
+
+
+		<div class="reveal" id="about-modal" data-reveal>
+		  <h1>About</h1>
+		  <p class="lead">...blah blah blah...</p>
+			<p>Two dimensional images of any kind, have long been stored and displayed digitally. To do so the image is broken down into a set of pixels, with a pre-defined color depth. So the digital representation of an image is essentially just a series of color values.</p>
+			<p>If we look at this the other way, we can say that any given digital canvas has a certain number of possible combinations of color values among its pixels. [ie a small image with a resolution of 4?4 pixels and 2 colors has 2^16=65536 possible color combinations.] So since any kind of image can be digitized, we could also assume that every single representation can be found in one of these possible combinations, as long as the canvas has enough resolution and color definition.</p>
+			<p>The number of possible combinations are increasing in an exponential rate in relation to the amount of pixels. This means that the possible combinations of a digital canvas of a substantial resolution, may be an astronomical number, but never the less a finite number.</p>
+			<p>This simple one button software, gives the ability to the user to iterate through all the color combinations and effectively generate every possible image within a given canvas. No artistic skill is required what so ever, just enough time to go through all these combinations. The grand majority of the results will be nondescript, but the user will eventually come to see meaningful images.</p>
+			<p>Of course this software and experiment only works in a theoretical level, as in practise the age of the known universe (14 billion years) is just about enough time to iterate through a 8?8 pixels image with only 2 colors. The tool can also run in the 'explore' mode and to allow the user to take a look into this vast universe of possible combinations.</p>
+			<p>The first thing the user notices in the 'explore' mode is the index number which represents the current color combination and increases with every iteration. This number can be copied, shared and paste back to the program. The user can specify the resolution and color depth of the digital canvas and that affects the total number of possibilities. He can adjust the step size of the increment to speed up the process, or even set it to the automatic mode and let it run indefinitely. Most interestingly, there are a few sample images to prove the point that a representation is just an iteration in this program. Just to clarify these images have not been generated in this program, they are just an indication of how many times the user has to iterate in order to get there. The slider at the bottom is a faster way to go through all the possible combinations and gives an rough estimate of how long it would take to get there and how much longer there is left to reach the end, when running at 60 iterations per second.</p>
+			<p>This experimental software, explores the vast amount of possibilities within a digital canvas. </p>
+			<p>Since we've proved that one of the sample images can be seen as an iteration index, theoretically every possible image of the universe can be found in there. It may be a photo of you, your parents, or even your kid that hasn't been born yet.</p>
+			<p>In a potential version 2 of this program, the output images can be fed into an image recognition algorithm, which will be responsible for identifying meaningful results. The process can run in parallel with a farm of computers and allow us to explore this vast amount of images faster. As the time passes, we will be able to retrieve sets of images that resemble known objects. And as the processing power of the computers gets faster and faster, such a brute force solution may become more and more feasible.</p>
+			<p>ImgGen also questions the intellectual property of digital content. Who would own the rights of the images generated with this program?</p>
+			<p>It also questions the...</p>
+			<p> ...blah blah blah... </p>
+
+			<p>Q&A:</p>
+			<p>
+			Q. Why don't I see any meaningful images when I move the slider?
+			A. The slider's accuracy is limited by the screen resolution. Moving the slider just by one pixel, may translate to an increment of many trillion iterations, which means it's easy to miss some.
+			</p>
+			<p>
+			Q. Why are there only grey colors?
+			A. Colors require 3 values per pixel, so for the purpose of keeping this experiment simple, only tones of grey are used.
+			</p>
+			<p>
+			Q. Who owns the rights of my the image I just created with this tool?
+			A. All images generated with this tool belong to the public domain. Part of the goal is to generate every possible image to fight the copyright regime. =]
+			</p>
+
+		  <button class="close-button" data-close aria-label="Close modal" type="button">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+
+		<script src="js/vendor/jquery.js"></script>
+		<script src="js/vendor/what-input.js"></script>
+		<script src="js/vendor/foundation.js"></script>
+		<script src="js/app.js"></script>
+
+
+
+
+
+
+
+
+
+
+		<div id="content">
+
 
 			<div id="idField">
 				<textarea id="uiId" type="number" rows="10" cols="100"></textarea>
