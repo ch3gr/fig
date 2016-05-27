@@ -6,9 +6,8 @@ var RefTime = new Date(1981, 2, 18);
 
 
 VImage Img ;
-VImage ImgUser = new VImage(30,30,4); //(100,100,2) tooooo much
-VImage ImgDate = new VImage(5,5,5);
-VImage ImgFile = new VImage(100,100,5);
+VImage ImgUser = new VImage(30,30,5); //(100,100,2) tooooo much
+VImage ImgDate = new VImage(30,30,3);
 
 
 
@@ -19,59 +18,98 @@ PImage ImgInput;
 
 
 
-int LastSize = 0;
+int UI_lastId = uivars.theId.length();
 int Mill = 0;
 
 
-boolean SinceMode = true;
+boolean SinceMode = false;
 boolean Overlay = false;
 
 
 
 void setup ()
 {
-  size( 700, 700, JAVA2D );
-  
-  
+  size( 700, 800, JAVA2D );
+ 
   colorMode(RGB,1);
   background(0.18);
   
+/* @pjs preload="in/georgios.jpg"; */
+  ImgInput = loadImage("georgios.jpg");
 
-  ImgDate.setIdFromDate();
-  //ImgDate.id = 100;
+
+  ImgDate.setIdFromDate( RefTime );
+  //ImgDate.setId(9999999, ImgDate.cDepth);
+  
+  ImgUser.setId(999999999999999, ImgUser.cDepth);
+  
   if( SinceMode )
     Img = ImgDate;
   else
     Img = ImgUser;
   
-/* @pjs preload="in/georgios.jpg"; */
-  ImgInput = loadImage("georgios.jpg");
   
-  text("Hello World!", 50, 50);
+  
+  
 }
+
+
+
+
+
 
 
 
 void draw()
 {
-  background(0.18);
-  smooth();
+
+
+  
+  
+  //// Logic
   
   if( SinceMode )
-    ImgDate.shift();
+  {
+    //ImgDate.step();
+    Img.shift();
+    //Img.setIdFromDate( RefTime );
+  }
+  
+  background(0.18);
+  smooth();
+    
+  
+  //// Draw
 
   pushMatrix();
   translate(50,50);
   scale(600.0/Img.h);  //fit height in 500 pixels
   
-  //Img.drawBitmap();
-  Img.draw(Overlay);
+  
+  if( Img.w > 50 )
+    Img.drawBitmap();
+  else
+    Img.draw(Overlay);
   
   popMatrix();
   
   
+
+  //// UI
   
-  // Temp text
+  // when the input chages
+  if( UI_lastId != uivars.theId )
+  {
+    UI_lastId = uivars.theId;
+    Img.setId(uivars.theId, Img.cDepth);
+  }
+  
+  
+  
+  
+  
+  
+  //// Temp text
   
   fill(color(0.7));
   textSize(14);
@@ -87,32 +125,47 @@ void draw()
   
   
   text(Img.estimateComputeTime(), 10, 680);
-  text(Img.msg, 10, 690);
   if(SinceMode)
     text("Since :" + RefTime, 200, 30);
+    
+    
+  text( "Img         : "+Img.getId(), 10, 700);
+  text( "ImgUser : "+ImgUser.getId() , 10, 710);
+  text( "ImgDate : "+ImgDate.getId() , 10, 720);
   
-  if( LastSize != uivars.theId.length() )
-  {
-    LastSize = uivars.theId.length();
-    Img.setId(uivars.theId, Img.cDepth);
-  }
+  text( "Img         : "+Img.msg, 300, 700);
+  text( "ImgUser : "+ImgUser.msg, 300, 710);
+  text( "ImgDate : "+ImgDate.msg, 300, 720);  
   
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void keyPressed()
 {
   if(key=='c')
   {
-    ImgUser.clear();
+    Img.clear();
   }
     
   if(key=='r')
-    ImgUser.randomise();
+    Img.randomise();
 
   if(key=='s')
   {
-    ImgUser.shift();
+    Img.shift();
   }
   
   if(key=='d')
@@ -121,12 +174,11 @@ void keyPressed()
     if( SinceMode )
     {
       Img = ImgDate;
-//      Img.setIdFromDate();
+      //Img.setIdFromDate( RefTime );
     }
     else
     {
       Img = ImgUser;
-//      Img.updateId();
     }
   }
   
@@ -160,63 +212,65 @@ void keyPressed()
   {
     ImgUser.setIdFromImg(ImgInput);
   }
+  
+  if(key=='v')
+  {
+    ImgDate.setIdFromDate( RefTime );
+    
+    var time = new Date(1970, 1, 1);
+    println( time.getTime() );
+  }
+  
 }
+
+
+
 
 void mousePressed()
 {
-  ImgDate.setIdFromDate();
+  
 }
 
 
 
-/*
-  OLD MOUSE CONTROL
-  
-  if(mouseX>50 && mouseY>50 && mouseX<width-50 && mouseY<height-50)
-    ImgUser.shift();
-  
-  
-  if(mouseX<50 && mouseY<50)
-  {
-    SinceMode = !SinceMode;
-    if( SinceMode )
-    {
-      Img = ImgDate;
-      Img.setIdFromDate();
-    }
-    else
-    {
-      Img = ImgUser;
-      Img.updateId();
-    }
-  }
-  
-  if(mouseX<50 && mouseY>height-50)
-    ImgUser.setIdFromImg(ImgInput);
-  
-  if(mouseX>50 && mouseX<width-50 && mouseY<50)
-    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);  
-  if(mouseX>50 && mouseX<width-50 && mouseY>height-50)
-    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
-  if(mouseX<50 && mouseY>50 && mouseY<height-50)
-    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
-  if(mouseX>50 && mouseY>50 && mouseY<height-50)
-    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-    
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 /*
-void importId()
-{
-  if (uivars.theId.length() > letterSizes.length)
-  {
-    letterSizes = expand(letterSizes);                // expand array size if new word is longer
-  }
-}
+
+35    years
+12460    days
+299040    hours
+17942400  minutes
+1076544000  seconds
+1076544000000  millis
+
+64592640000  frames
+
+
+birthday
+353736000000
+now
+1456710681849
+
+age
+1102974681849  millis
+
+
+66178507000
+
 */
-
-
-
-

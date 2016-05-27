@@ -8,6 +8,8 @@ class VImage
   String msg;
   
   PImage bitmap;
+  
+  var id = bigInt();
 
   
   VImage(int wIn, int hIn, int cIn)
@@ -16,36 +18,55 @@ class VImage
     w = wIn;
     h = hIn;
     size = w * h;
-    msg = "_";
-
-    bitmap = new PImage(w,h,RGB);
-    
+    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
     
-    
-    id = bigInt(1000);
-    
-    
-    //randomise();
+    bitmap = new PImage(w,h,RGB);
   }
+  
+  // OVERLOAD constructor
+  VImage(int wIn, int hIn, int cIn, var idIn)
+  {
+    cDepth = cIn;
+    w = wIn;
+    h = hIn;
+    size = w * h;
+    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
+    pix = new int[size];
+    
+    bitmap = new PImage(w,h,RGB);
+    
+    setId( idIn, cDepth );
+  }
+  
+
+
+
  
   void clear()
   {
     for( int p = 0; p<size; ++p )
       pix[p] = 0;
     
-    updateId();
+    //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
+    id = bigInt(0);
   }
+  
+  
   
   void randomise()
   {
     for( int p = 0; p<size; ++p )
       pix[p] = floor(random(cDepth));
     
-    updateId();
+    canvasToId();
   }
   
   
+  
+  
+  
+  // Canvas driven increment
   void shift()
   {
     id = id.add(1);
@@ -71,6 +92,18 @@ class VImage
     }
     
   }
+  
+  
+  
+  // Id driven increment
+  void step()
+  {
+    id = id.add(1);
+    setId(id, cDepth);
+  }
+  
+  
+  
   
   
   void draw(boolean overlay)
@@ -109,13 +142,28 @@ class VImage
   }
   
   
-  
+
+
+
+
+
+
+
+
+
+
+  String getId()
+  {
+    return id.toString();
+  } 
   
   
 
-  void updateId()
+
+
+  void canvasToId()
   {
-    id = bigInt(0);
+    //id = bigInt(0);
     
     
     for( int p = 0; p<size; ++p )
@@ -129,19 +177,20 @@ class VImage
   
   
   
-  String getId()
-  {
-    return id.toString();
-  }
   
   
 
 
   void setId(String idIn, int depth)
   {
+    // clear pixels
+    for(int p=0; p<size; p++)
+      pix[p] = 0;
+    
+    
     String idBaseConvert = bigInt(idIn).toString(depth);
-    msg = idBaseConvert;
-    //for(int d=idBaseConvert.length()-1; d>=0; d--)
+    
+    
     for(int d=0; d<idBaseConvert.length(); d++)
     {
       int dInv = idBaseConvert.length()-d-1;
@@ -151,10 +200,8 @@ class VImage
       String newColor = dColor.toString();
       
       pix[dInv] = int(newColor);
-      
     }
     
-    //updateId();
     id = bigInt(idBaseConvert, depth);
     
     // FIX : extra conversion to support 10+ depth
@@ -165,15 +212,15 @@ class VImage
   
   
   
-  void setIdFromDate()
+  void setIdFromDate( Date dateIn)
   {
-    var now = new Date();
-    var timeCode = now.getTime() - RefTime.getTime();
-    timeCode *= 1/60.0;
-    timeCode = int(timeCode);
+    double now = new Date();
+    // Calculate how many milliseconds since the input date
+    double frame = now.getTime() - dateIn.getTime();
     
-    //msg = timeCode; 
-    setId(timeCode, cDepth);
+    frame *= 0.06;  // milliseconds * frames/milli
+     
+    setId(frame, cDepth);
   }
   
   
@@ -191,7 +238,7 @@ class VImage
     for(int p=0; p<size; ++p)
       pix[p] = floor(brightness(imgR.pixels[p]) * (cDepth));
     
-    updateId();
+    canvasToId();
   }
   
   
