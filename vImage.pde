@@ -53,7 +53,7 @@ class VImage
     
     //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
     id = bigInt(0);
-    //updateUI();
+    //update_UI();
   }
   
   
@@ -77,7 +77,7 @@ class VImage
     
     pix[0] ++;
     propagate(0);
-    //updateUI();
+    //update_UI();
   }
   
   void propagate(int p)
@@ -111,7 +111,7 @@ class VImage
       id = bigInt(0).add( id.minus(idLimit) ).minus(1);
     
     setId(id, cDepth);
-    //updateUI();
+    //update_UI();
   }
   
   
@@ -206,7 +206,7 @@ class VImage
     
     id = bigInt(idBaseConvert, depth);
     
-    //updateUI();
+    //update_UI();
     
     // FIX : extra conversion to support 10+ depth
     // Warning ean kseperaseis to size
@@ -284,7 +284,7 @@ class VImage
       id = id.add( dDigit );
     }
     
-    //updateUI();
+    //update_UI();
   }
   
   

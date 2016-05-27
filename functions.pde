@@ -10,7 +10,7 @@ void update_UI()
   
   // Update HTML slider
   if(javascript!=null)
-    javascript.HUI_updateId(Img.id.toString(), portion);
+    javascript.HUI_updateId(Img.id.toString(), portion, UI_Common.get("about").click);
 
   // Update processing slider
   UI_Explore.get("slider").v = portion;
@@ -52,10 +52,6 @@ void ui_common()
   
   //if( UI_Common.get("explore").click )
   //  Explore = !Explore;
-  
-  if( UI_Common.get("about").click )
-    Img.offset(Step);
-
 }
 
 
@@ -80,7 +76,10 @@ void ui_simple()
   // Button actions
   
   if( UI_Simple.get("next").click )
+  {
     Img.offset(Step);
+    update_UI();
+  }
 }
 
 
@@ -137,9 +136,15 @@ void ui_explore()
   // Button actions
   
   if( UI_Explore.get("prev").click )
+  {
     Img.offset(-Step);
+    update_UI();
+  }
   if( UI_Explore.get("next").click )
+  {
     Img.offset(Step);
+    update_UI();
+  }
   if( UI_Explore.get("incUp").click )
   {
     Step *= 2;
@@ -167,18 +172,33 @@ void ui_explore()
     Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
     
   if( UI_Explore.get("auto").click )
+  {
     Img.offset(Step);
+    update_UI();
+  }
   
   if( UI_Explore.get("random").click )
+  {
     Img.randomise();
+    update_UI();
+  }
   if( UI_Explore.get("clear").click )
+  {
     Img.clear();
+    update_UI();
+  }
     
-  if( UI_Explore.get("samples").click )  
+  if( UI_Explore.get("samples").click )
+  {
     ImgUser.setIdFromImg(ImgInput);
+    update_UI();
+  }
 
   if( UI_Explore.get("slider").changed )
+  {
     Img.setIdFromRange( UI_Explore.get("slider").v );
+    update_UI();
+  }
 }
 
 

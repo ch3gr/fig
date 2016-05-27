@@ -71,9 +71,6 @@ void setup ()
 
 
   ImgDate.setIdFromDate( RefTime );
-  //ImgDate.setId(9999999, ImgDate.cDepth);
-  
-  ImgUser.setId(999999999999999, ImgUser.cDepth);
   
   if( AutoMode )
     Img = ImgDate;
@@ -154,7 +151,7 @@ void setup ()
   
   py = height - bh*2;
   UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-gap, bh, baseC, overC, downC) );
-  UI_Common.put( "about", new Button("about", false, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Common.put( "about", new Button("about", true, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
   
@@ -184,6 +181,7 @@ void draw()
   {
     //ImgDate.step();
     Img.shift();
+    update_UI();
     //Img.setIdFromDate( RefTime );
   }
   
@@ -210,7 +208,7 @@ void draw()
   
   
   //// Canvas UI
-  update_UI();
+  //update_UI();
   ui_common();
   
   if( UI_Common.get("explore").click )
@@ -227,6 +225,7 @@ void draw()
   {
     HUI_lastId = uivars.id;
     Img.setId(uivars.id, Img.cDepth);
+    update_UI();
   }
   
   if( HUI_lastSlider != uivars.slider )
@@ -234,6 +233,7 @@ void draw()
     HUI_lastSlider = uivars.slider;
     Img.setIdFromRange(float(uivars.slider));
     //Img.setIdFromRange(float(mouseX)/float(width));
+    update_UI();
   }
   
   
@@ -310,18 +310,24 @@ void keyPressed()
   if(key=='c')
   {
     Img.clear();
+    update_UI();
   }
     
   if(key=='r')
+  {
     Img.randomise();
+    update_UI();
+  }
 
   if(key=='s')
   {
     Img.offset(1);
+    update_UI();
   }
   if(key=='S')
   {
     Img.offset(-1);
+    update_UI();
   }
   
   if(key=='d')
@@ -365,6 +371,7 @@ void keyPressed()
   if(key=='i')
   {
     ImgUser.setId(uivars.id, ImgUser.cDepth);
+    update_UI();
   }
   if(key=='p')
   {
@@ -390,6 +397,10 @@ void keyPressed()
     //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
     Img.msg = duration( t );
   }
+  if(key=='u')
+  {
+    update_UI();
+  }
 }
 
 
@@ -414,8 +425,17 @@ void keyPressed()
 /*
 TO DO
 
+sliders dont update when canvas is adjusted
+prefix ID with canvas resolution
+touch screen buttons?
+
+HTML UI doesn't update when it's running online
 no characters to id textArea
 clean up javascript/jQuery, check if everything can be on a tab
+
+
+To Del ??
+canvasToId()
 
 
 DONE:
@@ -609,7 +629,7 @@ void update_UI()
   
   // Update HTML slider
   if(javascript!=null)
-    javascript.HUI_updateId(Img.id.toString(), portion);
+    javascript.HUI_updateId(Img.id.toString(), portion, UI_Common.get("about").click);
 
   // Update processing slider
   UI_Explore.get("slider").v = portion;
@@ -651,10 +671,6 @@ void ui_common()
   
   //if( UI_Common.get("explore").click )
   //  Explore = !Explore;
-  
-  if( UI_Common.get("about").click )
-    Img.offset(Step);
-
 }
 
 
@@ -679,7 +695,10 @@ void ui_simple()
   // Button actions
   
   if( UI_Simple.get("next").click )
+  {
     Img.offset(Step);
+    update_UI();
+  }
 }
 
 
@@ -736,9 +755,15 @@ void ui_explore()
   // Button actions
   
   if( UI_Explore.get("prev").click )
+  {
     Img.offset(-Step);
+    update_UI();
+  }
   if( UI_Explore.get("next").click )
+  {
     Img.offset(Step);
+    update_UI();
+  }
   if( UI_Explore.get("incUp").click )
   {
     Step *= 2;
@@ -766,18 +791,33 @@ void ui_explore()
     Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
     
   if( UI_Explore.get("auto").click )
+  {
     Img.offset(Step);
+    update_UI();
+  }
   
   if( UI_Explore.get("random").click )
+  {
     Img.randomise();
+    update_UI();
+  }
   if( UI_Explore.get("clear").click )
+  {
     Img.clear();
+    update_UI();
+  }
     
-  if( UI_Explore.get("samples").click )  
+  if( UI_Explore.get("samples").click )
+  {
     ImgUser.setIdFromImg(ImgInput);
+    update_UI();
+  }
 
   if( UI_Explore.get("slider").changed )
+  {
     Img.setIdFromRange( UI_Explore.get("slider").v );
+    update_UI();
+  }
 }
 
 
@@ -1106,7 +1146,7 @@ class VImage
     
     //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
     id = bigInt(0);
-    //updateUI();
+    //update_UI();
   }
   
   
@@ -1130,7 +1170,7 @@ class VImage
     
     pix[0] ++;
     propagate(0);
-    //updateUI();
+    //update_UI();
   }
   
   void propagate(int p)
@@ -1164,7 +1204,7 @@ class VImage
       id = bigInt(0).add( id.minus(idLimit) ).minus(1);
     
     setId(id, cDepth);
-    //updateUI();
+    //update_UI();
   }
   
   
@@ -1259,7 +1299,7 @@ class VImage
     
     id = bigInt(idBaseConvert, depth);
     
-    //updateUI();
+    //update_UI();
     
     // FIX : extra conversion to support 10+ depth
     // Warning ean kseperaseis to size
@@ -1337,7 +1377,7 @@ class VImage
       id = id.add( dDigit );
     }
     
-    //updateUI();
+    //update_UI();
   }
   
   

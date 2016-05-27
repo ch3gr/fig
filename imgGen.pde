@@ -71,9 +71,6 @@ void setup ()
 
 
   ImgDate.setIdFromDate( RefTime );
-  //ImgDate.setId(9999999, ImgDate.cDepth);
-  
-  ImgUser.setId(999999999999999, ImgUser.cDepth);
   
   if( AutoMode )
     Img = ImgDate;
@@ -154,7 +151,7 @@ void setup ()
   
   py = height - bh*2;
   UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-gap, bh, baseC, overC, downC) );
-  UI_Common.put( "about", new Button("about", false, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Common.put( "about", new Button("about", true, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
   
@@ -184,6 +181,7 @@ void draw()
   {
     //ImgDate.step();
     Img.shift();
+    update_UI();
     //Img.setIdFromDate( RefTime );
   }
   
@@ -210,7 +208,7 @@ void draw()
   
   
   //// Canvas UI
-  update_UI();
+  //update_UI();
   ui_common();
   
   if( UI_Common.get("explore").click )
@@ -227,6 +225,7 @@ void draw()
   {
     HUI_lastId = uivars.id;
     Img.setId(uivars.id, Img.cDepth);
+    update_UI();
   }
   
   if( HUI_lastSlider != uivars.slider )
@@ -234,6 +233,7 @@ void draw()
     HUI_lastSlider = uivars.slider;
     Img.setIdFromRange(float(uivars.slider));
     //Img.setIdFromRange(float(mouseX)/float(width));
+    update_UI();
   }
   
   
@@ -310,18 +310,24 @@ void keyPressed()
   if(key=='c')
   {
     Img.clear();
+    update_UI();
   }
     
   if(key=='r')
+  {
     Img.randomise();
+    update_UI();
+  }
 
   if(key=='s')
   {
     Img.offset(1);
+    update_UI();
   }
   if(key=='S')
   {
     Img.offset(-1);
+    update_UI();
   }
   
   if(key=='d')
@@ -365,6 +371,7 @@ void keyPressed()
   if(key=='i')
   {
     ImgUser.setId(uivars.id, ImgUser.cDepth);
+    update_UI();
   }
   if(key=='p')
   {
@@ -389,6 +396,10 @@ void keyPressed()
     var t = bigInt( Img.id );
     //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
     Img.msg = duration( t );
+  }
+  if(key=='u')
+  {
+    update_UI();
   }
 }
 
@@ -422,6 +433,9 @@ HTML UI doesn't update when it's running online
 no characters to id textArea
 clean up javascript/jQuery, check if everything can be on a tab
 
+
+To Del ??
+canvasToId()
 
 
 DONE:

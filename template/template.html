@@ -71,17 +71,30 @@
 	#uiIdSlider {
 		width: 950px;
 	}
+	#about {
+		width: 1000px;
+		clear: both;
+		padding: 20px 0px;
+		border: 1px solid green;
+		display: none;
+	}
 	#idField {
 		width: 1000px;
 		clear: both;
-		padding: 50px 0px;
-		border: 1px solid blue;
+		display: block;
+	}
+	#uiId {
+		background: #2e2e2e;
+		color: #d0d0d0;
+		border: none;
+		width: 1000px;
 	}
 	#credits {
 		clear: both;
 		width: 1000px;
 		padding: 25px 50px;
 		border: 1px solid orange;
+		display: none;
 	}
 
 
@@ -107,9 +120,19 @@
 		bindJavascript();
 
 
-		function HUI_updateId(id, idSlider){
+		function HUI_updateId(id, idSlider, about){
 		  document.getElementById('uiId').value = id;
 		  document.getElementById('uiIdSlider').value = idSlider;
+		  if( about )
+		  {
+		  	document.getElementById('about').style.display = "block";
+		  	document.getElementById('idField').style.display = "none";
+		  }
+		  else
+		  {
+		  	document.getElementById('about').style.display = "none";
+		  	document.getElementById('idField').style.display = "block";
+		  }
 		}
 
 		</script>
@@ -142,10 +165,15 @@
 	    	</div>
 
 
+			<div id="about">
+				<h1> About </h1>
+				<p> Blah blah blah </p>
+			</div>
+
 
 			<div id="idField">
+				<textarea id="uiId" type="number" rows="10" cols="100"></textarea>
 				<input id="uiIdSlider" type="range" min="0.0" max="1.0" value="0" step="0.000000001"/>
-				<textarea id="uiId" type="number" rows="10" cols="120"></textarea>
 			</div>
 
 
