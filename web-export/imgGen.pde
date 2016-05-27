@@ -6,14 +6,13 @@ var RefTime = new Date(1981, 2, 18);
 
 
 VImage Img ;
-VImage ImgUser = new VImage(30,20,5); //(100,100,2) tooooo much
+VImage ImgUser = new VImage(20,20,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
 
 
 
 PImage ImgInput;
-PImage ImgWeb;
 
 
 
@@ -52,18 +51,13 @@ void setup ()
  
   colorMode(RGB,1);
   background(0.18);
-
+  frameRate(60);
 
  
 // @pjs preload must be used to preload the image 
 /* @pjs preload="georgios.jpg"; */
-/* @pjs preload="http://stylesatlife.com/wp-content/uploads/2015/09/Layered-Hairstyles-for-Round-Faces-4.jpg"; */
-
   ImgInput = loadImage("georgios.jpg");
   
-  //ImgWeb = loadImage("georgios.jpg");
-  //ImgWeb = requestImage("http://stylesatlife.com/wp-content/uploads/2015/09/Layered-Hairstyles-for-Round-Faces-4.jpg");
-  ImgWeb = loadImage("http://stylesatlife.com/wp-content/uploads/2015/09/Layered-Hairstyles-for-Round-Faces-4.jpg");
 
 
   ImgDate.setIdFromDate( RefTime );
@@ -147,15 +141,11 @@ void draw()
   text("4", 10,530);
   text(Img.msg, 10,540);
   
+  text(duration(Img.id), 10, 560);
+  text(duration(Img.idLimit.minus(Img.id)), 200, 560);
+  text(frameRate, 10, 580);
   
-  
-  pushMatrix();
-  scale(0.1);
-  image(ImgInput, 200, 200);
-  scale(2);
-  image(ImgWeb, 50, 300);
-  popMatrix();
-  
+ 
   
   
   
@@ -216,7 +206,11 @@ void keyPressed()
 
   if(key=='s')
   {
-    Img.shift();
+    Img.offset(1);
+  }
+  if(key=='S')
+  {
+    Img.offset(-1);
   }
   
   if(key=='d')
@@ -264,10 +258,6 @@ void keyPressed()
   {
     ImgUser.setIdFromImg(ImgInput);
   }
-  if(key=='P')
-  {
-    ImgUser.setIdFromImg(ImgWeb);
-  }
   
   if(key=='v')
   {
@@ -282,11 +272,190 @@ void keyPressed()
     Img.setIdFromRange(float(mouseX)/float(width));
   }
   
-  
+  if(key=='z')
+  {
+    var t = bigInt( Img.id );
+    //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
+    Img.msg = duration( t );
+  }
 }
 
 
 
+
+
+
+
+String duration( bigInt f)
+{
+  // f in frames
+  if( f.lesser(60) )
+    return( "less than a second");
+  
+  
+  // s = t in seconds
+  var s = bigInt(f).divide(60);
+  
+  // t variable time unit, starting in seconds
+  var t = s;
+  
+  
+  
+  if( t.lesser(60) )
+    if( t.lesser(2) )
+      return (t.toString() + " second");
+    else
+      return (t.toString() + " seconds");
+  
+  // t in minutes
+  t = t.divide(60);
+  if( t.lesser(60) )
+    if( t.lesser(2) )
+      return (t.toString() + " minute");
+    else
+      return (t.toString() + " minutes");
+    
+  // t in hours
+  t = t.divide(60);
+  if( t.lesser(24) )
+    if( t.lesser(2) )
+      return (t.toString() + " hour");
+    else
+      return (t.toString() + " hours");
+    
+  // t in days
+  t = t.divide(24);
+  if( t.lesser(31) )
+    if( t.lesser(2) )
+      return (t.toString() + " day");
+    else
+      return (t.toString() + " days");
+  
+  // t in days
+  // months
+  if( t.lesser(365) )
+  {
+    var m = bigInt(t).divide(31);
+    if( m.lesser(2) )
+      return (m.toString() + " month");
+    else
+      return (m.toString() + " months");
+  }
+
+  // y = s in years
+  var y = bigInt(s).divide(31536000);
+  
+  // t in years
+  t = y;
+  if( t.lesser(10) )
+  {
+    if( t.lesser(2) )
+      return (t.toString() + " year");
+    else
+      return (t.toString() + " years");
+  }
+  
+  // t in decades
+  t = y.divide(10);
+  if( t.lesser(10) )
+  {
+    if( t.lesser(2) )
+      return (t.toString() + " decade");
+    else
+      return (t.toString() + " decades");
+  }
+  
+  // t in centuries
+  t = y.divide(100);
+  if( t.lesser(10) )
+  {
+    if( t.lesser(2) )
+      return (t.toString() + " century");
+    else
+      return (t.toString() + " centuries");
+  }
+  
+  // t in millenia
+  t = y.divide(1000);
+  if( t.lesser(1000) )
+  {
+    if( t.lesser(2) )
+      return (t.toString() + " millenium");
+    else
+      return (t.toString() + " millenia");
+  }
+  
+  // t in megga-annums
+  t = y.divide(1000000);
+  if( t.lesser(230) )
+  {
+    if( t.lesser(2) )
+      return (t.toString() + " mega-annum");
+    else
+      return (t.toString() + " mega-annums");
+  }
+  
+  // t in galactic years
+  t = y.divide(230000000);
+  if( t.lesser(5) )
+  {
+    if( t.lesser(2) )
+      return (t.toString() + " galactic year");
+    else
+      return (t.toString() + " galactic years");
+  }
+  
+  // t in gigaannum
+  t = y.divide(1000000000);
+  if( t.lesser(14) )
+  {
+    if( t.lesser(2) )
+      return (t.toString() + " gigaannum");
+    else
+      return (t.toString() + " gigaannums");
+  }
+  
+  // t in Cosmic years
+  t = y.divide(14000000000);
+//  if( t.lesser(72) )
+  {
+    if( t.lesser(2) )
+      return (t.toString() + " cosmic year");
+    else
+      return (t.toString() + " cosmic years");
+  }
+}
+
+
+/*
+@60fps
+<
+
+second        60 itterations                        60 it
+minute        60 seconds                            3600 it
+hour          60 minutes                            216000 it
+day           24 hours                              5184000 it
+month         31 days                               160704000 it
+year          365 days                              1892160000 it  or 31536000 sec
+
+decade         10 years
+ceunturie      100 years
+millennium        1,000 years
+mega-annum        1,000,000 years
+galactic year     230,000,000 years
+gigaannum         1,000,000,000 years
+Sun's lifespan    12,000,000,000 years
+Cosmic callendar  14,000,000,000 years
+teraannum         1,000,000,000,000 years
+petaannum         1,000,000,000,000,000 years
+
+
+sun : 12 billion years
+universe : 14 billion years
+
+
+
+*/
 
 
 
@@ -299,17 +468,22 @@ void keyPressed()
 TO DO
 
 no characters to id textArea
-mipos h updateUI() kalitera sto main kai oxi stin class?
 clean up javascript/jQuery, check if everything can be on a tab
-
-Slider YES!
-
-fix bug with picture not updating slider
 
 shift backwards
 calculate since / until, in nice text
-load image
+
+
+
+DONE:
+Slider YES!
+fix bug with picture not updating slider
 non square ratio image
+
+
+Nah
+load image
+mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
 
 
 */
@@ -442,9 +616,16 @@ class VImage
   
   
   // Id driven increment
-  void step()
+  void offset(int o)
   {
-    id = id.add(1);
+    id = id.add(o);
+    
+    // reset id if outside limit
+    if( id.lesser( bigInt(0) ) )
+      id = idLimit.minus( id.minus(o) );
+    else if( id.greater( idLimit ) )
+      id = bigInt(0).add( id.minus(idLimit) ).minus(1);
+    
     setId(id, cDepth);
     updateUI();
   }
@@ -581,13 +762,6 @@ class VImage
     int nH = imgIn.height;
     PImage imgR = new PImage(nW,nH);
     
-    imgIn.loadPixels();
-    msg ="";
-    msg += str(imgIn.width) + "  " ;
-    for(int p=0; p<3; ++p)
-      msg += brightness(imgIn.pixels[p]) + "   ";
-    
-/*    
     for(int p=0; p<nW*nH; ++p)
       imgR.pixels[p] = imgIn.pixels[p]; 
 
@@ -608,11 +782,9 @@ class VImage
     
     
     canvasToId();
-*/    
     
-//    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
-
-    //msg = str(imgIn.width);
+    
+    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   
@@ -632,6 +804,10 @@ class VImage
   }
   
   
+
+
+  
+  
   void updateUI()
   {
     // integer that holds id/idLimit * 1000000
@@ -641,13 +817,12 @@ class VImage
     float portion = mil.toString();
     portion /= 1000000.0;
     
-    msg = portion;
+    //msg = portion;
+    msg = duration(id);
     if(javascript!=null)
       javascript.UI_updateId(id.toString(), portion);
-
+  
   }
-  
-  
   
   
   

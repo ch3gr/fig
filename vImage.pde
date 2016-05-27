@@ -100,9 +100,16 @@ class VImage
   
   
   // Id driven increment
-  void step()
+  void offset(int o)
   {
-    id = id.add(1);
+    id = id.add(o);
+    
+    // reset id if outside limit
+    if( id.lesser( bigInt(0) ) )
+      id = idLimit.minus( id.minus(o) );
+    else if( id.greater( idLimit ) )
+      id = bigInt(0).add( id.minus(idLimit) ).minus(1);
+    
     setId(id, cDepth);
     updateUI();
   }
@@ -239,13 +246,6 @@ class VImage
     int nH = imgIn.height;
     PImage imgR = new PImage(nW,nH);
     
-    imgIn.loadPixels();
-    msg ="";
-    msg += str(imgIn.width) + "  " ;
-    for(int p=0; p<3; ++p)
-      msg += brightness(imgIn.pixels[p]) + "   ";
-    
-/*    
     for(int p=0; p<nW*nH; ++p)
       imgR.pixels[p] = imgIn.pixels[p]; 
 
@@ -266,11 +266,9 @@ class VImage
     
     
     canvasToId();
-*/    
     
-//    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
-
-    //msg = str(imgIn.width);
+    
+    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   
@@ -290,6 +288,10 @@ class VImage
   }
   
   
+
+
+  
+  
   void updateUI()
   {
     // integer that holds id/idLimit * 1000000
@@ -299,13 +301,12 @@ class VImage
     float portion = mil.toString();
     portion /= 1000000.0;
     
-    msg = portion;
+    //msg = portion;
+    msg = duration(id);
     if(javascript!=null)
       javascript.UI_updateId(id.toString(), portion);
-
+  
   }
-  
-  
   
   
   

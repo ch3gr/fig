@@ -1,3 +1,5 @@
+// https://www.npmjs.com/package/big-integer
+
 var bigInt = (function (undefined) {
     "use strict";
 
