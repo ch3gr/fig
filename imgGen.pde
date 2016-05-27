@@ -1,16 +1,14 @@
-//  https://github.com/peterolson/BigInteger.js
 
+
+// UI buttons
+HashMap Buttons = new HashMap();
 
 // Date( year, month(0-11), date(1-31))
 var RefTime = new Date(1981, 2, 18);
 
-
 VImage Img ;
 VImage ImgUser = new VImage(20,20,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
-
-
-
 
 PImage ImgInput;
 
@@ -23,8 +21,9 @@ int Mill = 0;
 
 boolean SinceMode = false;
 boolean Overlay = false;
+int Step = 1;
 
-int FrameSize = 500;
+int FrameSize = 650;
 
 
 interface JavaScript {
@@ -52,6 +51,49 @@ void setup ()
   colorMode(RGB,1);
   background(0.18);
   frameRate(60);
+
+
+  color baseC = color(0.1,0.1,0.1);
+  color overC = color(0.4,0.4,0.4);
+  color downC = color(0.8,0.8,0.8);
+  
+  
+  int px = 700;
+  int py = 0;
+  int pw = 300;
+  int bh = 50;
+  int gap = 5;
+  Buttons.put( "prev", new Button("-", px, py, pw/3-gap, bh*2, baseC, overC, downC) );
+  Buttons.put( "next", new Button("+", px+2*(pw/3)+gap, py, pw/3-gap, bh*2, baseC, overC, downC) );
+  
+  Buttons.put( "incUp", new Button("incUp", px+(pw/3), py, pw/3, (bh*0.6), baseC, overC, downC) );
+  Buttons.put( "incDown", new Button("incDown", px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), baseC, overC, downC) );
+  
+  py += bh*3;
+  int px1 = px + pw/6; 
+  int px2 = px + pw/2;
+  int px3 = px + pw*5.0/6.0;
+  int bs = 35;
+  Buttons.put( "xUp", new Button("+", px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "yUp", new Button("+", px2-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "cUp", new Button("+", px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  py += 80;
+  Buttons.put( "xDown", new Button("-", px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "yDown", new Button("-", px2-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "cDown", new Button("-", px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  
+  py = height - bh;
+  Buttons.put( "about", new Button("about", px, py, pw, bh, baseC, overC, downC) );
+  
+  py -= bh*1.5 + gap ;
+  Buttons.put( "samples", new Button("samples", px, py, pw, bh*1.5, baseC, overC, downC) );
+  
+  py -= bh + gap;
+  Buttons.put( "random", new Button("random", px, py, pw/2-gap, bh, baseC, overC, downC) );
+  Buttons.put( "clear", new Button("clear", px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+
+  py -= bh + gap;
+  Buttons.put( "auto iterate", new Button("auto", px, py, pw, bh, baseC, overC, downC) );
 
  
 // @pjs preload must be used to preload the image 
@@ -118,8 +160,11 @@ void draw()
   popMatrix();
   
   
+  //// Canvas UI
+  ui();
+  
 
-  //// UI
+  //// HTML UI
   
   // when the input chages
   if( UI_lastId != uivars.id )
@@ -135,7 +180,17 @@ void draw()
     //Img.setIdFromRange(float(mouseX)/float(width));
   }
   
-  float slider = uivars.slider; 
+  
+  
+  
+  
+ 
+  /*
+  //// Temp text
+
+  float slider = uivars.slider;
+  textSize(12);
+  fill(1,1,1);
   text(slider, 10,510);
   text(Img.idLimit, 10,520);
   text("4", 10,530);
@@ -144,13 +199,6 @@ void draw()
   text(duration(Img.id), 10, 560);
   text(duration(Img.idLimit.minus(Img.id)), 200, 560);
   text(frameRate, 10, 580);
-  
- 
-  
-  
-  
-  /*
-  //// Temp text
   
   fill(color(0.7));
   textSize(14);
@@ -185,7 +233,81 @@ void draw()
 
 
 
+void ui()
+{
+  // Loop through all the buttons
+  Iterator i = Buttons.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    me.getValue().update();
+    me.getValue().draw();
+  }
+  
+  // draw info
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  fill(0.8);
+  int xc, yc;
+  
+  xc = ((Buttons.get("prev").x + Buttons.get("prev").sx/2) + (Buttons.get("next").x + Buttons.get("next").sx/2))/2;
+  yc = ((Buttons.get("incUp").y + Buttons.get("incUp").sy/2) + (Buttons.get("incDown").y + Buttons.get("incDown").sy/2))/2;
+  text( Step, xc, yc);
+  
+  yc = ((Buttons.get("xUp").y + Buttons.get("xUp").sy/2) + (Buttons.get("xDown").y + Buttons.get("xDown").sy/2))/2;
+  xc = (Buttons.get("xUp").x + Buttons.get("xUp").sx/2);
+  text( Img.w, xc, yc);
+  xc = (Buttons.get("yUp").x + Buttons.get("yUp").sx/2);
+  text( Img.h, xc, yc);
+  xc = (Buttons.get("cUp").x + Buttons.get("cUp").sx/2);
+  text( Img.cDepth, xc, yc);
+  
+  
+  
+  
+  
+  
+  // Button actions
+  if( Buttons.get("prev").click )
+    Img.offset(-Step);
+  if( Buttons.get("next").click )
+    Img.offset(Step);
+  if( Buttons.get("incUp").click )
+  {
+    Step ++;
+  }
+  if( Buttons.get("incDown").click )
+  {
+    Step --;
+    if( Step<1 )
+      Step = 1;
+  }
+  
+  if( Buttons.get("xUp").click )
+    Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
+  if( Buttons.get("xDown").click )
+    Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
+    
+  if( Buttons.get("yUp").click )
+    Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
+  if( Buttons.get("yDown").click )
+    Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
+    
+  if( Buttons.get("cUp").click )
+    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
+  if( Buttons.get("cDown").click )
+    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
+  
+  if( Buttons.get("random").click )
+    Img.randomise();
+  if( Buttons.get("clear").click )
+    Img.clear();
+    
+  if( Buttons.get("samples").click )  
+    ImgUser.setIdFromImg(ImgInput);
 
+  
+}
 
 
 
@@ -279,6 +401,18 @@ void keyPressed()
     Img.msg = duration( t );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
