@@ -18,7 +18,8 @@ void update_UI()
     //id = str(Img.w)+":"+str(Img.w)+":"+str(Img.cDepth)+"|";
     String id = Img.getId();
     
-    javascript.HUI_updateId(id, portion, explore, about);
+    //javascript.HUI_updateId(id, portion, explore, about);
+    javascript.HUI_updateId(id);
   }
 
   // Update processing slider

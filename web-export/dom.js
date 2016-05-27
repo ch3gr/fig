@@ -3,15 +3,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 /*
 LINKS
 http://joseph-harrington.com/2012/03/controlling-processingjs-jqueryui/
@@ -20,7 +11,7 @@ http://processingjs.nihongoresources.com/interfacing/
 
 */
 
-
+/*
 // Numeric only control handler
 jQuery.fn.ForceNumericOnly =
 function()
@@ -45,7 +36,7 @@ function()
     });
 };
 
-
+*/
 
 
 /*
@@ -60,11 +51,11 @@ $(function() {
 e.preventDefault()});
 })
 */
-
+/*
 
 $(function() {
   
-  $("#uiId").ForceNumericOnly();
+  //$("#uiId").ForceNumericOnly();
   $("#uiId").keyup(function ()
   {                                                     // whenever text is entered into input box...
     
@@ -89,7 +80,7 @@ $(function() {
 
 
 
-
+*/
 
 
 

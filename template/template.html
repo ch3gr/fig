@@ -28,6 +28,33 @@
 			<script type="text/javascript">alert("Your browser does not support the canvas tag.");</script>
 		<![endif]-->
 		<script src="processing.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		var bound = false;
+
+		function bindJavascript()
+		{
+			var pjs = Processing.getInstanceById("@@id@@");
+			if(pjs!=null)
+			{
+				pjs.bindJavascript(this);
+				bound = true;
+			}
+			if(!bound)
+				setTimeout(bindJavascript, 250);
+		}
+		bindJavascript();
+
+
+		function HUI_updateId( theId )
+		{
+			document.getElementById('uiId').value = id;
+		}
+
+		var uivars =
+		{
+			id: "0"
+		};
+       </script>
 
 
 
@@ -48,7 +75,6 @@
 
 			<div id="idField">
 				<textarea id="uiId" type="number" rows="10" cols="100"></textarea>
-				<input id="uiIdSlider" type="range" min="0.0" max="1.0" value="0" step="0.000000001"/>
 			</div>
 
 			<div id="about">
@@ -78,56 +104,6 @@
 </html>
 
 
-
-
-
-<script type="text/javascript">
-var bound = false;
-
-function bindJavascript() {
-  var pjs = Processing.getInstanceById('@@id@@');
-  if(pjs!=null) {
-  pjs.bindJavascript(this);
-  bound = true;
-  }
-  if(!bound) setTimeout(bindJavascript, 250);
-}
-
-bindJavascript();
-
-
-function HUI_updateId(id, idSlider, explore, about){
-  document.getElementById('uiId').value = id;
-  document.getElementById('uiIdSlider').value = idSlider;
-
-  if( about === true )
-  {
-  document.getElementById('about').style.display = "block";
-  }
-  else
-  {
-  document.getElementById('about').style.display = "none";
-  }
-
-  if( explore === true )
-  {
-  document.getElementById('idField').style.display = "block";
-  }
-  else
-  {
-  document.getElementById('idField').style.display = "none";
-  }
-}
-
-
-// create an object to hold variables controlled by the UI
-var uivars = {
-  id: "0",
-  slider : "0"
-
-};
-
-</script>
 
 
 

@@ -16,7 +16,6 @@ PImage[] ImgFile = new PImage[4];
 
 
 int HUI_lastId = uivars.id.length();
-float HUI_lastSlider = uivars.slider;
 
 //int Mill = 0;
 
@@ -36,11 +35,13 @@ var Step = bigInt(1);
 int FrameSize = 650;
 
 
-interface JavaScript {
+interface JavaScript
+{
   void HUI_updateId(String t);
 }
 
-void bindJavascript(JavaScript js) {
+void bindJavascript(JavaScript js)
+{
   javascript = js;
 }
 
@@ -257,14 +258,7 @@ void draw()
     Img.setPixFromId();
     update_UI();
   }
-  
-  if( HUI_lastSlider != uivars.slider )
-  {
-    HUI_lastSlider = uivars.slider;
-    Img.setIdFromRange(float(uivars.slider));
-    //Img.setIdFromRange(float(mouseX)/float(width));
-    update_UI();
-  }
+
   
   
   
