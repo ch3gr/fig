@@ -24,7 +24,6 @@
 		<![endif]-->
 
 
-		<link rel="stylesheet" href="css/style.css"/>
 		<link rel="stylesheet" href="css/foundation.css">
 		<link rel="stylesheet" href="css/app.css">
 
@@ -245,16 +244,16 @@
 							<legend>Sample Images</legend>
 							<div class="row">
 								<div class="small-3 columns">
-									<div id="buttonS1" type="button" onclick="processingCall('sample1')" class="small expanded button single">s1</div>
+									<div id="buttonS1" type="button" onclick="processingCall('sample1')" class="small expanded button single">1</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS2" type="button" onclick="processingCall('sample2')" class="small expanded button single">s2</div>
+									<div id="buttonS2" type="button" onclick="processingCall('sample2')" class="small expanded button single">2</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS3" type="button" onclick="processingCall('sample3')" class="small expanded button single">s3</div>
+									<div id="buttonS3" type="button" onclick="processingCall('sample3')" class="small expanded button single">3</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS4" type="button" onclick="processingCall('sample4')" class="small expanded button single">s4</div>
+									<div id="buttonS4" type="button" onclick="processingCall('sample4')" class="small expanded button single">4</div>
 								</div>
 							</div>
 
@@ -282,78 +281,43 @@
 
 
 
-
-
-		  
-
-
-
-
-
-
-
-
-
-		<div class="reveal" id="about-modal" data-reveal>
-		  <h1>About</h1>
-		  <p class="lead">...blah blah blah...</p>
-			<p>
+		<div class="reveal medium" id="about-modal" data-reveal>
+			<h1>inFinite Image Generator</h1>
+			<hr>
+			<p class="text-justify">
 			Two dimensional images of any kind, have long been stored and displayed digitally. To do so, the image is broken down into a set of pixels, with a pre-defined color depth. The digital representation of an image is essentially just a series of color values.
 			</p>
-			<p>
-			If we look at this the other way, we can say that any given digital canvas has a certain number of possible color combinations among its pixels. [ie a small image with a resolution of just 4x4 pixels and 2 colors has 2^16=65536 possible color combinations.] So since any kind of image can be digitized, we could also assume that every single representation can be found in one of these possible combinations, as long as the canvas has enough resolution and color definition to make the image readable.
+			<p class="text-justify">
+			If we look at this the other way, we can say that any given digital canvas has a certain number of possible color combinations among its pixels. This number is calculated by raising the amount of available colors to the power of total pixels in the image [combinations=colorDepth^pixels]. So for example a tiny image with a resolution of 4x4 pixels and only 2 colors has 2^16=65536 possible color combinations.
 			</p>
-			<p>
-			combinations = colorDepth ^ pixels
+			<p class="text-justify">
+			Since any kind of image can be digitized, we could also assume that every single representation can be found in one of these possible color combinations, as long as the canvas has enough resolution and color definition to make the image readable. The above equation is exponential, so an image with adequate definition may have an astronomical number of possible combinations, but never the less a finite amount.
 			</p>
-			<p>
-			The mathematical equation to find the amount of all possible color combinations is exponential to the image's quality. A digital canvas with enough resolution, may have an astronomical number of possible combinations, but never the less a finite amount.
+			<p class="text-justify">
+			This experimental software exploits the artifact of digital imaging, where an algorithm samples an infinite reality into a finite data-set and attempts to explore this vast universe of color combinations within a digital canvas.  The software iterates through all the possible combinations one by one, in an attempt ti generate every possible image. Even though the grand majority of the results may be nondescript, it is guaranteed that eventually meaningful images will emerge. These images could be of anything, like a photo of your cat, your own portrait, the photo of your unborn child, or even a mathematical equation that hasn't been invented yet. Essentially it is the ultimate digital image creation tool.
 			</p>
-			<p>
-			This simple one button software, gives the ability to the user to iterate through all the color combinations among the pixels and effectively generate every possible image that can be seen in a given canvas. No artistic skill is required what so ever, just enough time. Even though the grand majority of the results will be nondescript, the user will eventually come to see meaningful images.
+			<p class="text-justify">
+			Of course at the moment this only works in a theoretical level, as in practice, even when running at 60 iterations per second, it would require a little less 10 billion years, or almost the age of the known universe, to iterate through all the possible color combinations of an 8x8 pixels image with only 2 colors. But as the processing power of computers still keeps doubling every two years based on Moore's law and with the fast progress in quantum computing, there may be a time in the future when we will be able to brute force and filter all the meaningful images out of the chaos. In a potential version 2 of this program, the output images can be passed into an image recognition algorithm, which will identify, aggregate and categorize human recognizable results. 
 			</p>
-			<p>
-			Of course this experimental software only works in a theoretical level, as in practice, even running at 60 iterations per second, it would require a little less than the known age of the universe (14 billion years), to display all the possible color combinations of a 8?8 pixels image with just 2 colors.
+			<p class="text-justify">
+			So what happens when and if we get to that point? Will this be the end of human creativity?
+			What about intellectual property? Who will own the rights to all the images?
 			</p>
-			<p>
-			As the processing power of computers still keeps doubling every two years based on Moore's law, there may be a time in future, when we will be able to brute force and filter all the meaningful images out of the chaos. In a potential version 2 of this program, the output images can be passed into an image recognition algorithm, which will be identifying human recognizable results. The process can be parallelized in an array of computers and with upgrades over time, may allow us to explore this vast amount of images faster. As the time passes, the software will aggregate sets of images that resemble known pictorial elements.
-			</p>
-			<p>
-			Running the tool in 'explore' mode allows the user to take a look into this vast universe of possible combinations.
-			In the 'explore' mode every iteration is indexed, so the user can save, retrieve and share the artifact. The resolution and the color depth of the canvas can be changed and any given iteration will take a different appearance as the data are redistributed among the pixels in a different manner. The step size of each iteration can be increased to accelerate the process and in conjunction with an interactive slider the user can slide through all the possibilities. In auto mode the software iterates the canvas at 60 images per second and based on that speed it it calculates how long it would take in real time to get to that iteration and how much longer until it reaches the end. A few sample images have been provided to prove the point that an image can be represented by just a singular number in a given canvas. It also gives a sense of how long it will take to iterate to that specific representation in relation to the image quality.
-			</p>
-			<p>
-			tech
-			</p>
-			<p>
-			Each image in this software is represented by its index number, which is the number of iterations it took to get there. The association of this index and the resulting image is simple. If we convert this decimal number index into a different numeric system, where the base is the color depth, then we end up with a number where each of its digits corresponds to the color value of each pixel of the image.
-			</p>
-			<p>
-			Questions raised
-			</p>
-			<p>
-			Intellectual property of digital content - Who would own the rights of the images generated with this program?
-			Will processing power get so powerful to explore the cosmos through these algorithmic means?
-			</p>
-			<p>
+			<p class="text-justify">
+
 			Q&A:
-			</p>
-			<p>
+
 			Q. Why don't I see any meaningful images when I move the slider?
 			A. The slider's accuracy is limited by the screen resolution. Moving the slider just by one pixel, may translate to an increment of many trillion iterations, which means it's easy to miss some.
-			</p>
-			<p>
+
 			Q. Why are there only grey colors?
 			A. Colors require 3 values per pixel, so for the purpose of keeping this experiment simple, only tones of grey are used. The logic can easily be transferred into color images, or even moving images.
 			</p>
-			<p>
-			Q. Who owns the rights of my the image I just created with this tool?
-			A. All images generated with this tool belong to the public domain. Part of the goal is to generate every possible image to fight the copyright regime.
-			</p>
 
-		  <button class="close-button" data-close aria-label="Close modal" type="button">
+
+
+			<button class="close-button" data-close aria-label="Close modal" type="button">
 			<span aria-hidden="true">&times;</span>
-		  </div>
 		</div>
 
 		<script src="js/vendor/jquery.js"></script>
