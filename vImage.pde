@@ -53,7 +53,7 @@ class VImage
     
     //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
     id = bigInt(0);
-    updateUI();
+    //updateUI();
   }
   
   
@@ -77,7 +77,7 @@ class VImage
     
     pix[0] ++;
     propagate(0);
-    updateUI();
+    //updateUI();
   }
   
   void propagate(int p)
@@ -111,7 +111,7 @@ class VImage
       id = bigInt(0).add( id.minus(idLimit) ).minus(1);
     
     setId(id, cDepth);
-    updateUI();
+    //updateUI();
   }
   
   
@@ -206,7 +206,7 @@ class VImage
     
     id = bigInt(idBaseConvert, depth);
     
-    updateUI();
+    //updateUI();
     
     // FIX : extra conversion to support 10+ depth
     // Warning ean kseperaseis to size
@@ -284,7 +284,7 @@ class VImage
       id = id.add( dDigit );
     }
     
-    updateUI();
+    //updateUI();
   }
   
   
@@ -292,25 +292,7 @@ class VImage
 
   
   
-  void updateUI()
-  {
-    // integer that holds id/idLimit * 1000000
-    bigInt mil = bigInt(id.multiply(1000000)).divide(idLimit.multiply(1));
-    
-    //float portion = float(mil.toString());
-    float portion = mil.toString();
-    portion /= 1000000.0;
-    
-    //msg = portion;
-    msg = duration(id);
-    
-    // Update HTML slider
-    if(javascript!=null)
-      javascript.UI_updateId(id.toString(), portion);
-  
-    // Update processing slider
-    Buttons.get("slider").v = portion;
-  }
+
   
   
   

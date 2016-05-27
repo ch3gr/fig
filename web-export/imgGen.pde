@@ -169,7 +169,7 @@ void draw()
   ui();
   
 
-  //// HTML UI
+  //// HTML UI to Processing
   
   // when the input chages
   if( UI_lastId != uivars.id )
@@ -177,8 +177,6 @@ void draw()
     UI_lastId = uivars.id;
     Img.setId(uivars.id, Img.cDepth);
   }
-  
-  
   
   if( UI_lastSlider != uivars.slider )
   {
@@ -240,6 +238,24 @@ void draw()
 
 void ui()
 {
+  // Calculate and Update sliders
+  // integer that holds id/idLimit * 1000000
+  bigInt mil = bigInt(Img.id.multiply(1000000)).divide(Img.idLimit.multiply(1));
+  float portion = mil.toString();
+  portion /= 1000000.0;
+  
+  // Update HTML slider
+  if(javascript!=null)
+    javascript.UI_updateId(Img.id.toString(), portion);
+
+  // Update processing slider
+  Buttons.get("slider").v = portion;
+  
+  
+  
+  
+  ////////////////////////////////////////////////////
+  // RENDER UI  
   
   // Loop through all the buttons
   Iterator i = Buttons.entrySet().iterator();  // Get an iterator
@@ -249,7 +265,6 @@ void ui()
     me.getValue().update();
     me.getValue().draw();
   }
-  
   
   // Print some info
   textSize(20);
@@ -282,7 +297,9 @@ void ui()
   
   
   
+  ////////////////////////////////////////////////////
   // Button actions
+  
   if( Buttons.get("prev").click )
     Img.offset(-Step);
   if( Buttons.get("next").click )
@@ -326,6 +343,7 @@ void ui()
   
   
   // SHIITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+  /*
   if( Buttons.get("slider").b.down )
   {
     if( Buttons.get("slider").v != LastSlider )
@@ -334,6 +352,18 @@ void ui()
       LastSlider = Buttons.get("slider").v;
     }
   }
+  */
+  if( Buttons.get("slider").changed )
+    Img.setIdFromRange( Buttons.get("slider").v );
+  
+  
+  
+  
+  
+  
+
+  
+  
 }
 
 
@@ -342,6 +372,8 @@ void ui()
 
 
 
+//////////////////////////////////////////////////////////////////
+// KEYBOARD
 
 void keyPressed()
 {
@@ -428,7 +460,6 @@ void keyPressed()
     Img.msg = duration( t );
   }
 }
-
 
 
 
@@ -841,8 +872,9 @@ class Button
 class Slider
 {
   int x, y, sx, sy;
-  float v;
+  float v, vLast;
   Button b;
+  boolean changed = false;
   
   int bs = 10;
   
@@ -854,7 +886,7 @@ class Slider
     sy = isy;
     
     v = 0;
-    down = false;
+    vLast = 0;
     
     b = new Button("", false, x, y, bs*2, sy, color(0.1), color(0.2), color(0.3));
   }
@@ -866,11 +898,21 @@ class Slider
   void update() 
   {
     b.update();
+    changed = false;
     if(b.down)
     {
       v = ( map( mouseX, x+bs, x+sx-bs, 0, 1) );
       if(v<0) v=0;
       if(v>1) v=1;
+      
+      if( v != vLast )
+      {
+        changed = true;
+        vLast = v;
+      }
+      else
+        changed = false;
+      
     }
     // move slider
     b.x = map( v, 0,1, x, x+sx-2*bs );
@@ -893,11 +935,14 @@ class Slider
     line(x+bs, y+sy/2.0, x+sx-bs, y+sy/2.0);
     b.draw();
     
+    
+    // DEBUG
     fill(0.8);
     textAlign(LEFT, TOP);
     textSize(14);
     text(v, x, y);
-    
+    textAlign(LEFT, BOTTOM);
+    text(changed, x, y+sy);
   }
   
 }
@@ -956,7 +1001,7 @@ class VImage
     
     //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
     id = bigInt(0);
-    updateUI();
+    //updateUI();
   }
   
   
@@ -980,7 +1025,7 @@ class VImage
     
     pix[0] ++;
     propagate(0);
-    updateUI();
+    //updateUI();
   }
   
   void propagate(int p)
@@ -1014,7 +1059,7 @@ class VImage
       id = bigInt(0).add( id.minus(idLimit) ).minus(1);
     
     setId(id, cDepth);
-    updateUI();
+    //updateUI();
   }
   
   
@@ -1109,7 +1154,7 @@ class VImage
     
     id = bigInt(idBaseConvert, depth);
     
-    updateUI();
+    //updateUI();
     
     // FIX : extra conversion to support 10+ depth
     // Warning ean kseperaseis to size
@@ -1187,7 +1232,7 @@ class VImage
       id = id.add( dDigit );
     }
     
-    updateUI();
+    //updateUI();
   }
   
   
@@ -1195,25 +1240,7 @@ class VImage
 
   
   
-  void updateUI()
-  {
-    // integer that holds id/idLimit * 1000000
-    bigInt mil = bigInt(id.multiply(1000000)).divide(idLimit.multiply(1));
-    
-    //float portion = float(mil.toString());
-    float portion = mil.toString();
-    portion /= 1000000.0;
-    
-    //msg = portion;
-    msg = duration(id);
-    
-    // Update HTML slider
-    if(javascript!=null)
-      javascript.UI_updateId(id.toString(), portion);
-  
-    // Update processing slider
-    //Buttons.get("slider").v = portion;
-  }
+
   
   
   

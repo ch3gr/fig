@@ -1,6 +1,3 @@
-
-
-
 // UI buttons
 HashMap Buttons = new HashMap();
 
@@ -17,7 +14,6 @@ PImage ImgInput;
 
 int UI_lastId = uivars.id.length();
 float UI_lastSlider = uivars.slider;
-float LastSlider = 0;
 
 int Mill = 0;
 
@@ -131,10 +127,7 @@ void setup ()
 
 void draw()
 {
-
-
-  
-  
+  ////////////////////////////////////////////////////
   //// Logic
   
   if( AutoMode )
@@ -144,12 +137,13 @@ void draw()
     //Img.setIdFromDate( RefTime );
   }
   
-  background(0.18);
-  smooth();
     
   
-  //// Draw
-
+  ////////////////////////////////////////////////////
+  //// Draw Iamge
+  
+  background(0.18);
+  smooth();
   pushMatrix();
   translate(0,0);
   if( Img.h > Img.w )  // fit img in the frame square
@@ -169,7 +163,7 @@ void draw()
   ui();
   
 
-  //// HTML UI
+  //// HTML UI to Processing
   
   // when the input chages
   if( UI_lastId != uivars.id )
@@ -177,8 +171,6 @@ void draw()
     UI_lastId = uivars.id;
     Img.setId(uivars.id, Img.cDepth);
   }
-  
-  
   
   if( UI_lastSlider != uivars.slider )
   {
@@ -240,6 +232,24 @@ void draw()
 
 void ui()
 {
+  // Calculate and Update sliders
+  // integer that holds id/idLimit * 1000000
+  bigInt mil = bigInt(Img.id.multiply(1000000)).divide(Img.idLimit.multiply(1));
+  float portion = mil.toString();
+  portion /= 1000000.0;
+  
+  // Update HTML slider
+  if(javascript!=null)
+    javascript.UI_updateId(Img.id.toString(), portion);
+
+  // Update processing slider
+  Buttons.get("slider").v = portion;
+  
+  
+  
+  
+  ////////////////////////////////////////////////////
+  // RENDER UI  
   
   // Loop through all the buttons
   Iterator i = Buttons.entrySet().iterator();  // Get an iterator
@@ -249,7 +259,6 @@ void ui()
     me.getValue().update();
     me.getValue().draw();
   }
-  
   
   // Print some info
   textSize(20);
@@ -282,7 +291,9 @@ void ui()
   
   
   
+  ////////////////////////////////////////////////////
   // Button actions
+  
   if( Buttons.get("prev").click )
     Img.offset(-Step);
   if( Buttons.get("next").click )
@@ -325,15 +336,10 @@ void ui()
     ImgUser.setIdFromImg(ImgInput);
   
   
-  // SHIITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-  if( Buttons.get("slider").b.down )
-  {
-    if( Buttons.get("slider").v != LastSlider )
-    {
-      Img.setIdFromRange( Buttons.get("slider").v );
-      LastSlider = Buttons.get("slider").v;
-    }
-  }
+  if( Buttons.get("slider").changed )
+    Img.setIdFromRange( Buttons.get("slider").v );
+  
+  
 }
 
 
@@ -342,6 +348,8 @@ void ui()
 
 
 
+//////////////////////////////////////////////////////////////////
+// KEYBOARD
 
 void keyPressed()
 {
@@ -428,7 +436,6 @@ void keyPressed()
     Img.msg = duration( t );
   }
 }
-
 
 
 

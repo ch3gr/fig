@@ -1,8 +1,9 @@
 class Slider
 {
   int x, y, sx, sy;
-  float v;
+  float v, vLast;
   Button b;
+  boolean changed = false;
   
   int bs = 10;
   
@@ -14,7 +15,7 @@ class Slider
     sy = isy;
     
     v = 0;
-    down = false;
+    vLast = 0;
     
     b = new Button("", false, x, y, bs*2, sy, color(0.1), color(0.2), color(0.3));
   }
@@ -26,11 +27,21 @@ class Slider
   void update() 
   {
     b.update();
+    changed = false;
     if(b.down)
     {
       v = ( map( mouseX, x+bs, x+sx-bs, 0, 1) );
       if(v<0) v=0;
       if(v>1) v=1;
+      
+      if( v != vLast )
+      {
+        changed = true;
+        vLast = v;
+      }
+      else
+        changed = false;
+      
     }
     // move slider
     b.x = map( v, 0,1, x, x+sx-2*bs );
@@ -53,11 +64,16 @@ class Slider
     line(x+bs, y+sy/2.0, x+sx-bs, y+sy/2.0);
     b.draw();
     
+    
+    // DEBUG
+    /*
     fill(0.8);
     textAlign(LEFT, TOP);
     textSize(14);
     text(v, x, y);
-    
+    textAlign(LEFT, BOTTOM);
+    text(changed, x, y+sy);
+    */
   }
   
 }
