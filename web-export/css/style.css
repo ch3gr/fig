@@ -1,5 +1,5 @@
 body {
-  background-color: #333; color: #bbb; line-height: normal;
+  color: #bbb; line-height: normal;
   font-family: Lucida Grande, Lucida Sans, Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
   font-size: 11px; font-weight: normal; text-decoration: none;
 	  line-height: 1.5em;
@@ -19,6 +19,7 @@ canvas {
 	display: block;
 	outline: 0px;
 }
+
 #content {
 	margin: 0px auto 0px auto; padding: 25px 25px 25px 25px;
 

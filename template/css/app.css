@@ -1,8 +1,17 @@
+body {
+	background: #2e2e2e;
+	color: #d0d0d0;
+}
+
 canvas#processing {
 	border: 1px solid black;
 	width: 100%;
 }
 
-button.single {
-	background: gold;
+button.single{
+	background: grey;
+}
+
+button.button{
+	background: grey;
 }
