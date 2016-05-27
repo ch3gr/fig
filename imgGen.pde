@@ -48,7 +48,7 @@ JavaScript javascript;
 
 void setup ()
 {
-  size( 700, 750, JAVA2D );
+  size( 500, 500, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
@@ -101,8 +101,8 @@ void draw()
   //// Draw
 
   pushMatrix();
-  translate(50,50);
-  scale(600.0/Img.h);  //fit height in 500 pixels
+  translate(0,0);
+  scale(500.0/Img.h);  //fit height in 500 pixels
   
   
   if( Img.w > 50 )
@@ -127,7 +127,7 @@ void draw()
   
   
   
-  
+  /*
   //// Temp text
   
   fill(color(0.7));
@@ -155,7 +155,7 @@ void draw()
   text( "Img         : "+Img.msg, 300, 700);
   text( "ImgUser : "+ImgUser.msg, 300, 710);
   text( "ImgDate : "+ImgDate.msg, 300, 720);  
-  
+  */
 
 }
 
@@ -259,6 +259,11 @@ TO DO
 no characters to id textArea
 mipos h updateUI() kalitera sto main kai oxi stin class?
 clean up javascript/jQuery, check if everything can be on a tab
+
+Slider ??!?!
+calculate since / until, in nice text
+load image
+iregular image
 
 
 */

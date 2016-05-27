@@ -56,20 +56,29 @@
 		background-color: #3d3d3d;
 	}
 	#processing {
-		width: 700px;
+		width: 500px;
 		float: left;
 		border: 1px solid red;
 	}
 	#ui {
-		width: 700px;
+		width: 500px;
+		height: 500px;
 		overflow: hidden;
-		padding: 50px;
+		padding: 0px 00px;
+		margin: 0px 50px;
 		border: 1px solid green;
+	}
+	#id {
+		width: 1000px;
+		clear: both;
+		border: 50px 0px;
+
 	}
 	#credits {
 		clear: both;
+		width: 1000px;
 		padding: 25px 50px;
-		border: 1px solid blue;
+		border: 1px solid orange;
 	}
 
 
@@ -123,7 +132,7 @@ function getProcessingSketchId () { return 'imgGen'; }
 		<div id="content">
 			<div id="processing">
 				<canvas id="imgGen" data-processing-sources="imgGen.pde"
-						width="700" height="750">
+						width="500" height="500">
 					<p>Your browser does not support the canvas tag.</p>
 					<!-- Note: you can put any alternative content here. -->
 				</canvas>
@@ -134,9 +143,15 @@ function getProcessingSketchId () { return 'imgGen'; }
 
 			<div id="ui">
 				<div class="proc_ui">
-					<textarea id="idField" type="number" rows="10" cols="80"></textarea>
+					<p>This is some stats and buttons</p>
 				</div>
 			</div>
+
+
+			<div id="id">
+					<textarea id="idField" type="number" rows="10" cols="120"></textarea>
+			</div>
+
 
 			<div id="credits">
 				<h1>imgGen</h1>
