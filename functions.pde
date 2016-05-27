@@ -18,13 +18,12 @@ void update_UI()
     //id = str(Img.w)+":"+str(Img.w)+":"+str(Img.cDepth)+"|";
     String id = Img.getId();
     
-    //javascript.HUI_updateId(id, portion, explore, about);
+    
     javascript.HUI_updateId(id);
   }
 
   // Update processing slider
   UI_Explore.get("slider").v = portion;
-  
 }
 
 
@@ -59,16 +58,17 @@ void ui_common()
   
   ////////////////////////////////////////////////////
   // Button actions
-
-  if( UI_Common.get("explore").click )
-    Explore = true;
-  else
-    Explore = false;
   
-  if( UI_Common.get("about").down )  // Bit crap that updates all the time while it's down, but oh well
-    update_UI();
-  if( UI_Common.get("explore").down )  // Bit crap that updates all the time while it's down, but oh well
-    update_UI();
+  boolean lastExplore = Explore;
+  boolean lastAbout = About;
+  
+  Explore = UI_Common.get("explore").click;
+  About = UI_Common.get("about").click;
+  
+  if( lastExplore != Explore || lastAbout != About )
+    HUI_updateDivs( Explore, About );
+  
+    
 }
 
 
@@ -272,6 +272,7 @@ void ui_explore()
     Img.setIdFromRange( UI_Explore.get("slider").v );
     update_UI();
     
+    
     if(Sample > -1)
       resetSamples(-1);
   }  
@@ -292,7 +293,6 @@ void ui_explore()
 
       resetSamples(s);
       applySample(s);
-      text("recalc", 700, 300);
     }
   }
   // reset global if non is pressed

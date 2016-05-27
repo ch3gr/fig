@@ -1,3 +1,6 @@
+// Global that holds whether and which sample image is clicked 
+int Sample = -1;
+
 // Global to track if one button is pressed, to prevent more at any one time
 boolean OneButtonClicked = false;
 

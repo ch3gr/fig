@@ -49,7 +49,7 @@ canvas {
 	width: 1000px;
 	clear: both;
 	padding: 20px 0px;
-	display: block;
+	display: none;
 	background: #2e2e2e;
 
 }

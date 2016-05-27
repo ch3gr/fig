@@ -1,23 +1,24 @@
-// UI buttons
-HashMap UI_Simple = new HashMap();
-HashMap UI_Explore = new HashMap();
-HashMap UI_Common = new HashMap();
-
-
-interface JavaScript
-{
-  void HUI_updateId(String t);
-  void showXYCoordinates(int x, int y);
+//  html javascript functions
+interface JavaScript {
+  void HUI_updateId(String theId);
+  void HUI_updateDivs( boolean explore, boolean about );
+  void HUI_debug(String text);
 }
 
-void bindJavascript(JavaScript js)
-{
+void bindJavascript(JavaScript js) {
   javascript = js;
 }
 
 JavaScript javascript;
 
 
+
+
+
+// UI buttons
+HashMap UI_Simple = new HashMap();
+HashMap UI_Explore = new HashMap();
+HashMap UI_Common = new HashMap();
 
 
 
@@ -43,7 +44,7 @@ boolean Overlay = false;
 boolean About = false;
 boolean Explore = true;
 
-int Sample = -1;
+
 
 
 var Step = bigInt(1);
@@ -496,18 +497,65 @@ void keyPressed()
 
 
 
-void mouseMoved() {
 
-  if(javascript!=null){
-    javascript.showXYCoordinates(mouseX, mouseY);
+
+
+/*
+void checkButtons()
+{
+  Iterator i;
+  
+  i = UI_Common.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    me.getValue().update();
+  }
+  
+  if( Explore )
+  {
+    i = UI_Explore.entrySet().iterator();  // Get an iterator
+    while (i.hasNext())
+    {
+      Map.Entry me = (Map.Entry)i.next();
+      me.getValue().update();
+      me.getValue().draw();
+    }
+  }
+  else
+  {
+    i = UI_Simple.entrySet().iterator();  // Get an iterator
+    while (i.hasNext())
+    {
+      Map.Entry me = (Map.Entry)i.next();
+      me.getValue().update();
+      me.getValue().draw();
+    }
   }
 }
 
+void mouseClicked()
+{
+  checkButtons();
+}
+void mouseDragged()
+{
+  checkButtons();
+}
+void mouseMoved()
+{
+  checkButtons();
+}
+void mousePressed()
+{
+  checkButtons();
+}
+void mouseReleased()
+{
+  checkButtons();
+}
 
-
-
-
-
+*/
 
 
 
@@ -516,16 +564,7 @@ void mouseMoved() {
 /*
 TO DO
 
-really clear img when reset canvas
-when re-set canvas color depth, regenerate img
-
-
-
-
 touch screen buttons?
-HTML UI doesn't update when it's running online
-no characters in id textArea
-clean up javascript/jQuery, check if everything can be on a tab
 
 Finish layout/graphics
 hardcode text coord
@@ -548,6 +587,12 @@ slider doesn't update Img when in auto mode
 sliders/id dont update when canvas is adjusted
 combined + / - button
 optimise step (kateuthian apo to id)
+HTML UI doesn't update when it's running online !!!!
+really clear img when reset canvas
+when re-set canvas color depth, regenerate img
+no characters in id textArea
+clean up javascript/jQuery, check if everything can be on a tab
+
 
 Nah
 load image
@@ -556,6 +601,9 @@ prefix ID with canvas resolution
 Bug: breaks in certain colorDepths (perfectly fits the step increment)
 
 */
+// Global that holds whether and which sample image is clicked 
+int Sample = -1;
+
 // Global to track if one button is pressed, to prevent more at any one time
 boolean OneButtonClicked = false;
 
@@ -740,13 +788,12 @@ void update_UI()
     //id = str(Img.w)+":"+str(Img.w)+":"+str(Img.cDepth)+"|";
     String id = Img.getId();
     
-    //javascript.HUI_updateId(id, portion, explore, about);
+    
     javascript.HUI_updateId(id);
   }
 
   // Update processing slider
   UI_Explore.get("slider").v = portion;
-  
 }
 
 
@@ -781,16 +828,17 @@ void ui_common()
   
   ////////////////////////////////////////////////////
   // Button actions
-
-  if( UI_Common.get("explore").click )
-    Explore = true;
-  else
-    Explore = false;
   
-  if( UI_Common.get("about").down )  // Bit crap that updates all the time while it's down, but oh well
-    update_UI();
-  if( UI_Common.get("explore").down )  // Bit crap that updates all the time while it's down, but oh well
-    update_UI();
+  boolean lastExplore = Explore;
+  boolean lastAbout = About;
+  
+  Explore = UI_Common.get("explore").click;
+  About = UI_Common.get("about").click;
+  
+  if( lastExplore != Explore || lastAbout != About )
+    HUI_updateDivs( Explore, About );
+  
+    
 }
 
 
@@ -994,6 +1042,7 @@ void ui_explore()
     Img.setIdFromRange( UI_Explore.get("slider").v );
     update_UI();
     
+    
     if(Sample > -1)
       resetSamples(-1);
   }  
@@ -1014,7 +1063,6 @@ void ui_explore()
 
       resetSamples(s);
       applySample(s);
-      text("recalc", 700, 300);
     }
   }
   // reset global if non is pressed
@@ -1526,9 +1574,7 @@ class VImage
  
   void clear()
   {
-    for( int p = 0; p<pix.length; ++p )
-      pix[p] = 0;
-    
+    pix = new int[size];
     id = bigInt(0);
   }
   
@@ -1638,19 +1684,6 @@ class VImage
   } 
   
   
-
-
-
-
-
-  
-  
-  
-  
-  
-  
-
-
   void setId(String idIn)
   {
     clear();
@@ -1663,6 +1696,9 @@ class VImage
   
   void setPixFromId()
   {
+    // Reset pixels
+    pix = new int[size];
+    
     // generate a string with the pixel values by converting to a base of cDepth
     // numbers 10 to 35 are letters
     // numbers higher than 35 are like <65>
@@ -1705,7 +1741,7 @@ class VImage
       pix[p++] = pix2[i];
     
     
-    //// 4 hours to fix this function FUCKING HELL!!!!!
+    //// 4 hours to fix this function FOR FUCK SHAKE IT HELL!!!!!
   }
   
   
@@ -1808,44 +1844,30 @@ class VImage
   
   void setCanvas( int wIn, int hIn, int cDepthIn )
   {
+    // Set and limit new inputs
     w = wIn;
     if( w < 1 )
       w = 1;
-    
     h = hIn;
     if( h < 1 )
       h = 1;
+    cDepth = cDepthIn;
+    if( cDepth < 2 )
+      cDepth = 2;
     
+    // Set Img attributes
     size = w * h;
-    
-    // If pix array gets bigger, fill the tail with zeros 000
-    if( size > pix.length )
-    {
-      for(int e=pix.length; e<size; e++)
-        pix.push(0);
-    }
-    
-    if( cDepthIn != cDepth && cDepthIn > 1)
-    {
-      // fit color from one depth to another
-      for( int p = 0; p<size; ++p )
-      {
-        if( isNaN(pix[p]) )
-          pix[p] = 0;
-        
-        //pix[p] = map( pix[p], 0, cDepth, 0, cDepthIn );
-        pix[p] = floor((pix[p]/cDepth) * cDepthIn + 0.5) ;
-      }
-      
-      cDepth = cDepthIn;
-    }
-    
     idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     
+    // Reset pixel array, first set pixels from id, then back to id to clamp values and pixels. Then update UI
+    pix = new int[size];
+    setPixFromId();
+    canvasToId();
+    HUI_updateId(id);
+    update_UI();
+    
+    // Reset bitmat as well
     bitmap = new PImage(w,h,RGB);
-    
-    
-    //msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   

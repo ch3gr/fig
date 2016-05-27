@@ -50,9 +50,7 @@ class VImage
  
   void clear()
   {
-    for( int p = 0; p<pix.length; ++p )
-      pix[p] = 0;
-    
+    pix = new int[size];
     id = bigInt(0);
   }
   
@@ -162,19 +160,6 @@ class VImage
   } 
   
   
-
-
-
-
-
-  
-  
-  
-  
-  
-  
-
-
   void setId(String idIn)
   {
     clear();
@@ -187,6 +172,9 @@ class VImage
   
   void setPixFromId()
   {
+    // Reset pixels
+    pix = new int[size];
+    
     // generate a string with the pixel values by converting to a base of cDepth
     // numbers 10 to 35 are letters
     // numbers higher than 35 are like <65>
@@ -229,7 +217,7 @@ class VImage
       pix[p++] = pix2[i];
     
     
-    //// 4 hours to fix this function FUCKING HELL!!!!!
+    //// 4 hours to fix this function FOR FUCK SHAKE IT HELL!!!!!
   }
   
   
@@ -332,44 +320,30 @@ class VImage
   
   void setCanvas( int wIn, int hIn, int cDepthIn )
   {
+    // Set and limit new inputs
     w = wIn;
     if( w < 1 )
       w = 1;
-    
     h = hIn;
     if( h < 1 )
       h = 1;
+    cDepth = cDepthIn;
+    if( cDepth < 2 )
+      cDepth = 2;
     
+    // Set Img attributes
     size = w * h;
-    
-    // If pix array gets bigger, fill the tail with zeros 000
-    if( size > pix.length )
-    {
-      for(int e=pix.length; e<size; e++)
-        pix.push(0);
-    }
-    
-    if( cDepthIn != cDepth && cDepthIn > 1)
-    {
-      // fit color from one depth to another
-      for( int p = 0; p<size; ++p )
-      {
-        if( isNaN(pix[p]) )
-          pix[p] = 0;
-        
-        //pix[p] = map( pix[p], 0, cDepth, 0, cDepthIn );
-        pix[p] = floor((pix[p]/cDepth) * cDepthIn + 0.5) ;
-      }
-      
-      cDepth = cDepthIn;
-    }
-    
     idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     
+    // Reset pixel array, first set pixels from id, then back to id to clamp values and pixels. Then update UI
+    pix = new int[size];
+    setPixFromId();
+    canvasToId();
+    HUI_updateId(id);
+    update_UI();
+    
+    // Reset bitmat as well
     bitmap = new PImage(w,h,RGB);
-    
-    
-    //msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   

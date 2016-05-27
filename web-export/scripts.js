@@ -1,12 +1,6 @@
 
-
-
-
-
-
-
+// function to limit the text input only to numbers and copy/past
 numbersOnly( document.getElementById('uiId') );
-
 
 function numbersOnly(elem) {
   elem.onkeypress=function(e) {
@@ -38,3 +32,9 @@ function numbersOnly(elem) {
     uivars.id = this.value;
   }
 };
+
+
+
+
+// make sure the id in the html div is zero when you start
+document.getElementById('uiId').value = 0;

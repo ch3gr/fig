@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 	<head>
 
-
-		<script src="processing-1.3.6.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/vader/jquery-ui.css"/>
 		<link rel="stylesheet" href="style.css"/>
-
-
-
 
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>imgGen : Built with Processing and Processing.js</title>
@@ -27,7 +19,8 @@
 		<!--[if lt IE 9]>
 			<script type="text/javascript">alert("Your browser does not support the canvas tag.");</script>
 		<![endif]-->
-		<script src="processing.js" type="text/javascript"></script>
+
+		<script type="text/javascript" src="processing.js"></script>
 		<script type="text/javascript">
 
 		var uivars =
@@ -39,36 +32,48 @@
 
 		var bound = false;
 
-		function bindJavascript()
-		{
+		function bindJavascript() {
 		  var pjs = Processing.getInstanceById("imgGen");
 		  if(pjs!=null) {
 			pjs.bindJavascript(this);
 			bound = true; }
-		  if(!bound) setTimeout(bindJavascript, 250);
+		  if(!bound) setTimeout(bindJavascript, 1000);
 		}
 		bindJavascript();
 
-		function showXYCoordinates(x, y)
-		{
-		  document.getElementById('xcoord').value = x;
-		  document.getElementById('ycoord').value = y;
-		}
 
 		function HUI_updateId( theId )
 		{
 			document.getElementById('uiId').value = theId;
+		}
+
+		function HUI_updateDivs( explore, about )
+		{
+			if( explore )
+				document.getElementById('idField').style.display = "block";
+			else
+				document.getElementById('idField').style.display = "none";
+
+			if( about )
+				document.getElementById('about').style.display = "block";
+			else
+				document.getElementById('about').style.display = "none";
+		}
+
+		function HUI_debug( text )
+		{
+			document.getElementById('debug').value = text;
 		}
 		</script>
 
 
 
 
+
+
+
 	</head>
 	<body>
-	    <div id="coordinates">
-	      x/y: <input type="textfield" id="xcoord">/<input type="textfield" id="ycoord">
-    	</div>
 		<div id="content">
 			<div id="processing">
 				<canvas id="imgGen" data-processing-sources="imgGen.pde"
@@ -87,24 +92,45 @@
 
 			<div id="about">
 				<h1> About </h1>
-				<p> Blah blah blah </p>
-				<p> Two dimensional images of any kind, have long been stored and displayed digitally. To do so the image is broken down into a set number of pixels, with a pre-defined color depth. So the digital representation of the image is essentially just a series of color values(1). </p>
-				<p> If we look at this the other way, we can say that any given digital canvas has a certain number of possible combinations of color values among its pixels(2). And since any kind of image can be digitized, we could also assume that every single respresentation can be found in one of these possible combinations. </p>
-				<p> The definition of a digital image is proportional to the number of pixels and colors. The possible combinations on the other hand are increasing in a geometric/exponential/logarithmic? way in relation to the number of pixels and colors. This means that the possible combinations of a digital canvas of a substantial resolution, may be an astronomical number, but never the less a finite number. </p>
-				<p> This simple one button software, gives the ability to the user to iterate through all the color combinations and effectively generate every possible image within a given canvas. No artistic skill is required what so ever, just enough time to go through all these combinations. The grand majority of the results will be non descript(?), but the user will eventually come to see meaninfull images. (Images that resemble photos of known objects, familiar people, or even people that haven't been born yet) </p>
-				<p> Of course it won't take long for the user to realise that even the lifespan of the universe is not enough to go through all the possible combinations of a canvas with (inequate?) enough definition. Still the software can allow the user to explore all these possibilities and get an understanding of the vastness of such an astronomical number�. </p>
-				<p> Blah Blah Blah </p>
+
+				<p>Two dimensional images of any kind, have long been stored and displayed digitally. To do so the image is broken down into a set of pixels, with a pre-defined color depth. So the digital representation of an image is essentially just a series of color values.</p>
+				<p>If we look at this the other way, we can say that any given digital canvas has a certain number of possible combinations of color values among its pixels. [ie a small image with a resolution of 4?4 pixels and 2 colors has 2^16=65536 possible color combinations.] So since any kind of image can be digitized, we could also assume that every single representation can be found in one of these possible combinations, as long as the canvas has enough resolution and color definition.</p>
+				<p>The number of possible combinations are increasing in an exponential rate in relation to the amount of pixels. This means that the possible combinations of a digital canvas of a substantial resolution, may be an astronomical number, but never the less a finite number.</p>
+				<p>This simple one button software, gives the ability to the user to iterate through all the color combinations and effectively generate every possible image within a given canvas. No artistic skill is required what so ever, just enough time to go through all these combinations. The grand majority of the results will be nondescript, but the user will eventually come to see meaningful images.</p>
+				<p>Of course this software and experiment only works in a theoretical level, as in practise the age of the known universe (14 billion years) is just about enough time to iterate through a 8?8 pixels image with only 2 colors. The tool can also run in the 'explore' mode and to allow the user to take a look into this vast universe of possible combinations.</p>
+				<p>The first thing the user notices in the 'explore' mode is the index number which represents the current color combination and increases with every iteration. This number can be copied, shared and paste back to the program. The user can specify the resolution and color depth of the digital canvas and that affects the total number of possibilities. He can adjust the step size of the increment to speed up the process, or even set it to the automatic mode and let it run indefinitely. Most interestingly, there are a few sample images to prove the point that a representation is just an iteration in this program. Just to clarify these images have not been generated in this program, they are just an indication of how many times the user has to iterate in order to get there. The slider at the bottom is a faster way to go through all the possible combinations and gives an rough estimate of how long it would take to get there and how much longer there is left to reach the end, when running at 60 iterations per second.</p>
+				<p>This experimental software, explores the vast amount of possibilities within a digital canvas. </p>
+				<p>Since we've proved that one of the sample images can be seen as an iteration index, theoretically every possible image of the universe can be found in there. It may be a photo of you, your parents, or even your kid that hasn't been born yet.</p>
+				<p>In a potential version 2 of this program, the output images can be fed into an image recognition algorithm, which will be responsible for identifying meaningful results. The process can run in parallel with a farm of computers and allow us to explore this vast amount of images faster. As the time passes, we will be able to retrieve sets of images that resemble known objects. And as the processing power of the computers gets faster and faster, such a brute force solution may become more and more feasible.</p>
+				<p>ImgGen also questions the intellectual property of digital content. Who would own the rights of the images generated with this program?</p>
+				<p>It also questions the...</p>
+				<p>Q&A:</p>
+				<p>
+				Q. Why don't I see any meaningful images when I move the slider?
+				A. The slider's accuracy is limited by the screen resolution. Moving the slider just by one pixel, may translate to an increment of many trillion iterations, which means it's easy to miss some.
+				</p>
+				<p>
+				Q. Why are there only grey colors?
+				A. Colors require 3 values per pixel, so for the purpose of keeping this experiment simple, only tones of grey are used.
+				</p>
+				<p>
+				Q. Who owns the rights of my the image I just created with this tool?
+				A. All images generated with this tool belong to the public domain. Part of the goal is to generate every possible image to fight the copyright regime. =]
+				</p>
 			</div>
 
 
 			<div id="credits">
 				<h1>imgGen</h1>
 				<p id="description"></p>
-				<p id="sources">Source code: <a href="imgGen.pde">imgGen</a> <a href="BigInteger.js">BigInteger.js</a> <a href="dom.js">dom.js</a> <a href="scripts.js">scripts.js</a> </p>
+				<p id="sources">Source code: <a href="imgGen.pde">imgGen</a> <a href="BigInteger.js">BigInteger.js</a> <a href="scripts.js">scripts.js</a> </p>
 				<p>
 				Built with <a href="http://processing.org" title="Processing">Processing</a>
 				and <a href="http://processingjs.org" title="Processing.js">Processing.js</a>
 				</p>
+			</div>
+			<div>
+				<textarea id="debug"></textarea>
 			</div>
 
 		</div>
@@ -115,12 +141,10 @@
 
 
 
-
 <script type="text/javascript">
 // convenience function to get the id attribute of generated sketch html element
 function getProcessingSketchId () { return 'imgGen'; }
 </script>
 <script src="BigInteger.js" type="text/javascript"></script>
-<script src="dom.js" type="text/javascript"></script>
 <script src="scripts.js" type="text/javascript"></script>
 

@@ -1,23 +1,24 @@
-// UI buttons
-HashMap UI_Simple = new HashMap();
-HashMap UI_Explore = new HashMap();
-HashMap UI_Common = new HashMap();
-
-
-interface JavaScript
-{
-  void HUI_updateId(String t);
-  void showXYCoordinates(int x, int y);
+//  html javascript functions
+interface JavaScript {
+  void HUI_updateId(String theId);
+  void HUI_updateDivs( boolean explore, boolean about );
+  void HUI_debug(String text);
 }
 
-void bindJavascript(JavaScript js)
-{
+void bindJavascript(JavaScript js) {
   javascript = js;
 }
 
 JavaScript javascript;
 
 
+
+
+
+// UI buttons
+HashMap UI_Simple = new HashMap();
+HashMap UI_Explore = new HashMap();
+HashMap UI_Common = new HashMap();
 
 
 
@@ -43,7 +44,7 @@ boolean Overlay = false;
 boolean About = false;
 boolean Explore = true;
 
-int Sample = -1;
+
 
 
 var Step = bigInt(1);
@@ -496,18 +497,65 @@ void keyPressed()
 
 
 
-void mouseMoved() {
 
-  if(javascript!=null){
-    javascript.showXYCoordinates(mouseX, mouseY);
+
+
+/*
+void checkButtons()
+{
+  Iterator i;
+  
+  i = UI_Common.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    me.getValue().update();
+  }
+  
+  if( Explore )
+  {
+    i = UI_Explore.entrySet().iterator();  // Get an iterator
+    while (i.hasNext())
+    {
+      Map.Entry me = (Map.Entry)i.next();
+      me.getValue().update();
+      me.getValue().draw();
+    }
+  }
+  else
+  {
+    i = UI_Simple.entrySet().iterator();  // Get an iterator
+    while (i.hasNext())
+    {
+      Map.Entry me = (Map.Entry)i.next();
+      me.getValue().update();
+      me.getValue().draw();
+    }
   }
 }
 
+void mouseClicked()
+{
+  checkButtons();
+}
+void mouseDragged()
+{
+  checkButtons();
+}
+void mouseMoved()
+{
+  checkButtons();
+}
+void mousePressed()
+{
+  checkButtons();
+}
+void mouseReleased()
+{
+  checkButtons();
+}
 
-
-
-
-
+*/
 
 
 
@@ -516,16 +564,7 @@ void mouseMoved() {
 /*
 TO DO
 
-really clear img when reset canvas
-when re-set canvas color depth, regenerate img
-
-
-
-
 touch screen buttons?
-HTML UI doesn't update when it's running online
-no characters in id textArea
-clean up javascript/jQuery, check if everything can be on a tab
 
 Finish layout/graphics
 hardcode text coord
@@ -548,6 +587,12 @@ slider doesn't update Img when in auto mode
 sliders/id dont update when canvas is adjusted
 combined + / - button
 optimise step (kateuthian apo to id)
+HTML UI doesn't update when it's running online !!!!
+really clear img when reset canvas
+when re-set canvas color depth, regenerate img
+no characters in id textArea
+clean up javascript/jQuery, check if everything can be on a tab
+
 
 Nah
 load image
