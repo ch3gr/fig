@@ -27,9 +27,28 @@ boolean Overlay = false;
 
 
 
+
+interface JavaScript {
+  void UI_updateId(String t);
+}
+
+void bindJavascript(JavaScript js) {
+  javascript = js;
+}
+
+JavaScript javascript;
+
+
+
+
+
+
+
+
+
 void setup ()
 {
-  size( 700, 800, JAVA2D );
+  size( 700, 750, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
@@ -180,6 +199,7 @@ void keyPressed()
     {
       Img = ImgUser;
     }
+    Img.updateUI();
   }
   
   
@@ -226,10 +246,6 @@ void keyPressed()
 
 
 
-void mousePressed()
-{
-  
-}
 
 
 
@@ -237,16 +253,15 @@ void mousePressed()
 
 
 
+/*
+TO DO
+
+no characters to id textArea
+mipos h updateUI() kalitera sto main kai oxi stin class?
+clean up javascript/jQuery, check if everything can be on a tab
 
 
-
-
-
-
-
-
-
-
+*/
 
 
 

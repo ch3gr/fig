@@ -44,21 +44,63 @@
 	canvas {
 		display: block;
 		outline: 0px;
-		margin-bottom: 10px;
 	}
 	#content {
-		margin: 0px auto 0px auto; padding: 25px 25px 15px 25px;
-		width: @@width@@px; min-width: 300px; overflow: auto;
-		border-left: 1px solid #444; border-top: 1px solid #444;
-		border-right: 1px solid #333; border-bottom: 1px solid #333;
+		margin: 0px auto 0px auto; padding: 25px 25px 25px 25px;
+
+		overflow: hidden;
+		border-left: 1px solid #444;
+		border-top: 1px solid #444;
+		border-right: 1px solid #333;
+		border-bottom: 1px solid #333;
 		background-color: #3d3d3d;
 	}
+	#processing {
+		width: @@width@@px;
+		float: left;
+		border: 1px solid red;
+	}
+	#ui {
+		width: 700px;
+		overflow: hidden;
+		padding: 50px;
+		border: 1px solid green;
+	}
+	#credits {
+		clear: both;
+		padding: 25px 50px;
+		border: 1px solid blue;
+	}
+
+
 		</style>
 		<!--[if lt IE 9]>
 			<script type="text/javascript">alert("Your browser does not support the canvas tag.");</script>
 		<![endif]-->
 		<script src="processing.js" type="text/javascript"></script>
-		@@scripts@@
+
+
+		<script type="text/javascript">
+		var bound = false;
+
+		function bindJavascript() {
+		  var pjs = Processing.getInstanceById('@@id@@');
+		  if(pjs!=null) {
+		    pjs.bindJavascript(this);
+		    bound = true;
+		  }
+		  if(!bound) setTimeout(bindJavascript, 250);
+		}
+
+		bindJavascript();
+
+
+		function UI_updateId(t){
+		  document.getElementById('idField').value = t;
+		}
+		</script>
+
+
 
 		<script>
 		// create an object to hold variables controlled by the UI
@@ -68,11 +110,12 @@
 		};
 		</script>
 
+		@@scripts@@
 
 	</head>
 	<body>
 		<div id="content">
-			<div>
+			<div id="processing">
 				<canvas id="@@id@@" data-processing-sources="@@sketch@@.pde"
 						width="@@width@@" height="@@height@@">
 					<p>Your browser does not support the canvas tag.</p>
@@ -83,25 +126,21 @@
 				</noscript>
 	    	</div>
 
-
-
-			<h1>@@sketch@@</h1>
-    		<p id="description">@@description@@</p>
-			<p id="sources">Source code: @@source@@</p>
-			<p>
-			Built with <a href="http://processing.org" title="Processing">Processing</a>
-			and <a href="http://processingjs.org" title="Processing.js">Processing.js</a>
-			</p>
-
-			<div class="proc_ui">
-				<center>
-				<input type="text" id="word_textbox" size="80"/>
-				</center>
+			<div id="ui">
+				<div class="proc_ui">
+					<textarea id="idField" type="number" rows="10" cols="80"></textarea>
+				</div>
 			</div>
 
-			<p>
-			ch3 ch3 ch3
-            </p>
+			<div id="credits">
+				<h1>@@sketch@@</h1>
+				<p id="description">@@description@@</p>
+				<p id="sources">Source code: @@source@@</p>
+				<p>
+				Built with <a href="http://processing.org" title="Processing">Processing</a>
+				and <a href="http://processingjs.org" title="Processing.js">Processing.js</a>
+				</p>
+			</div>
 
 		</div>
 	</body>
