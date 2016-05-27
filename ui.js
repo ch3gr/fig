@@ -70,3 +70,5 @@ $(function() {
   $("#uiIdSlider").val(uivars.slider);
   
 });
+
+

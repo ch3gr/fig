@@ -47,7 +47,7 @@ JavaScript javascript;
 
 void setup ()
 {
-  size( 500, 600, JAVA2D );
+  size( 1000, 650, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
