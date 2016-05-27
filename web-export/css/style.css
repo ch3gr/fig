@@ -1,36 +1,42 @@
 
 body {
-	background: #2e2e2e;
-	color: #bbb; line-height: normal;
-	font-family: Lucida Grande, Lucida Sans, Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
-	font-size: 12px; font-weight: normal; text-decoration: none;
-	line-height: 1.5em;
+  background: #2e2e2e;
+  color: #bbb; line-height: normal;
+  font-family: Lucida Grande, Lucida Sans, Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
+  font-size: 12px; font-weight: normal; text-decoration: none;
+  line-height: 1.5em;
 }
 
 
 
 a:link {
-	color: red;
+  color: red;
     text-decoration: none;
 }
 
 a:visited {
-	color: red;
+  color: red;
     text-decoration: none;
 }
 
 a:hover {
-	color: red;
+  color: red;
     text-decoration: underline;
 }
 
 a:active {
-	color: red;
+  color: red;
     text-decoration: underline;
 }
 
+h1 {
+  margin: 1rem 0rem 0rem 1rem;
+  color: red;
+}
 
-
+.red {
+  color: red;
+}
 
 
 /* foundation */
@@ -38,35 +44,35 @@ a:active {
 
 
 .button, .button:focus{
-	background: #3d3d3d;
-	color: #d1d1d1;
+  background: #3d3d3d;
+  color: #d1d1d1;
 
-	border: 1px solid black;
+  border: 1px solid black;
 
 
-	border-radius: 3px;
-	text-align: center;
-	transition: background-color 0.0s ease-out, color 0.0s ease-out;
+  border-radius: 3px;
+  text-align: center;
+  transition: background-color 0.0s ease-out, color 0.0s ease-out;
 }
 
 
 .button:hover{
-	background: #525252;
+  background: #525252;
 }
 
 .button:active{
-	background: #242424;
+  background: #242424;
 }
 
 .toggled {
- 	color: red;
+  color: red;
 }
 .toggled:hover {
- 	color: red;
+  color: red;
 }
 
 #about-modal{
-	color: black;
+  color: black;
 }
 
 
@@ -79,12 +85,12 @@ a:active {
 
 
 #imgGen {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #uiIdSlider {
-	width: 100%;
+  width: 100%;
 }
 
 
@@ -96,13 +102,13 @@ a:active {
 
 
 textarea#uiId {
-	margin: 0px;
+  margin: 0px;
     border: none;
-	padding: 0px;
+  padding: 0px;
 
-	background: #2e2e2e;
-	color: #d0d0d0;
-	font-size: 12px; font-weight: normal; text-decoration: none;
+  background: #2e2e2e;
+  color: #d0d0d0;
+  font-size: 12px; font-weight: normal; text-decoration: none;
 
     background-color: transparent;
     resize: none;
@@ -116,22 +122,22 @@ textarea#uiId {
 /* panels */
 
 .panel {
-	border: 1px solid grey;
-	border-radius: 5px;
-	margin: 5px;
-	padding: 5px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
 }
 
 
 fieldset{
-	margin: 5px;
-	border: 1px solid grey;
-	padding: 10px 15px;
-	border-radius: 5px;
+  margin: 5px;
+  border: 1px solid grey;
+  padding: 10px 15px;
+  border-radius: 5px;
 }
 legend {
-	margin: 0px;
-	padding: 0px 10px;
+  margin: 0px;
+  padding: 0px 10px;
     display: block;
     font-size: 16px;
     border: none;
@@ -144,8 +150,20 @@ legend {
 /* About */
 
 #about-modal.reveal {
-	background-color: #f1f1f1;
-	font-size: 16px; font-weight: normal; text-decoration: none;
+  background-color: #f1f1f1;
+  font-size: 16px; font-weight: normal; text-decoration: none;
+
+}
+
+
+
+
+/* Tool tips */
+.has-tip {
+  /*margin-bottom: 1rem;*/
+  font-weight: normal;
+  border-bottom: none;
+  border-bottom: dotted 1px #4e4e4e;
 
 }
 
@@ -156,9 +174,9 @@ legend {
 
 
 
-
-
 /* slider */
+
+/* Firefox */
 
 input[type=range] {
   -webkit-appearance: none;
@@ -174,20 +192,26 @@ input[type=range]::-moz-range-track {
   cursor: pointer;
   animate: 0.0s;
   box-shadow: none;
-  background: #242424;
+  background: #2a2a2a;
   border-radius: 0px;
   border: 1px solid black;
 }
+
 input[type=range]::-moz-range-thumb {
   box-shadow: none;
   border: 1px solid #000000;
-  height: 25px;
-  width: 15px;
-  border-radius: 3px;
+  height: 20px;
+  width: 10px;
+  border-radius: 0px;
   background: #3d3d3d;
   cursor: pointer;
 }
 
+
+
+
+
+/* Chrome */
 
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
@@ -195,28 +219,31 @@ input[type=range]::-webkit-slider-runnable-track {
   cursor: pointer;
   animate: 0.0s;
   box-shadow: none;
-  background: #242424;
+  background: #2a2a2a;
   border-radius: 0px;
   border: 1px solid black;
 }
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #2a2a2a;
+}
+
 input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
   box-shadow: none;
   border: 1px solid black;
-  height: 25px;
-  width: 15px;
-  border-radius: 3px;
+  height: 20px;
+  width: 10px;
+  border-radius: 0px;
   background: #3d3d3d;
   cursor: pointer;
-  margin-top: -14px;
-}
-input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #242424;
+  margin-top: -10px;
 }
 
 
 
 
 
+/* IE */
 
 input[type=range]::-ms-track {
   width: 100%;
@@ -224,13 +251,13 @@ input[type=range]::-ms-track {
   cursor: pointer;
   animate: 0.0s;
   box-shadow: none;
-  background: #2e2e2e;
+  background: #2a2a2a;
   border-radius: 0px;
   border: 0px solid black;
 }
 
 input[type=range]::-ms-fill-lower, input[type=range]::-ms-fill-upper {
-  background: #2e2e2e;
+  background: #2a2a2a;
   border: 2px solid black;
   border-radius: 1px;
   box-shadow: none;
@@ -238,7 +265,12 @@ input[type=range]::-ms-fill-lower, input[type=range]::-ms-fill-upper {
 }
 
 
-
+input[type=range]:focus::-ms-fill-lower {
+  background: #2a2a2a;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #2a2a2a;
+}
 
 
 input[type=range]::-ms-thumb {

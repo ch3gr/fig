@@ -61,10 +61,14 @@
 
 						<div class="small-12 medium-2 large-2 columns">
 							<div class="small-6  medium-12 large-12 columns">
-								<div id="buttonMinimal" class="tiny expanded button" onclick="HUI_minimalToggle()">Min</div>
+								<div id="buttonMinimal" class="tiny expanded button" onclick="HUI_minimalToggle()">
+									<span data-tooltip aria-haspopup="true" class="has-tip " title="Minimize interface">Min</span>
+								</div>
 							</div>
 							<div class="small-6  medium-12 large-12 columns">
-								<div class="tiny expanded button" data-open="about-modal">About</div>
+								<div class="tiny expanded button" data-open="about-modal">
+									<span data-tooltip aria-haspopup="true" class="has-tip" title="Documentation">About</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -103,10 +107,14 @@
 						<legend>Time Range</legend>
 						<div class="row">
 							<div class="small-6 columns">
-								<p id="since"> Running since</p>
+								<p>
+									<span id="since" data-tooltip aria-haspopup="true" class="has-tip" title="How long it takes to get to this iteration @60fps">Running since</span>
+								</p>
 							</div>
 							<div class="small-6 columns" style="text-align: right">
-								<p id="until"> Running until</p>
+								<p>
+									<span id="until" data-tooltip aria-haspopup="true" class="has-tip" title="How much longer is needed to go through the remainding iterations @60fps">Running until</span>
+								</p>
 							</div>
 						</div>
 
@@ -135,13 +143,19 @@
 							<div class="row" >
 							
 								<div class="small-12 columns">
-									<div onclick="processingCall('next')" class="small expanded button">Next</div>
+									<div onclick="processingCall('next')" class="small expanded button">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Next iteration, based on the step size">Next</span>
+									</div>
 								</div>
 								<div class="small-12 columns">
-									<div onclick="processingCall('prev')" class="small expanded button">Prev</div>
+									<div onclick="processingCall('prev')" class="small expanded button">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Previous iteration, based on the step size">Prev</span>
+									</div>
 								</div>
 								<div class="small-12 columns">
-									<div id="buttonAuto" onclick="processingCall('autoMode')" class="small expanded button">Auto</div>
+									<div id="buttonAuto" onclick="processingCall('autoMode')" class="small expanded button">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Iterate at maximum 60 images per second">Auto</span>
+									</div>
 								</div>
 							</div>
 
@@ -156,13 +170,22 @@
 								<div class="row" >
 									<p></p>
 									<div class="large-12 columns">
-										<div onclick="processingCall('incUp')" class="small expanded button">+</div>
+										<div onclick="processingCall('incUp')" class="small expanded button">
+											<span data-tooltip aria-haspopup="true" class="has-tip" title="Double the step size">+
+											</span>
+										</div>
 									</div>
 									<div class="large-12 columns">
-										<p id="stepSize" class="text-center"> Step size</p>
+										<p class="text-center">
+											<span id="stepSize" data-tooltip aria-haspopup="true" class="has-tip" title="How many images to skip on each iteration">Step size
+											</span>
+										</p>
 									</div>
 									<div class="large-12 columns">
-										<div onclick="processingCall('incDown')" class="small expanded button">-</div>
+										<div onclick="processingCall('incDown')" class="small expanded button">
+											<span data-tooltip aria-haspopup="true" class="has-tip" title="Half the step size">-
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -180,17 +203,23 @@
 									<p class="text-center"> Resolution </p>
 									<div class="row">
 										<div class="small-12 columns text-center">
-											<div onclick="processingCall('rUp')" class="small expanded button">+</div>
+											<div onclick="processingCall('rUp')" class="small expanded button">
+												<span data-tooltip aria-haspopup="true" class="has-tip" title="Add 1 pixel to both dimensions of the canvas">+</span>
+											</div>
 										</div>
 
 										<div class="row">
 											<div class="small-12 columns text-center">
-												<p id="res">X / Y</p>
+												<p>
+													<span id="res" data-tooltip aria-haspopup="true" class="has-tip" title="The resolution of the canvas">X / Y</span>
+												</p>
 											</div>
 										</div>
 
 										<div class="small-12 columns text-center">
-											<div onclick="processingCall('rDown')" class="small expanded button">-</div>
+											<div onclick="processingCall('rDown')" class="small expanded button">
+												<span data-tooltip aria-haspopup="true" class="has-tip" title="Remove 1 pixel from both dimensions of the canvas">-</span>
+											</div>
 										</div>
 									</div>
 									
@@ -200,17 +229,23 @@
 									<p class="text-center"> Colors </p>
 									<div class="row">
 										<div class="small-12 columns text-center">
-											<div onclick="processingCall('cUp')" class="small expanded button">+</div>
+											<div onclick="processingCall('cUp')" class="small expanded button">
+												<span data-tooltip aria-haspopup="true" class="has-tip" title="Add an available color grade">+</span>
+											</div>
 										</div>
 
 										<div class="row">
 											<div class="small-12 columns text-center">
-												<p id="cDepth">Color depth</p>
+												<p>
+													<span id="cDepth" data-tooltip aria-haspopup="true" class="has-tip" title="CHECK">Color depth</span>
+												</p>
 											</div>
 										</div>
 
 										<div class="small-12 columns text-center">
-											<div onclick="processingCall('cDown')" class="small expanded button">-</div>
+											<div onclick="processingCall('cDown')" class="small expanded button">
+												<span data-tooltip aria-haspopup="true" class="has-tip" title="Remove a color grade">-</span>
+											</div>
 										</div>
 									</div>
 									
@@ -219,14 +254,14 @@
 
 							<div class="row">
 								<div class="small-12 columns small-centered">
-									<p id="limit" class="text-center"> Combinations </p>
+									<p class="text-center">
+										<span id="limit" data-tooltip aria-haspopup="true" class="has-tip" title="Total amount of possible image variations based on the resolution and color depth of the canvas">Combinations</span>
+									</p>
 								</div>
 							</div>
 
 						</fieldset>
 					</div>
-
-				
 
 				</div>
 
@@ -237,13 +272,19 @@
 							<legend>Options</legend>
 							<div class="row">
 								<div class="small-4 columns">
-									<div onclick="processingCall('randomize')" class="small expanded button">Random</div>
+									<div onclick="processingCall('randomize')" class="small expanded button">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Feeling like a luckly monkey? Pick a randeom iteration">Random</span>
+									</div>
 								</div>
 								<div class="small-4 columns">
-									<div onclick="processingCall('clearCanvas')" class="small expanded button">Clear</div>
+									<div onclick="processingCall('clearCanvas')" class="small expanded button">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Clear the canvas">Clear</span>
+									</div>
 								</div>
 								<div class="small-4 columns">
-									<div id="buttonValues" onclick="processingCall('showValues')" class="small expanded button">Values</div>
+									<div id="buttonValues" onclick="processingCall('showValues')" class="small expanded button">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Toggle pixel color value">Values</span>
+									</div>
 								</div>
 							</div>
 						</fieldset>
@@ -251,18 +292,30 @@
 
 					<div class="small-12 medium-6 large-12 columns">
 						<fieldset>
-							<legend>Sample Images</legend>
+							<legend>
+								<span data-tooltip aria-haspopup="true" class="has-tip" title="Toggle one of the sample images. In non-auto mode you can re-adjust the canvas' resolution and see how it affects the id as well as the total duration.">Sample Images
+								</span>
+							</legend>
+
 								<div class="small-3 columns">
-									<div id="buttonS1" onclick="processingCall('sample1')" class="small expanded button single">1</div>
+									<div id="buttonS1" onclick="processingCall('sample1')" class="small expanded button single ">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Georgios">1</span>
+									</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS2" onclick="processingCall('sample2')" class="small expanded button single">2</div>
+									<div id="buttonS2" onclick="processingCall('sample2')" class="small expanded button single">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Lisa">2</span>
+									</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS3" onclick="processingCall('sample3')" class="small expanded button single">3</div>
+									<div id="buttonS3" onclick="processingCall('sample3')" class="small expanded button single">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="A cat">3</span>
+									</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS4" onclick="processingCall('sample4')" class="small expanded button single">4</div>
+									<div id="buttonS4" onclick="processingCall('sample4')" class="small expanded button single">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="E = mc2">4</span>
+										</div>
 								</div>
 						</fieldset>
 					</div>
@@ -276,8 +329,11 @@
 		<div class="row">
 			<div id="idField" class="small-12 columns minimal">
 				<fieldset>
-					<legend>The Id</legend>
-					<textarea id="uiId" rows="10"  onkeypress="processingSetId(this.value)"></textarea>
+					<legend>
+						<span data-tooltip aria-haspopup="true" class="has-tip" title="The unique index for the current iteration. In non-auto mode, you can copy, share and paste this number, as well compose your own.">The Id</span>
+					</legend>
+
+					<textarea id="uiId" rows="10" onkeypress="processingSetId(this.value)"></textarea>
 				</fieldset>
 			</div>
 		</div>
