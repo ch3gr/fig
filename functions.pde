@@ -120,7 +120,7 @@ void ui_explore()
   
   xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
   yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
-  text( compact(Step), xc, yc);
+  text( compactBig(Step), xc, yc);
   
   yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
   xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
@@ -156,17 +156,20 @@ void ui_explore()
     Img.offset(Step);
     update_UI();
   }
+  
+  
   if( UI_Explore.get("incUp").click )
   {
-    if( Step < 9*pow(10,306) ) // upper limit
-      Step *= 2;
+    Step = Step.multiply(2);
   }
   if( UI_Explore.get("incDown").click )
   {
-    Step /= 2;
-    if( Step<1 )
-      Step = 1;
+    Step = Step.divide(2);
+    if( Step.lesser(1) )
+      Step = bigInt(1);
   }
+  
+  
   
   if( UI_Explore.get("xUp").click )
     Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
@@ -237,7 +240,7 @@ String compactBig( bigInt n )
 {
   String nStr = n.toString();
   
-  if( nStr.length() > 20 )
+  if( nStr.length() > 9 )
   {
     String out = nStr.charAt(0);
     out += " * 10 ^ ";

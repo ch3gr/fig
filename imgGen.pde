@@ -25,7 +25,8 @@ boolean AutoMode = false;
 boolean Overlay = false;
 boolean Explore = true;
 boolean About = false;
-int Step = 1;
+var Step = bigInt(1);
+
 
 
 int FrameSize = 650;
