@@ -1,5 +1,6 @@
 
 
+
 // UI buttons
 HashMap Buttons = new HashMap();
 
@@ -16,10 +17,12 @@ PImage ImgInput;
 
 int UI_lastId = uivars.id.length();
 float UI_lastSlider = uivars.slider;
+float LastSlider = 0;
+
 int Mill = 0;
 
 
-boolean SinceMode = false;
+boolean AutoMode = false;
 boolean Overlay = false;
 int Step = 1;
 
@@ -109,7 +112,7 @@ void setup ()
   
   ImgUser.setId(999999999999999, ImgUser.cDepth);
   
-  if( SinceMode )
+  if( AutoMode )
     Img = ImgDate;
   else
     Img = ImgUser;
@@ -134,7 +137,7 @@ void draw()
   
   //// Logic
   
-  if( SinceMode )
+  if( AutoMode )
   {
     //ImgDate.step();
     Img.shift();
@@ -175,14 +178,14 @@ void draw()
     Img.setId(uivars.id, Img.cDepth);
   }
   
+  
+  
   if( UI_lastSlider != uivars.slider )
   {
     UI_lastSlider = uivars.slider;
     Img.setIdFromRange(float(uivars.slider));
     //Img.setIdFromRange(float(mouseX)/float(width));
   }
-  
-  
   
   
   
@@ -216,7 +219,7 @@ void draw()
   
   
   text(Img.estimateComputeTime(), 10, 680);
-  if(SinceMode)
+  if(AutoMode)
     text("Since :" + RefTime, 200, 30);
     
     
@@ -286,11 +289,11 @@ void ui()
     Img.offset(Step);
   if( Buttons.get("incUp").click )
   {
-    Step ++;
+    Step *= 2;
   }
   if( Buttons.get("incDown").click )
   {
-    Step --;
+    Step /= 2;
     if( Step<1 )
       Step = 1;
   }
@@ -320,8 +323,17 @@ void ui()
     
   if( Buttons.get("samples").click )  
     ImgUser.setIdFromImg(ImgInput);
-
   
+  
+  // SHIITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+  if( Buttons.get("slider").b.down )
+  {
+    if( Buttons.get("slider").v != LastSlider )
+    {
+      Img.setIdFromRange( Buttons.get("slider").v );
+      LastSlider = Buttons.get("slider").v;
+    }
+  }
 }
 
 
@@ -352,8 +364,8 @@ void keyPressed()
   
   if(key=='d')
   {
-    SinceMode = !SinceMode;
-    if( SinceMode )
+    AutoMode = !AutoMode;
+    if( AutoMode )
     {
       Img = ImgDate;
       //Img.setIdFromDate( RefTime );
@@ -416,7 +428,6 @@ void keyPressed()
     Img.msg = duration( t );
   }
 }
-
 
 
 

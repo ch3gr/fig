@@ -1,3 +1,20 @@
+// Global to track if one button is pressed, to prevent more at any one time
+boolean OneButtonClicked = false;
+
+// Need this global to check if mouse is over the sketch
+boolean MouseOver = true;
+void mouseOver()
+{
+  MouseOver = true;
+}
+void mouseOut()
+{
+  MouseOver = false;
+  mousePressed = false;
+}
+
+
+
 // http://processingjs.org/learning/topic/buttons/
 // by Casey Reas and Ben Fry
 
@@ -31,7 +48,7 @@ class Button
 
   boolean isOver() 
   {
-    if (mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
+    if ( !OneButtonClicked && MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
     {
       over = true;
       return true;
@@ -45,16 +62,28 @@ class Button
   
   boolean isDown()
   {
-    if( mousePressed && over )
+    if( !down && mousePressed && over )
     {
       down = true;
+      OneButtonClicked = true;
       return true;
     }
+    // Keep it down even not over
+    if( down && !mousePressed )
+    {
+      down = false;
+      OneButtonClicked = false;
+      return false;
+    }
+    
+    // Auto release when not over
+    /*
     else
     {
       down = false;
       return false;
     }
+    */
   }
   
   
@@ -117,6 +146,17 @@ class Button
     textAlign(CENTER, CENTER);
     text(label, x+sx/2, y+sy/2);
     
+    
+    
+    // Debug info
+    /*
+    fill(0.8,0,0);
+    textSize(10);
+    textAlign(LEFT, TOP);
+    text(over, x, y);
+    text(down, x, y+sy/2);
+    text(click, x, y+sy-10);
+    */
   }
 
 }

@@ -3,8 +3,8 @@ class Slider
   int x, y, sx, sy;
   float v;
   Button b;
-  int bx;
-  int bs = 5;
+  
+  int bs = 10;
   
   Slider( int ix, int iy, int isx, int isy )
   {
@@ -14,10 +14,13 @@ class Slider
     sy = isy;
     
     v = 0;
+    down = false;
     
-    bx = x+bs;
     b = new Button("", false, x, y, bs*2, sy, color(0.1), color(0.2), color(0.3));
   }
+  
+  
+
   
   
   void update() 
@@ -25,15 +28,12 @@ class Slider
     b.update();
     if(b.down)
     {
-      bx = mouseX;
-      
-      
-      v = map( bx, x+bs, x+sx-bs, 0, 1);
+      v = ( map( mouseX, x+bs, x+sx-bs, 0, 1) );
+      if(v<0) v=0;
+      if(v>1) v=1;
     }
-    
-    bx = map( v, 0,1, x+bs, x+sx-bs );
-    b.x = bx - bs;
-    
+    // move slider
+    b.x = map( v, 0,1, x, x+sx-2*bs );
   }
   
   
@@ -50,7 +50,7 @@ class Slider
     
     strokeWeight(3);
     stroke(0.1);
-    line(x+5, y+sy/2.0, x+sx-5, y+sy/2.0);
+    line(x+bs, y+sy/2.0, x+sx-bs, y+sy/2.0);
     b.draw();
     
     fill(0.8);

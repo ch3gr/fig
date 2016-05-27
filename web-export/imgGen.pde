@@ -1,5 +1,6 @@
 
 
+
 // UI buttons
 HashMap Buttons = new HashMap();
 
@@ -16,10 +17,12 @@ PImage ImgInput;
 
 int UI_lastId = uivars.id.length();
 float UI_lastSlider = uivars.slider;
+float LastSlider = 0;
+
 int Mill = 0;
 
 
-boolean SinceMode = false;
+boolean AutoMode = false;
 boolean Overlay = false;
 int Step = 1;
 
@@ -109,7 +112,7 @@ void setup ()
   
   ImgUser.setId(999999999999999, ImgUser.cDepth);
   
-  if( SinceMode )
+  if( AutoMode )
     Img = ImgDate;
   else
     Img = ImgUser;
@@ -134,7 +137,7 @@ void draw()
   
   //// Logic
   
-  if( SinceMode )
+  if( AutoMode )
   {
     //ImgDate.step();
     Img.shift();
@@ -175,14 +178,14 @@ void draw()
     Img.setId(uivars.id, Img.cDepth);
   }
   
+  
+  
   if( UI_lastSlider != uivars.slider )
   {
     UI_lastSlider = uivars.slider;
     Img.setIdFromRange(float(uivars.slider));
     //Img.setIdFromRange(float(mouseX)/float(width));
   }
-  
-  
   
   
   
@@ -216,7 +219,7 @@ void draw()
   
   
   text(Img.estimateComputeTime(), 10, 680);
-  if(SinceMode)
+  if(AutoMode)
     text("Since :" + RefTime, 200, 30);
     
     
@@ -286,11 +289,11 @@ void ui()
     Img.offset(Step);
   if( Buttons.get("incUp").click )
   {
-    Step ++;
+    Step *= 2;
   }
   if( Buttons.get("incDown").click )
   {
-    Step --;
+    Step /= 2;
     if( Step<1 )
       Step = 1;
   }
@@ -320,8 +323,17 @@ void ui()
     
   if( Buttons.get("samples").click )  
     ImgUser.setIdFromImg(ImgInput);
-
   
+  
+  // SHIITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+  if( Buttons.get("slider").b.down )
+  {
+    if( Buttons.get("slider").v != LastSlider )
+    {
+      Img.setIdFromRange( Buttons.get("slider").v );
+      LastSlider = Buttons.get("slider").v;
+    }
+  }
 }
 
 
@@ -352,8 +364,8 @@ void keyPressed()
   
   if(key=='d')
   {
-    SinceMode = !SinceMode;
-    if( SinceMode )
+    AutoMode = !AutoMode;
+    if( AutoMode )
     {
       Img = ImgDate;
       //Img.setIdFromDate( RefTime );
@@ -416,7 +428,6 @@ void keyPressed()
     Img.msg = duration( t );
   }
 }
-
 
 
 
@@ -663,6 +674,23 @@ age
 66178507000
 
 */
+// Global to track if one button is pressed, to prevent more at any one time
+boolean OneButtonClicked = false;
+
+// Need this global to check if mouse is over the sketch
+boolean MouseOver = true;
+void mouseOver()
+{
+  MouseOver = true;
+}
+void mouseOut()
+{
+  MouseOver = false;
+  mousePressed = false;
+}
+
+
+
 // http://processingjs.org/learning/topic/buttons/
 // by Casey Reas and Ben Fry
 
@@ -696,7 +724,7 @@ class Button
 
   boolean isOver() 
   {
-    if (mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
+    if ( !OneButtonClicked && MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
     {
       over = true;
       return true;
@@ -710,16 +738,28 @@ class Button
   
   boolean isDown()
   {
-    if( mousePressed && over )
+    if( !down && mousePressed && over )
     {
       down = true;
+      OneButtonClicked = true;
       return true;
     }
+    // Keep it down even not over
+    if( down && !mousePressed )
+    {
+      down = false;
+      OneButtonClicked = false;
+      return false;
+    }
+    
+    // Auto release when not over
+    /*
     else
     {
       down = false;
       return false;
     }
+    */
   }
   
   
@@ -782,6 +822,17 @@ class Button
     textAlign(CENTER, CENTER);
     text(label, x+sx/2, y+sy/2);
     
+    
+    
+    // Debug info
+    /*
+    fill(0.8,0,0);
+    textSize(10);
+    textAlign(LEFT, TOP);
+    text(over, x, y);
+    text(down, x, y+sy/2);
+    text(click, x, y+sy-10);
+    */
   }
 
 }
@@ -792,8 +843,8 @@ class Slider
   int x, y, sx, sy;
   float v;
   Button b;
-  int bx;
-  int bs = 5;
+  
+  int bs = 10;
   
   Slider( int ix, int iy, int isx, int isy )
   {
@@ -803,10 +854,13 @@ class Slider
     sy = isy;
     
     v = 0;
+    down = false;
     
-    bx = x+bs;
     b = new Button("", false, x, y, bs*2, sy, color(0.1), color(0.2), color(0.3));
   }
+  
+  
+
   
   
   void update() 
@@ -814,15 +868,12 @@ class Slider
     b.update();
     if(b.down)
     {
-      bx = mouseX;
-      
-      
-      v = map( bx, x+bs, x+sx-bs, 0, 1);
+      v = ( map( mouseX, x+bs, x+sx-bs, 0, 1) );
+      if(v<0) v=0;
+      if(v>1) v=1;
     }
-    
-    bx = map( v, 0,1, x+bs, x+sx-bs );
-    b.x = bx - bs;
-    
+    // move slider
+    b.x = map( v, 0,1, x, x+sx-2*bs );
   }
   
   
@@ -839,7 +890,7 @@ class Slider
     
     strokeWeight(3);
     stroke(0.1);
-    line(x+5, y+sy/2.0, x+sx-5, y+sy/2.0);
+    line(x+bs, y+sy/2.0, x+sx-bs, y+sy/2.0);
     b.draw();
     
     fill(0.8);
@@ -1161,7 +1212,7 @@ class VImage
       javascript.UI_updateId(id.toString(), portion);
   
     // Update processing slider
-    Buttons.get("slider").v = portion;
+    //Buttons.get("slider").v = portion;
   }
   
   
