@@ -75,8 +75,9 @@
 		width: 1000px;
 		clear: both;
 		padding: 20px 0px;
-		border: 1px solid green;
-		display: none;
+		display: block;
+		background: #2e2e2e;
+
 	}
 	#idField {
 		width: 1000px;
@@ -89,6 +90,10 @@
 		border: none;
 		width: 1000px;
 	}
+	#uiIdSlider {
+		display: none;
+	}
+
 	#credits {
 		clear: both;
 		width: 1000px;
@@ -120,18 +125,26 @@
 		bindJavascript();
 
 
-		function HUI_updateId(id, idSlider, about){
+		function HUI_updateId(id, idSlider, explore, about){
 		  document.getElementById('uiId').value = id;
 		  document.getElementById('uiIdSlider').value = idSlider;
+
 		  if( about )
 		  {
 		  	document.getElementById('about').style.display = "block";
-		  	document.getElementById('idField').style.display = "none";
 		  }
 		  else
 		  {
 		  	document.getElementById('about').style.display = "none";
+		  }
+
+		  if( explore )
+		  {
 		  	document.getElementById('idField').style.display = "block";
+		  }
+		  else
+		  {
+		  	document.getElementById('idField').style.display = "none";
 		  }
 		}
 
@@ -170,16 +183,20 @@ function getProcessingSketchId () { return 'imgGen'; }
 				</noscript>
 	    	</div>
 
+			<div id="idField">
+				<textarea id="uiId" type="number" rows="10" cols="100"></textarea>
+				<input id="uiIdSlider" type="range" min="0.0" max="1.0" value="0" step="0.000000001"/>
+			</div>
 
 			<div id="about">
 				<h1> About </h1>
 				<p> Blah blah blah </p>
-			</div>
-
-
-			<div id="idField">
-				<textarea id="uiId" type="number" rows="10" cols="100"></textarea>
-				<input id="uiIdSlider" type="range" min="0.0" max="1.0" value="0" step="0.000000001"/>
+				<p> Two dimensional images of any kind, have long been stored and displayed digitally. To do so the image is broken down into a set number of pixels, with a pre-defined color depth. So the digital representation of the image is essentially just a series of color values(1). </p>
+				<p> If we look at this the other way, we can say that any given digital canvas has a certain number of possible combinations of color values among its pixels(2). And since any kind of image can be digitized, we could also assume that every single respresentation can be found in one of these possible combinations. </p>
+				<p> The definition of a digital image is proportional to the number of pixels and colors. The possible combinations on the other hand are increasing in a geometric/exponential/logarithmic? way in relation to the number of pixels and colors. This means that the possible combinations of a digital canvas of a substantial resolution, may be an astronomical number, but never the less a finite number. </p>
+				<p> This simple one button software, gives the ability to the user to iterate through all the color combinations and effectively generate every possible image within a given canvas. No artistic skill is required what so ever, just enough time to go through all these combinations. The grand majority of the results will be non descript(?), but the user will eventually come to see meaninfull images. (Images that resemble photos of known objects, familiar people, or even people that haven't been born yet) </p>
+				<p> Of course it won't take long for the user to realise that even the lifespan of the universe is not enough to go through all the possible combinations of a canvas with (inequate?) enough definition. Still the software can allow the user to explore all these possibilities and get an understanding of the vastness of such an astronomical number�. </p>
+				<p> Blah Blah Blah </p>
 			</div>
 
 

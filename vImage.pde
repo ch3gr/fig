@@ -23,6 +23,7 @@ class VImage
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
     
+    
     bitmap = new PImage(w,h,RGB);
   }
   
@@ -36,6 +37,7 @@ class VImage
     idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
+    
     
     bitmap = new PImage(w,h,RGB);
     
@@ -54,6 +56,7 @@ class VImage
     //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
     id = bigInt(0);
     //update_UI();
+    
   }
   
   
@@ -64,6 +67,7 @@ class VImage
       pix[p] = floor(random(cDepth));
     
     canvasToId();
+    
   }
   
   
@@ -78,6 +82,7 @@ class VImage
     pix[0] ++;
     propagate(0);
     //update_UI();
+    
   }
   
   void propagate(int p)
@@ -112,6 +117,7 @@ class VImage
     
     setId(id, cDepth);
     //update_UI();
+    
   }
   
   
@@ -185,10 +191,7 @@ class VImage
 
   void setId(String idIn, int depth)
   {
-    // clear pixels
-    for(int p=0; p<size; p++)
-      pix[p] = 0;
-    
+    clear();
     
     String idBaseConvert = bigInt(idIn).toString(depth);
     
@@ -208,6 +211,7 @@ class VImage
     
     //update_UI();
     
+    
     // FIX : extra conversion to support 10+ depth
     // Warning ean kseperaseis to size
   }
@@ -225,6 +229,7 @@ class VImage
     frame *= 0.06;  // milliseconds * frames/milli
      
     setId(frame, cDepth);
+    
   }
   
   
@@ -235,6 +240,7 @@ class VImage
     newId = newId.multiply(v);
     setId(newId, cDepth);
     //setId(1000, cDepth);
+    
   }
   
   
@@ -285,6 +291,7 @@ class VImage
     }
     
     //update_UI();
+    
   }
   
   
@@ -335,6 +342,7 @@ class VImage
     idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     
     bitmap = new PImage(w,h,RGB);
+    
     
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }

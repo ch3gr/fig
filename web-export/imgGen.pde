@@ -154,7 +154,7 @@ void setup ()
   UI_Common.put( "about", new Button("about", true, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
-  
+  update_UI();
 }
 
 
@@ -177,11 +177,13 @@ void draw()
   ////////////////////////////////////////////////////
   //// Logic
   
+  
   if( AutoMode )
   {
     //ImgDate.step();
-    Img.shift();
     update_UI();
+    Img.shift();
+    
     //Img.setIdFromDate( RefTime );
   }
   
@@ -425,8 +427,9 @@ void keyPressed()
 /*
 TO DO
 
-sliders dont update when canvas is adjusted
-prefix ID with canvas resolution
+sliders/id dont update when canvas is adjusted
+slider doesn't update Img when in auto mode
+
 touch screen buttons?
 
 HTML UI doesn't update when it's running online
@@ -450,7 +453,7 @@ calculate since / until, in nice text
 Nah
 load image
 mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
-
+prefix ID with canvas resolution
 
 */
 // Global to track if one button is pressed, to prevent more at any one time
@@ -629,7 +632,16 @@ void update_UI()
   
   // Update HTML slider
   if(javascript!=null)
-    javascript.HUI_updateId(Img.id.toString(), portion, UI_Common.get("about").click);
+  {
+    boolean explore = UI_Common.get("explore").click;
+    boolean about = UI_Common.get("about").click;
+    
+    // Prefix id with ImgAttr -- Nah
+    //id = str(Img.w)+":"+str(Img.w)+":"+str(Img.cDepth)+"|";
+    String id = Img.getId();
+    
+    javascript.HUI_updateId(id, portion, explore, about);
+  }
 
   // Update processing slider
   UI_Explore.get("slider").v = portion;
@@ -669,8 +681,10 @@ void ui_common()
   ////////////////////////////////////////////////////
   // Button actions
   
-  //if( UI_Common.get("explore").click )
-  //  Explore = !Explore;
+  if( UI_Common.get("about").down )  // Bit crap that updates all the time while it's down, but oh well
+    update_UI();
+  if( UI_Common.get("explore").down )  // Bit crap that updates all the time while it's down, but oh well
+    update_UI();
 }
 
 
@@ -1116,6 +1130,7 @@ class VImage
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
     
+    
     bitmap = new PImage(w,h,RGB);
   }
   
@@ -1129,6 +1144,7 @@ class VImage
     idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
+    
     
     bitmap = new PImage(w,h,RGB);
     
@@ -1147,6 +1163,7 @@ class VImage
     //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
     id = bigInt(0);
     //update_UI();
+    
   }
   
   
@@ -1157,6 +1174,7 @@ class VImage
       pix[p] = floor(random(cDepth));
     
     canvasToId();
+    
   }
   
   
@@ -1171,6 +1189,7 @@ class VImage
     pix[0] ++;
     propagate(0);
     //update_UI();
+    
   }
   
   void propagate(int p)
@@ -1205,6 +1224,7 @@ class VImage
     
     setId(id, cDepth);
     //update_UI();
+    
   }
   
   
@@ -1278,10 +1298,7 @@ class VImage
 
   void setId(String idIn, int depth)
   {
-    // clear pixels
-    for(int p=0; p<size; p++)
-      pix[p] = 0;
-    
+    clear();
     
     String idBaseConvert = bigInt(idIn).toString(depth);
     
@@ -1301,6 +1318,7 @@ class VImage
     
     //update_UI();
     
+    
     // FIX : extra conversion to support 10+ depth
     // Warning ean kseperaseis to size
   }
@@ -1318,6 +1336,7 @@ class VImage
     frame *= 0.06;  // milliseconds * frames/milli
      
     setId(frame, cDepth);
+    
   }
   
   
@@ -1328,6 +1347,7 @@ class VImage
     newId = newId.multiply(v);
     setId(newId, cDepth);
     //setId(1000, cDepth);
+    
   }
   
   
@@ -1378,6 +1398,7 @@ class VImage
     }
     
     //update_UI();
+    
   }
   
   
@@ -1428,6 +1449,7 @@ class VImage
     idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     
     bitmap = new PImage(w,h,RGB);
+    
     
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }

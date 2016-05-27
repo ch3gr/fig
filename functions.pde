@@ -10,7 +10,16 @@ void update_UI()
   
   // Update HTML slider
   if(javascript!=null)
-    javascript.HUI_updateId(Img.id.toString(), portion, UI_Common.get("about").click);
+  {
+    boolean explore = UI_Common.get("explore").click;
+    boolean about = UI_Common.get("about").click;
+    
+    // Prefix id with ImgAttr -- Nah
+    //id = str(Img.w)+":"+str(Img.w)+":"+str(Img.cDepth)+"|";
+    String id = Img.getId();
+    
+    javascript.HUI_updateId(id, portion, explore, about);
+  }
 
   // Update processing slider
   UI_Explore.get("slider").v = portion;
@@ -50,8 +59,10 @@ void ui_common()
   ////////////////////////////////////////////////////
   // Button actions
   
-  //if( UI_Common.get("explore").click )
-  //  Explore = !Explore;
+  if( UI_Common.get("about").down )  // Bit crap that updates all the time while it's down, but oh well
+    update_UI();
+  if( UI_Common.get("explore").down )  // Bit crap that updates all the time while it's down, but oh well
+    update_UI();
 }
 
 

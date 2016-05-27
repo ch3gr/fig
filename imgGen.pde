@@ -154,7 +154,7 @@ void setup ()
   UI_Common.put( "about", new Button("about", true, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
-  
+  update_UI();
 }
 
 
@@ -177,11 +177,13 @@ void draw()
   ////////////////////////////////////////////////////
   //// Logic
   
+  
   if( AutoMode )
   {
     //ImgDate.step();
-    Img.shift();
     update_UI();
+    Img.shift();
+    
     //Img.setIdFromDate( RefTime );
   }
   
@@ -425,8 +427,9 @@ void keyPressed()
 /*
 TO DO
 
-sliders dont update when canvas is adjusted
-prefix ID with canvas resolution
+sliders/id dont update when canvas is adjusted
+slider doesn't update Img when in auto mode
+
 touch screen buttons?
 
 HTML UI doesn't update when it's running online
@@ -450,6 +453,6 @@ calculate since / until, in nice text
 Nah
 load image
 mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
-
+prefix ID with canvas resolution
 
 */
