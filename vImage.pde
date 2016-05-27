@@ -18,7 +18,7 @@ class VImage
     size = w * h;
     msg = "_";
 
-    bitmap = new PImage(w,h,RGB);
+    bitmap = createImage(w,h,RGB);
     
     pix = new int[size];
     
@@ -107,6 +107,11 @@ class VImage
     
     image(bitmap,0,0);
   }
+  
+  
+  
+  
+  
 
   void updateId()
   {
@@ -121,10 +126,15 @@ class VImage
   }
 
   
+  
+  
+  
   String getId()
   {
     return id.toString();
   }
+  
+  
 
 
   void setId(String idIn, int depth)
@@ -152,6 +162,9 @@ class VImage
   }
   
   
+  
+  
+  
   void setIdFromDate()
   {
     var now = new Date();
@@ -166,6 +179,9 @@ class VImage
   }
   
   
+  
+  
+  
   void setCanvas( int wIn, int hIn, int cDepthIn )
   {
     w = wIn;
@@ -178,17 +194,28 @@ class VImage
     
     size = w * h;
     
+    // If pix array gets bigger, fill the tail with zeros 000
+    if( size > pix.length )
+    {
+      for(int e=pix.length; e<size; e++)
+        pix.push(0);
+    }
     
     if( cDepthIn != cDepth && cDepthIn > 1)
     {
       // fit color from one depth to another
       for( int p = 0; p<size; ++p )
       {
+        if( isNaN(pix[p]) )
+          pix[p] = 0;
+        
         pix[p] = map( pix[p], 0, cDepth, 0, cDepthIn );
       }
       
       cDepth = cDepthIn;
     }
+    
+    bitmap = new PImage(w,h,RGB);
     
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }

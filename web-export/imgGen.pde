@@ -5,8 +5,9 @@
 var RefTime = new Date(1981, 2, 18);
 
 
-VImage ImgUser = new VImage(5,5,4); //(100,100,2) tooooo much
-VImage ImgDate = new VImage(4,4,4);
+vImage Img ;
+VImage ImgUser = new VImage(2,2,2); //(100,100,2) tooooo much
+VImage ImgDate = new VImage(25,25,3);
 
 
 
@@ -30,7 +31,10 @@ void setup ()
   
 
   ImgDate.setIdFromDate();
-  
+  if( SinceMode )
+    Img = ImgDate;
+  else
+    Img = ImgUser;
   
   
   text("Hello World!", 50, 50);
@@ -42,27 +46,18 @@ void setup ()
 void draw()
 {
   background(0.18);
-
   smooth();
   
+  if( SinceMode )
+    Img.shift();
+
   pushMatrix();
   translate(50,50);
-  if( SinceMode )
-  {
-    
-    
-    scale(600.0/ImgDate.h);  //fit height in 500 pixels
-    ImgDate.shift();
-    ImgDate.draw(Overlay);
-    //ImgDate.drawBitmap();
-  }
-  else
-  {
-    scale(600.0/ImgUser.h);  //fit height in 500 pixels
-    ImgUser.draw(Overlay);
-    //ImgUser.resize(60,60);
-    //ImgUser.drawBitmap();
-  }
+  scale(600.0/Img.h);  //fit height in 500 pixels
+  
+  Img.drawBitmap();
+  //Img.draw(Overlay);
+  
   popMatrix();
   
   
@@ -77,7 +72,7 @@ void draw()
   textSize(14);
   
   textSize(11);
-  string t = ImgUser.getId();
+  string t = Img.getId();
   text("id              : " +t, 10, 10);
   text("id length  : " + t.length(), 10, 20);
   text("framerate : " +floor(frameRate), 10, 30);
@@ -86,14 +81,14 @@ void draw()
   text("input      : " +uivars.theId, 10, 40);
   
   
-  text(ImgUser.msg, 10, 665);
-  text(ImgDate.msg, 10, 675);
+  text(Img.msg, 10, 665);
+  text(Img.msg, 10, 675);
   text("Since :" + RefTime, 200, 40);
   
   if( LastSize != uivars.theId.length() )
   {
     LastSize = uivars.theId.length();
-    ImgUser.setId(uivars.theId, ImgUser.cDepth);
+    Img.setId(uivars.theId, Img.cDepth);
   }
   
 }
@@ -118,27 +113,44 @@ void keyPressed()
   {
     SinceMode = !SinceMode;
     if( SinceMode )
-      ImgDate.setIdFromDate();
+    {
+      Img = ImgDate;
+      Img.setIdFromDate();
+    }
+    else
+      Img = ImgUser;
   }
   
   
   if(key=='+')
   {
-    ImgDate.setCanvas(ImgDate.w+1, ImgDate.h+1, ImgDate.cDepth);  
+    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);  
   }
     if(key=='-')
   {
-    ImgDate.setCanvas(ImgDate.w-1, ImgDate.h-1, ImgDate.cDepth);
+    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
   }
   if(key=='*')
   {
-    ImgDate.setCanvas(ImgDate.w, ImgDate.h, ImgDate.cDepth+1);
+    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
   }
   if(key=='.')
   {
-    ImgDate.setCanvas(ImgDate.w, ImgDate.h, ImgDate.cDepth-1);
+    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
   }
   
+  // DELETE - test class copy /////////////////////
+  if(key=='t')
+  {
+    Img = ImgDate;
+    Img.setCanvas(10, 10, 4);
+  }
+  if(key=='T')
+  {
+    Img = ImgUser;
+    Img.setCanvas(40, 40, 2);
+  }
+  /////////////////////////////////////////////////
   
   if(key=='o')
     Overlay = !Overlay;
@@ -191,7 +203,7 @@ class VImage
     size = w * h;
     msg = "_";
 
-    bitmap = new PImage(w,h,RGB);
+    bitmap = createImage(w,h,RGB);
     
     pix = new int[size];
     
@@ -280,6 +292,11 @@ class VImage
     
     image(bitmap,0,0);
   }
+  
+  
+  
+  
+  
 
   void updateId()
   {
@@ -294,10 +311,15 @@ class VImage
   }
 
   
+  
+  
+  
   String getId()
   {
     return id.toString();
   }
+  
+  
 
 
   void setId(String idIn, int depth)
@@ -325,6 +347,9 @@ class VImage
   }
   
   
+  
+  
+  
   void setIdFromDate()
   {
     var now = new Date();
@@ -339,6 +364,9 @@ class VImage
   }
   
   
+  
+  
+  
   void setCanvas( int wIn, int hIn, int cDepthIn )
   {
     w = wIn;
@@ -351,17 +379,28 @@ class VImage
     
     size = w * h;
     
+    // If pix array gets bigger, fill the tail with zeros 000
+    if( size > pix.length )
+    {
+      for(int e=pix.length; e<size; e++)
+        pix.push(0);
+    }
     
     if( cDepthIn != cDepth && cDepthIn > 1)
     {
       // fit color from one depth to another
       for( int p = 0; p<size; ++p )
       {
+        if( isNaN(pix[p]) )
+          pix[p] = 0;
+        
         pix[p] = map( pix[p], 0, cDepth, 0, cDepthIn );
       }
       
       cDepth = cDepthIn;
     }
+    
+    bitmap = new PImage(w,h,RGB);
     
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
