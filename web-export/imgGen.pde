@@ -49,6 +49,13 @@ JavaScript javascript;
 
 
 
+
+
+
+
+
+
+
 void setup ()
 {
   size( 1000, 700, JAVA2D );
@@ -152,6 +159,14 @@ void setup ()
   
   
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -272,173 +287,15 @@ void draw()
 
 
 
-void ui_common()
-{
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // Loop through all the buttons
-  Iterator i = UI_Common.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-    me.getValue().draw();
-  }
-  
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  //if( UI_Common.get("explore").click )
-  //  Explore = !Explore;
-  
-  if( UI_Common.get("about").click )
-    Img.offset(Step);
-
-}
-
-
-void ui_simple()
-{
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // Loop through all the buttons
-  Iterator i = UI_Simple.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-    me.getValue().draw();
-  }
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  if( UI_Simple.get("next").click )
-    Img.offset(Step);
-}
-
-
-
-void ui_explore()
-{
-
-  
-  
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // Loop through all the buttons
-  Iterator i = UI_Explore.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-    me.getValue().draw();
-  }
-  
-  // Print some info
-  textSize(20);
-  textAlign(CENTER, CENTER);
-  fill(0.8);
-  int xc, yc;
-  
-  xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
-  yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
-  text( Step, xc, yc);
-  
-  yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
-  xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
-  text( Img.w, xc, yc);
-  xc = (UI_Explore.get("yUp").x + UI_Explore.get("yUp").sx/2);
-  text( Img.h, xc, yc);
-  xc = (UI_Explore.get("cUp").x + UI_Explore.get("cUp").sx/2);
-  text( Img.cDepth, xc, yc);
-  
-  xc = UI_Explore.get("auto").x;
-  yc = height/2;
-  textSize(14);
-  textAlign(LEFT, BOTTOM);
-  text( ("limit: "+ Img.idLimit), xc, yc);
-  
-  
-  text( "Start: "+ duration(Img.id), xc, yc+20);
-  text( "End  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
-  
-  
-  
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  if( UI_Explore.get("prev").click )
-    Img.offset(-Step);
-  if( UI_Explore.get("next").click )
-    Img.offset(Step);
-  if( UI_Explore.get("incUp").click )
-  {
-    Step *= 2;
-  }
-  if( UI_Explore.get("incDown").click )
-  {
-    Step /= 2;
-    if( Step<1 )
-      Step = 1;
-  }
-  
-  if( UI_Explore.get("xUp").click )
-    Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
-  if( UI_Explore.get("xDown").click )
-    Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
-    
-  if( UI_Explore.get("yUp").click )
-    Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
-  if( UI_Explore.get("yDown").click )
-    Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
-    
-  if( UI_Explore.get("cUp").click )
-    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-  if( UI_Explore.get("cDown").click )
-    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
-    
-  if( UI_Explore.get("auto").click )
-    Img.offset(Step);
-  
-  if( UI_Explore.get("random").click )
-    Img.randomise();
-  if( UI_Explore.get("clear").click )
-    Img.clear();
-    
-  if( UI_Explore.get("samples").click )  
-    ImgUser.setIdFromImg(ImgInput);
-
-  if( UI_Explore.get("slider").changed )
-    Img.setIdFromRange( UI_Explore.get("slider").v );
-}
 
 
 
 
-void update_UI()
-{
-  
-  ////////////////////////////////////////////////////
-  // Calculate and Update sliders
-  // integer that holds id/idLimit * 1000000
-  bigInt mil = bigInt(Img.id.multiply(1000000)).divide(Img.idLimit.multiply(1));
-  float portion = mil.toString();
-  portion /= 1000000.0;
-  
-  // Update HTML slider
-  if(javascript!=null)
-    javascript.HUI_updateId(Img.id.toString(), portion);
 
-  // Update processing slider
-  UI_Explore.get("slider").v = portion;
-  
-}
+
+
+
+
 
 
 
@@ -533,6 +390,394 @@ void keyPressed()
     //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
     Img.msg = duration( t );
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+TO DO
+
+no characters to id textArea
+clean up javascript/jQuery, check if everything can be on a tab
+
+
+DONE:
+Slider YES!
+fix bug with picture not updating slider
+non square ratio image
+shift backwards
+calculate since / until, in nice text
+
+
+
+Nah
+load image
+mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
+
+
+*/
+// Global to track if one button is pressed, to prevent more at any one time
+boolean OneButtonClicked = false;
+
+// Need this global to check if mouse is over the sketch
+boolean MouseOver = true;
+void mouseOver()
+{
+  MouseOver = true;
+}
+void mouseOut()
+{
+  MouseOver = false;
+  mousePressed = false;
+}
+
+
+
+// http://processingjs.org/learning/topic/buttons/
+// by Casey Reas and Ben Fry
+
+class Button
+{
+  int x, y, sx, sy;
+  color baseC, overC, downC;
+  
+  boolean over = false;
+  boolean down = false;
+  boolean click = false;
+  boolean toggle;
+  int timer;
+  
+  String label;
+
+  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, color ibaseC, color ioverC, color idownC)
+  {
+    label = ilabel;
+    x = ix;
+    y = iy;
+    sx = isx;
+    sy = isy;
+    baseC = ibaseC;
+    overC = ioverC;
+    downC = idownC;
+    toggle = itoggle;
+    timer = -1;
+  }
+
+
+  boolean isOver() 
+  {
+    if ( !OneButtonClicked && MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
+    {
+      over = true;
+      return true;
+    }
+    else
+    {
+      over = false;
+      return false;
+    }
+  }
+  
+  boolean isDown()
+  {
+    if( !down && mousePressed && over )
+    {
+      down = true;
+      OneButtonClicked = true;
+      return true;
+    }
+    // Keep it down even not over
+    if( down && !mousePressed )
+    {
+      down = false;
+      OneButtonClicked = false;
+      return false;
+    }
+    
+    // Auto release when not over
+    /*
+    else
+    {
+      down = false;
+      return false;
+    }
+    */
+  }
+  
+  
+  
+  
+  void update() 
+  {
+    boolean pDown = down;
+    
+    isOver();
+    isDown();
+    
+    if( !toggle )
+    {
+      click = false;
+      // first frame down
+      if( !pDown && down )
+      {
+        click = true;
+        timer = millis();
+      }
+      
+      // continious press
+      if( timer>-1 && millis()-timer > 500 )
+        click = true;
+      
+      // last frame down
+      if( pDown && !down )
+      {
+        click = false;
+        timer = -1;
+      }
+    }
+    else
+    {
+     if( !pDown && down )
+       click = !click;
+    }
+    
+  }
+  
+  
+  void draw() 
+  {
+    color c; 
+    if( down || click )
+      c = downC;
+    else if ( over )
+      c = overC;
+    else
+      c = baseC;
+ 
+    stroke(0.2,0.2,0.2);
+    strokeWeight(2);
+    fill(c);
+    rect(x, y, sx, sy);
+    
+    fill(0.2,0.2,0.2);
+    textSize(sy* 0.75);
+    textAlign(CENTER, CENTER);
+    text(label, x+sx/2, y+sy/2);
+    
+    
+    
+    // Debug info
+    /*
+    fill(0.8,0,0);
+    textSize(10);
+    textAlign(LEFT, TOP);
+    text(over, x, y);
+    text(down, x, y+sy/2);
+    text(click, x, y+sy-10);
+    */
+  }
+
+}
+
+
+void update_UI()
+{
+  
+  ////////////////////////////////////////////////////
+  // Calculate and Update sliders
+  // integer that holds id/idLimit * 1000000
+  bigInt mil = bigInt(Img.id.multiply(1000000)).divide(Img.idLimit.multiply(1));
+  float portion = mil.toString();
+  portion /= 1000000.0;
+  
+  // Update HTML slider
+  if(javascript!=null)
+    javascript.HUI_updateId(Img.id.toString(), portion);
+
+  // Update processing slider
+  UI_Explore.get("slider").v = portion;
+  
+}
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+// UI SETS
+////////////////////////////////////////////////////
+
+
+
+
+void ui_common()
+{
+  ////////////////////////////////////////////////////
+  // RENDER UI  
+  
+  // Loop through all the buttons
+  Iterator i = UI_Common.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    me.getValue().update();
+    me.getValue().draw();
+  }
+  
+  
+  ////////////////////////////////////////////////////
+  // Button actions
+  
+  //if( UI_Common.get("explore").click )
+  //  Explore = !Explore;
+  
+  if( UI_Common.get("about").click )
+    Img.offset(Step);
+
+}
+
+
+
+
+
+void ui_simple()
+{
+  ////////////////////////////////////////////////////
+  // RENDER UI  
+  
+  // Loop through all the buttons
+  Iterator i = UI_Simple.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    me.getValue().update();
+    me.getValue().draw();
+  }
+  
+  ////////////////////////////////////////////////////
+  // Button actions
+  
+  if( UI_Simple.get("next").click )
+    Img.offset(Step);
+}
+
+
+
+
+
+
+void ui_explore()
+{
+  ////////////////////////////////////////////////////
+  // RENDER UI  
+  
+  // Loop through all the buttons
+  Iterator i = UI_Explore.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    me.getValue().update();
+    me.getValue().draw();
+  }
+  
+  // Print some info
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  fill(0.8);
+  int xc, yc;
+  
+  xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
+  yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
+  text( Step, xc, yc);
+  
+  yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
+  xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
+  text( Img.w, xc, yc);
+  xc = (UI_Explore.get("yUp").x + UI_Explore.get("yUp").sx/2);
+  text( Img.h, xc, yc);
+  xc = (UI_Explore.get("cUp").x + UI_Explore.get("cUp").sx/2);
+  text( Img.cDepth, xc, yc);
+  
+  xc = UI_Explore.get("auto").x;
+  yc = height/2;
+  textSize(14);
+  textAlign(LEFT, BOTTOM);
+  text( ("limit: "+ Img.idLimit), xc, yc);
+  
+  
+  text( "Start: "+ duration(Img.id), xc, yc+20);
+  text( "End  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
+  
+  
+  
+  
+  ////////////////////////////////////////////////////
+  // Button actions
+  
+  if( UI_Explore.get("prev").click )
+    Img.offset(-Step);
+  if( UI_Explore.get("next").click )
+    Img.offset(Step);
+  if( UI_Explore.get("incUp").click )
+  {
+    Step *= 2;
+  }
+  if( UI_Explore.get("incDown").click )
+  {
+    Step /= 2;
+    if( Step<1 )
+      Step = 1;
+  }
+  
+  if( UI_Explore.get("xUp").click )
+    Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
+  if( UI_Explore.get("xDown").click )
+    Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
+    
+  if( UI_Explore.get("yUp").click )
+    Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
+  if( UI_Explore.get("yDown").click )
+    Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
+    
+  if( UI_Explore.get("cUp").click )
+    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
+  if( UI_Explore.get("cDown").click )
+    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
+    
+  if( UI_Explore.get("auto").click )
+    Img.offset(Step);
+  
+  if( UI_Explore.get("random").click )
+    Img.randomise();
+  if( UI_Explore.get("clear").click )
+    Img.clear();
+    
+  if( UI_Explore.get("samples").click )  
+    ImgUser.setIdFromImg(ImgInput);
+
+  if( UI_Explore.get("slider").changed )
+    Img.setIdFromRange( UI_Explore.get("slider").v );
 }
 
 
@@ -725,222 +970,6 @@ universe : 14 billion years
 
 
 
-
-
-
-
-/*
-TO DO
-
-no characters to id textArea
-clean up javascript/jQuery, check if everything can be on a tab
-
-shift backwards
-calculate since / until, in nice text
-
-
-
-DONE:
-Slider YES!
-fix bug with picture not updating slider
-non square ratio image
-
-
-Nah
-load image
-mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
-
-
-*/
-
-
-
-/*
-
-35    years
-12460    days
-299040    hours
-17942400  minutes
-1076544000  seconds
-1076544000000  millis
-
-64592640000  frames
-
-
-birthday
-353736000000
-now
-1456710681849
-
-age
-1102974681849  millis
-
-
-66178507000
-
-*/
-// Global to track if one button is pressed, to prevent more at any one time
-boolean OneButtonClicked = false;
-
-// Need this global to check if mouse is over the sketch
-boolean MouseOver = true;
-void mouseOver()
-{
-  MouseOver = true;
-}
-void mouseOut()
-{
-  MouseOver = false;
-  mousePressed = false;
-}
-
-
-
-// http://processingjs.org/learning/topic/buttons/
-// by Casey Reas and Ben Fry
-
-class Button
-{
-  int x, y, sx, sy;
-  color baseC, overC, downC;
-  
-  boolean over = false;
-  boolean down = false;
-  boolean click = false;
-  boolean toggle;
-  int timer;
-  
-  String label;
-
-  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, color ibaseC, color ioverC, color idownC)
-  {
-    label = ilabel;
-    x = ix;
-    y = iy;
-    sx = isx;
-    sy = isy;
-    baseC = ibaseC;
-    overC = ioverC;
-    downC = idownC;
-    toggle = itoggle;
-    timer = -1;
-  }
-
-
-  boolean isOver() 
-  {
-    if ( !OneButtonClicked && MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
-    {
-      over = true;
-      return true;
-    }
-    else
-    {
-      over = false;
-      return false;
-    }
-  }
-  
-  boolean isDown()
-  {
-    if( !down && mousePressed && over )
-    {
-      down = true;
-      OneButtonClicked = true;
-      return true;
-    }
-    // Keep it down even not over
-    if( down && !mousePressed )
-    {
-      down = false;
-      OneButtonClicked = false;
-      return false;
-    }
-    
-    // Auto release when not over
-    /*
-    else
-    {
-      down = false;
-      return false;
-    }
-    */
-  }
-  
-  
-  
-  
-  void update() 
-  {
-    boolean pDown = down;
-    
-    isOver();
-    isDown();
-    
-    if( !toggle )
-    {
-      click = false;
-      // first frame down
-      if( !pDown && down )
-      {
-        click = true;
-        timer = millis();
-      }
-      
-      // continious press
-      if( timer>-1 && millis()-timer > 500 )
-        click = true;
-      
-      // last frame down
-      if( pDown && !down )
-      {
-        click = false;
-        timer = -1;
-      }
-    }
-    else
-    {
-     if( !pDown && down )
-       click = !click;
-    }
-    
-  }
-  
-  
-  void draw() 
-  {
-    color c; 
-    if( down || click )
-      c = downC;
-    else if ( over )
-      c = overC;
-    else
-      c = baseC;
- 
-    stroke(0.2,0.2,0.2);
-    strokeWeight(2);
-    fill(c);
-    rect(x, y, sx, sy);
-    
-    fill(0.2,0.2,0.2);
-    textSize(sy* 0.75);
-    textAlign(CENTER, CENTER);
-    text(label, x+sx/2, y+sy/2);
-    
-    
-    
-    // Debug info
-    /*
-    fill(0.8,0,0);
-    textSize(10);
-    textAlign(LEFT, TOP);
-    text(over, x, y);
-    text(down, x, y+sy/2);
-    text(click, x, y+sy-10);
-    */
-  }
-
-}
 
 
 class Slider
