@@ -4,6 +4,8 @@ body {
 	font-family: Lucida Grande, Lucida Sans, Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
 	font-size: 12px; font-weight: normal; text-decoration: none;
 	line-height: 1.5em;
+
+	
 }
 
 
@@ -18,6 +20,7 @@ body {
 
 .button{
 	background: grey;
+	border-radius: 3px;
 	text-align: center;
 	transition: background-color 0.0s ease-out, color 0.0s ease-out;
 }
@@ -49,7 +52,6 @@ body {
 
 
 #imgGen {
-	border: 2px solid purple;
 	width: 100%;
 	height: 100%;
 }
@@ -59,12 +61,50 @@ body {
 }
 
 
-#uiId {
+
+
+
+
+
+
+
+textarea#uiId {
+	margin: 0px;
+    border: none;
+	padding: 0px;
+
 	background: #2e2e2e;
 	color: #d0d0d0;
-	
-	border: none;
+
+    background-color: transparent;
+    resize: none;
+    outline: none;
+    box-shadow: none;
 }
 
 
 
+
+/* panels */
+
+.panel {
+	border: 1px solid grey;
+	border-radius: 5px;
+	margin: 15px;
+	padding: 15px;
+}
+
+
+fieldset{
+	margin: 15px;
+	border: 1px solid grey;
+	padding: 10px 15px;
+	border-radius: 5px;
+}
+legend {
+	margin: 0px;
+	padding: 0px 10px;
+    display: block;
+    font-size: 16px;
+    border: none;
+}

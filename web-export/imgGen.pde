@@ -3,7 +3,7 @@ VImage Img = new VImage(25,25,3); //(100,100,2) tooooo much
 
 PImage[] ImgFile = new PImage[4];
 
-boolean AutoMode = false;
+boolean AutoMode = true;
 boolean Values = false;
 boolean About = false;
 //boolean Explore = true;

@@ -41,15 +41,15 @@
 
 		<div class="row">
 			<div class="small-12 columns">
-				<div class="panel" style="border: 1px solid white">
+				<div class="panel">
 				
 					<div class="row">		
 						<div class="small-12 medium-8 large-8 columns">
-							<h1>Finite Image Generator</h1>
+							<h1><font color="grey">in</font>Finite Image Generator</h1>
 						</div>
 
 						<div class="small-6 medium-2 large-2 columns">
-							<div id="buttonExplore" type="button" class="tiny expanded button" onclick="HUI_exploreToggle()">Explore</div>
+							<div id="buttonMinimal" type="button" class="tiny expanded button" onclick="HUI_minimalToggle()">Minimal</div>
 						</div>
 						<div class="small-6 medium-2 large-2 columns">
 							<div type="button" class="tiny expanded button" data-open="about-modal">About</div>
@@ -63,7 +63,8 @@
 
 		<div class="row">
 			<div id="canvasDiv" class="small-12 large-8 columns" >
-				<div class="panel" style="border: 1px solid yellow">
+				<fieldset>
+					<legend>The canvas</legend>
 
 					<div class="row">
 						<div class="small-12 columns">
@@ -79,9 +80,11 @@
 							</noscript>
 					    </div>
 				    </div>
+			    </fieldset>
 
-
-				    <div class="explore">
+			    <div class="minimal">
+					<fieldset>
+						<legend>Time Range</legend>
 						<div class="row">
 							<div class="small-6 columns">
 								<p id="since"> Running since</p/>
@@ -97,13 +100,8 @@
 							</div>
 						</div>
 
-						<div class="row">
-							<p></p/>
-						</div>
-					</div>
-
-
-			    </div>
+					</fieldset>
+				</div>
 			</div>
 
 
@@ -111,11 +109,13 @@
 
 
 
-			<div class="small-12 large-4 columns explore" >
+			<div class="small-12 large-4 columns minimal" >
 				<div class="row" >
 					<div class="small-4 large-12 columns">
 
-						<div class="panel" style="border: 1px solid red">
+						<fieldset>
+							<legend>Iterate</legend>
+
 							<div class="row" >
 							
 								<div class="small-4 columns">
@@ -144,19 +144,14 @@
 								
 
 							</div>
-						</div>
+						</fieldset>
 					</div>
 
 
 					<div class="small-4 large-12 columns">
-						<div class="panel" style="border: 1px solid green">
+						<fieldset>
+							<legend>Resolution and Color Depth</legend>
 							
-							<div class="row small-collapse">
-								<div class="small-12 columns">
-									<p></p>
-								</div>
-							</div>
-
 							<div class="row">
 
 								<div class="small-2 large-2 large-offset-1 columns">
@@ -211,25 +206,20 @@
 
 
 							<div class="row">
-								<div class="small-6 columns small-centered">
+								<div class="small-12 columns small-centered">
 									<p id="limit" style="text-align: center"> Combinations </p>
 								</div>
 							</div>
 
-						</div>
+						</fieldset>
 					</div>
 
 
 
 
 					<div class="small-4 large-12 columns">
-						<div class="panel" style="border: 1px solid blue">
-
-							<div class="row">
-								<div class="small-12 columns">
-									<p></p>
-								</div>
-							</div>
+						<fieldset>
+							<legend>Control</legend>
 
 							<div class="row">
 								<div class="small-6 columns">
@@ -248,7 +238,11 @@
 									<div type="button" onclick="processingCall('clearCanvas')" class="large expanded button">Clear</div>
 								</div>
 							</div>
+						</fieldset>
 
+
+						<fieldset>
+							<legend>Sample Images</legend>
 							<div class="row">
 								<div class="small-3 columns">
 									<div id="buttonS1" type="button" onclick="processingCall('sample1')" class="small expanded button single">s1</div>
@@ -264,7 +258,7 @@
 								</div>
 							</div>
 
-						</div>
+						</fieldset>
 					</div>
 				</div>
 			</div>
@@ -272,10 +266,11 @@
 
 
 		<div class="row">
-			<div id="idField" class="small-12 columns explore">
-				<div class="panel" style="border: 1px solid grey">
-					<textarea id="uiId" type="number" rows="8"  onkeypress="processingSetId(this.value)"></textarea>
-				</div>
+			<div id="idField" class="small-12 columns minimal">
+				<fieldset>
+					<legend>The Id</legend>
+					<textarea id="uiId" type="number" rows="10"  onkeypress="processingSetId(this.value)"></textarea>
+				</fieldset>
 			</div>
 		</div>
 
@@ -366,13 +361,11 @@
 		<script src="js/vendor/foundation.js"></script>
 
 		<script src="js/app.js"></script>
-		<script> HUI_exploreToggle() </script>
 
 
 
 	</body>
 </html>
-
 
 
 

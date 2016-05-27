@@ -1,33 +1,33 @@
-var Explore = true;
-function HUI_exploreToggle()
+var Minimal = false;
+function HUI_minimalToggle()
 {
-	Explore = !Explore;
+	Minimal = !Minimal;
 
-	var divs = document.getElementsByClassName("explore");
+	var divs = document.getElementsByClassName("minimal");
 	var d;
 	for (d = 0; d < divs.length; d++)
 	{
-		if( Explore )
-	    	divs[d].style.display = 'inline';
-	    else
+		if( Minimal )
 	    	divs[d].style.display = 'none';
+	    else
+	    	divs[d].style.display = 'inline';
 	}
 
-	if( Explore )
+	if( Minimal )
 	{
-		document.getElementById('buttonExplore').classList.add("toggled");
-		document.getElementById('canvasDiv').classList.remove("large-12");
-		document.getElementById('canvasDiv').classList.add("large-8");
-	}
-	else
-	{
-		document.getElementById('buttonExplore').classList.remove("toggled");
+		document.getElementById('buttonMinimal').classList.add("toggled");
 		document.getElementById('canvasDiv').classList.remove("large-8");
 		document.getElementById('canvasDiv').classList.add("large-12");
 	}
+	else
+	{
+		document.getElementById('buttonMinimal').classList.remove("toggled");
+		document.getElementById('canvasDiv').classList.remove("large-12");
+		document.getElementById('canvasDiv').classList.add("large-8");
+	}
 
 
-	//console.log("explore :" + Explore);
+	//console.log("Minimal :" + Minimal);
 }
 
 
