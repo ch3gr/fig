@@ -129,7 +129,7 @@ void ui_explore()
   
   xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
   yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
-  text( compactBig(Step), xc, yc);
+  text( compact2Big(Step), xc, yc);
   
   yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
   xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
@@ -143,7 +143,7 @@ void ui_explore()
   
   textSize(18);
   textAlign(LEFT, BOTTOM);
-  text( compactBig(Img.idLimit.add(1)), 735, 325);
+  text( compact2Big(Img.idLimit.add(1)), 735, 325);
   textAlign(RIGHT, BOTTOM);
   text( "combinations", 965, 325);
   
@@ -390,10 +390,34 @@ String compactBig( bigInt n )
   }
   else
     return commas(nStr);
-    
-  
 }
 
+
+
+String compact2Big( bigInt n )
+{
+  String nStr = n.toString();
+  int strl = nStr.length();
+  if( strl > 12 )
+  {
+    String out = "";
+    for(int i=0; i<3; i++)
+      out += nStr.charAt(i);
+    
+    out += "...";
+    out += str(strl);
+    out += "digits";
+    out += "...";
+    
+    for(int i=strl-3; i<strl; i++)
+      out += nStr.charAt(i);
+    
+    return out;
+  }
+  else
+    return commas(nStr);
+  
+}
 
 
 
@@ -473,7 +497,7 @@ String duration( bigInt f)
     if( t.lesser(2) )
       return (t.toString() + " year");
     else
-      return (compactBig(t) + " years");
+      return (compact2Big(t) + " years");
   }
   /*
   // t in decades
