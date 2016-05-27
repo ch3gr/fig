@@ -18,7 +18,8 @@ PImage ImgInput;
 
 
 
-int UI_lastId = uivars.theId.length();
+int UI_lastId = uivars.id.length();
+float UI_lastSlider = uivars.slider;
 int Mill = 0;
 
 
@@ -48,13 +49,13 @@ JavaScript javascript;
 
 void setup ()
 {
-  size( 500, 500, JAVA2D );
+  size( 500, 550, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
   
 /* @pjs preload="in/georgios.jpg"; */
-  ImgInput = loadImage("georgios.jpg");
+  ImgInput = loadImage("cat.jpg");
 
 
   ImgDate.setIdFromDate( RefTime );
@@ -117,13 +118,24 @@ void draw()
   //// UI
   
   // when the input chages
-  if( UI_lastId != uivars.theId )
+  if( UI_lastId != uivars.id )
   {
-    UI_lastId = uivars.theId;
-    Img.setId(uivars.theId, Img.cDepth);
+    UI_lastId = uivars.id;
+    Img.setId(uivars.id, Img.cDepth);
   }
   
+  if( UI_lastSlider != uivars.slider )
+  {
+    UI_lastSlider = uivars.slider;
+    Img.setIdFromRange(float(uivars.slider));
+    //Img.setIdFromRange(float(mouseX)/float(width));
+  }
   
+  float slider = uivars.slider; 
+  text(slider, 10,510);
+  text(Img.idLimit, 10,520);
+  text("4", 10,530);
+  text(Img.msg, 10,540);
   
   
   
@@ -140,7 +152,7 @@ void draw()
   text("framerate : " +floor(frameRate), 10, 30);
   text("rate : " +floor(1000.0/(millis()-Mill)), 100, 30);
   Mill = millis();
-  text("input      : " +uivars.theId, 10, 40);
+  text("input      : " +uivars.id, 10, 40);
   
   
   text(Img.estimateComputeTime(), 10, 680);
@@ -226,7 +238,7 @@ void keyPressed()
     
   if(key=='i')
   {
-    ImgUser.setId(uivars.theId, ImgUser.cDepth);
+    ImgUser.setId(uivars.id, ImgUser.cDepth);
   }
   if(key=='p')
   {
@@ -240,6 +252,12 @@ void keyPressed()
     var time = new Date(1970, 1, 1);
     println( time.getTime() );
   }
+  
+  if(key=='l')
+  {
+    Img.setIdFromRange(float(mouseX)/float(width));
+  }
+  
   
 }
 
@@ -260,10 +278,14 @@ no characters to id textArea
 mipos h updateUI() kalitera sto main kai oxi stin class?
 clean up javascript/jQuery, check if everything can be on a tab
 
-Slider ??!?!
+Slider YES!
+
+fix bug with picture not updating slider
+
+shift backwards
 calculate since / until, in nice text
 load image
-iregular image
+non square ratio image
 
 
 */

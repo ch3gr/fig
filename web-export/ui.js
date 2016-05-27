@@ -48,15 +48,25 @@ e.preventDefault()});
 
 $(function() {
   
-  $("#idField").ForceNumericOnly();
-  $("#idField").keyup(function ()
+  $("#uiId").ForceNumericOnly();
+  $("#uiId").keyup(function ()
   {                                                     // whenever text is entered into input box...
     
-    uivars.theId = $(this).val();                       // update word variable,
+    uivars.id = $(this).val();                       // update word variable,
     var p = Processing.getInstanceById('imgGen');
     if (p) p.importId();                                // and call updateWord function in pjs sketch.
   });
+  $("#uiId").val(uivars.id);                // initialize input textbox contents.
   
-  $("#idField").val(uivars.theId);                // initialize input textbox contents.
+  
+  
+  
+  $("#uiIdSlider").on("input change", function()
+  {
+    uivars.slider = $(this).val();
+    var p = Processing.getInstanceById('imgGen');
+    if (p) p.importId();
+  });
+  $("#uiIdSlider").val(uivars.slider);
   
 });

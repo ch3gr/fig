@@ -10,6 +10,7 @@ class VImage
   PImage bitmap;
   
   var id = bigInt();
+  var idLimit = bigInt();
 
   
   VImage(int wIn, int hIn, int cIn)
@@ -18,6 +19,7 @@ class VImage
     w = wIn;
     h = hIn;
     size = w * h;
+    idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
     
@@ -31,6 +33,7 @@ class VImage
     w = wIn;
     h = hIn;
     size = w * h;
+    idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
     
@@ -163,19 +166,7 @@ class VImage
 
 
 
-  void canvasToId()
-  {
-    id = bigInt(0);
-    
-    
-    for( int p = 0; p<size; ++p )
-    {
-      dDigit = bigInt(cDepth).pow(p).multiply(pix[p]);
-      id = id.add( dDigit );
-    }
-    
-    updateUI();
-  }
+
 
   
   
@@ -231,6 +222,16 @@ class VImage
   
   
   
+  void setIdFromRange( float v )
+  {
+    var newId = idLimit;
+    newId = newId.multiply(v);
+    setId(newId, cDepth);
+    //setId(1000, cDepth);
+  }
+  
+  
+  
   void setIdFromImg(PImage imgIn)
   {
     // make a copy of the input image, to resize without loss of information
@@ -246,6 +247,42 @@ class VImage
     
     canvasToId();
   }
+  
+  
+  
+  void canvasToId()
+  {
+    id = bigInt(0);
+    
+    
+    for( int p = 0; p<size; ++p )
+    {
+      dDigit = bigInt(cDepth).pow(p).multiply(pix[p]);
+      id = id.add( dDigit );
+    }
+    
+    updateUI();
+  }
+  
+  
+  void updateUI()
+  {
+    // integer that holds id/idLimit * 1000000
+    bigInt mil = bigInt(id.multiply(1000000)).divide(idLimit.multiply(1));
+    
+    //float portion = float(mil.toString());
+    float portion = mil.toString();
+    portion /= 1000000.0;
+    
+    msg = portion;
+    if(javascript!=null)
+      javascript.UI_updateId(id.toString(), portion);
+
+  }
+  
+  
+  
+  
   
   
   
@@ -283,6 +320,8 @@ class VImage
       cDepth = cDepthIn;
     }
     
+    idLimit = bigInt(cDepth).pow(w*h).subtract(1);
+    
     bitmap = new PImage(w,h,RGB);
     
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
@@ -290,11 +329,7 @@ class VImage
   
   
   
-  void updateUI()
-  {
-    if(javascript!=null)
-      javascript.UI_updateId(id.toString());
-  }
+
   
   
   String estimateComputeTime()
@@ -307,4 +342,6 @@ class VImage
     return time;
     
   }
+  
+  
 }

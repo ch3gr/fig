@@ -68,11 +68,14 @@
 		margin: 0px 50px;
 		border: 1px solid green;
 	}
-	#id {
+	#uiIdSlider {
+		width: 950px;
+	}
+	#idField {
 		width: 1000px;
 		clear: both;
-		border: 50px 0px;
-
+		padding: 50px 0px;
+		border: 1px solid blue;
 	}
 	#credits {
 		clear: both;
@@ -104,9 +107,11 @@
 		bindJavascript();
 
 
-		function UI_updateId(t){
-		  document.getElementById('idField').value = t;
+		function UI_updateId(id, idSlider){
+		  document.getElementById('uiId').value = id;
+		  document.getElementById('uiIdSlider').value = idSlider;
 		}
+
 		</script>
 
 
@@ -114,7 +119,8 @@
 		<script>
 		// create an object to hold variables controlled by the UI
 		var uivars = {
-			theId: "0"  // set initial values
+			id: "0",
+			slider : "0"
 
 		};
 		</script>
@@ -132,7 +138,7 @@ function getProcessingSketchId () { return 'imgGen'; }
 		<div id="content">
 			<div id="processing">
 				<canvas id="imgGen" data-processing-sources="imgGen.pde"
-						width="500" height="500">
+						width="500" height="550">
 					<p>Your browser does not support the canvas tag.</p>
 					<!-- Note: you can put any alternative content here. -->
 				</canvas>
@@ -144,12 +150,14 @@ function getProcessingSketchId () { return 'imgGen'; }
 			<div id="ui">
 				<div class="proc_ui">
 					<p>This is some stats and buttons</p>
+
 				</div>
 			</div>
 
 
-			<div id="id">
-					<textarea id="idField" type="number" rows="10" cols="120"></textarea>
+			<div id="idField">
+				<input id="uiIdSlider" type="range" min="0.0" max="1.0" value="0" step="0.000000001"/>
+				<textarea id="uiId" type="number" rows="10" cols="120"></textarea>
 			</div>
 
 

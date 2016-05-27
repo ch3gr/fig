@@ -18,7 +18,8 @@ PImage ImgInput;
 
 
 
-int UI_lastId = uivars.theId.length();
+int UI_lastId = uivars.id.length();
+float UI_lastSlider = uivars.slider;
 int Mill = 0;
 
 
@@ -48,13 +49,13 @@ JavaScript javascript;
 
 void setup ()
 {
-  size( 500, 500, JAVA2D );
+  size( 500, 550, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
   
 /* @pjs preload="in/georgios.jpg"; */
-  ImgInput = loadImage("georgios.jpg");
+  ImgInput = loadImage("cat.jpg");
 
 
   ImgDate.setIdFromDate( RefTime );
@@ -117,13 +118,24 @@ void draw()
   //// UI
   
   // when the input chages
-  if( UI_lastId != uivars.theId )
+  if( UI_lastId != uivars.id )
   {
-    UI_lastId = uivars.theId;
-    Img.setId(uivars.theId, Img.cDepth);
+    UI_lastId = uivars.id;
+    Img.setId(uivars.id, Img.cDepth);
   }
   
+  if( UI_lastSlider != uivars.slider )
+  {
+    UI_lastSlider = uivars.slider;
+    Img.setIdFromRange(float(uivars.slider));
+    //Img.setIdFromRange(float(mouseX)/float(width));
+  }
   
+  float slider = uivars.slider; 
+  text(slider, 10,510);
+  text(Img.idLimit, 10,520);
+  text("4", 10,530);
+  text(Img.msg, 10,540);
   
   
   
@@ -140,7 +152,7 @@ void draw()
   text("framerate : " +floor(frameRate), 10, 30);
   text("rate : " +floor(1000.0/(millis()-Mill)), 100, 30);
   Mill = millis();
-  text("input      : " +uivars.theId, 10, 40);
+  text("input      : " +uivars.id, 10, 40);
   
   
   text(Img.estimateComputeTime(), 10, 680);
@@ -226,7 +238,7 @@ void keyPressed()
     
   if(key=='i')
   {
-    ImgUser.setId(uivars.theId, ImgUser.cDepth);
+    ImgUser.setId(uivars.id, ImgUser.cDepth);
   }
   if(key=='p')
   {
@@ -240,6 +252,12 @@ void keyPressed()
     var time = new Date(1970, 1, 1);
     println( time.getTime() );
   }
+  
+  if(key=='l')
+  {
+    Img.setIdFromRange(float(mouseX)/float(width));
+  }
+  
   
 }
 
@@ -259,6 +277,15 @@ TO DO
 no characters to id textArea
 mipos h updateUI() kalitera sto main kai oxi stin class?
 clean up javascript/jQuery, check if everything can be on a tab
+
+Slider YES!
+
+fix bug with picture not updating slider
+
+shift backwards
+calculate since / until, in nice text
+load image
+non square ratio image
 
 
 */
@@ -301,6 +328,7 @@ class VImage
   PImage bitmap;
   
   var id = bigInt();
+  var idLimit = bigInt();
 
   
   VImage(int wIn, int hIn, int cIn)
@@ -309,6 +337,7 @@ class VImage
     w = wIn;
     h = hIn;
     size = w * h;
+    idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
     
@@ -322,6 +351,7 @@ class VImage
     w = wIn;
     h = hIn;
     size = w * h;
+    idLimit = bigInt(cDepth).pow(w*h).subtract(1);
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
     pix = new int[size];
     
@@ -454,19 +484,7 @@ class VImage
 
 
 
-  void canvasToId()
-  {
-    id = bigInt(0);
-    
-    
-    for( int p = 0; p<size; ++p )
-    {
-      dDigit = bigInt(cDepth).pow(p).multiply(pix[p]);
-      id = id.add( dDigit );
-    }
-    
-    updateUI();
-  }
+
 
   
   
@@ -522,6 +540,16 @@ class VImage
   
   
   
+  void setIdFromRange( float v )
+  {
+    var newId = idLimit;
+    newId = newId.multiply(v);
+    setId(newId, cDepth);
+    //setId(1000, cDepth);
+  }
+  
+  
+  
   void setIdFromImg(PImage imgIn)
   {
     // make a copy of the input image, to resize without loss of information
@@ -537,6 +565,42 @@ class VImage
     
     canvasToId();
   }
+  
+  
+  
+  void canvasToId()
+  {
+    id = bigInt(0);
+    
+    
+    for( int p = 0; p<size; ++p )
+    {
+      dDigit = bigInt(cDepth).pow(p).multiply(pix[p]);
+      id = id.add( dDigit );
+    }
+    
+    updateUI();
+  }
+  
+  
+  void updateUI()
+  {
+    // integer that holds id/idLimit * 1000000
+    bigInt mil = bigInt(id.multiply(1000000)).divide(idLimit.multiply(1));
+    
+    //float portion = float(mil.toString());
+    float portion = mil.toString();
+    portion /= 1000000.0;
+    
+    msg = portion;
+    if(javascript!=null)
+      javascript.UI_updateId(id.toString(), portion);
+
+  }
+  
+  
+  
+  
   
   
   
@@ -574,6 +638,8 @@ class VImage
       cDepth = cDepthIn;
     }
     
+    idLimit = bigInt(cDepth).pow(w*h).subtract(1);
+    
     bitmap = new PImage(w,h,RGB);
     
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
@@ -581,11 +647,7 @@ class VImage
   
   
   
-  void updateUI()
-  {
-    if(javascript!=null)
-      javascript.UI_updateId(id.toString());
-  }
+
   
   
   String estimateComputeTime()
@@ -598,5 +660,7 @@ class VImage
     return time;
     
   }
+  
+  
 }
 
