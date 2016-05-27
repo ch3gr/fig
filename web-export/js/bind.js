@@ -16,14 +16,14 @@ function HUI_minimalToggle()
 	if( Minimal )
 	{
 		document.getElementById('buttonMinimal').classList.add("toggled");
-		document.getElementById('canvasDiv').classList.remove("large-8");
+		document.getElementById('canvasDiv').classList.remove("large-7");
 		document.getElementById('canvasDiv').classList.add("large-12");
 	}
 	else
 	{
 		document.getElementById('buttonMinimal').classList.remove("toggled");
 		document.getElementById('canvasDiv').classList.remove("large-12");
-		document.getElementById('canvasDiv').classList.add("large-8");
+		document.getElementById('canvasDiv').classList.add("large-7");
 	}
 
 
@@ -40,11 +40,10 @@ function HUI_minimalToggle()
 
 // Processing to HTML
 
-function HUI_updateImgInfo( inStep, inX, inY, inCd, inLimit )
+function HUI_updateImgInfo( inStep, inRes, inCd, inLimit )
 {
 	document.getElementById('stepSize').innerHTML = inStep;
-	document.getElementById('xSize').innerHTML = inX;
-	document.getElementById('ySize').innerHTML = inY;
+	document.getElementById('res').innerHTML = inRes;
 	document.getElementById('cDepth').innerHTML = inCd;
 	document.getElementById('limit').innerHTML = inLimit + " combinations";
 }

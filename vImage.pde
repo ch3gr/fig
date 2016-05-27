@@ -95,7 +95,7 @@ class VImage
      
     textSize(pixelSize * 0.5);
     textAlign(RIGHT, BOTTOM);
-    fill(color(0.9,0.5,0.4));
+    fill(color(1, 0.1, 0.1));
     
     
     int p=0;

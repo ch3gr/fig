@@ -257,6 +257,8 @@ String compactBig( bigInt n )
 
 String duration( bigInt f)
 {
+  f = bigInt(f).divide(Step);
+  
   if( f.lesser(1) )
     return( "0" );
   // f in frames

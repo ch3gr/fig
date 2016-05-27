@@ -102,7 +102,8 @@ void draw()
   //// update HTML UI if needed
   if( HUI_Update )
   {
-    HUI_updateImgInfo( compactBig(Step), Img.w, Img.h, Img.cDepth, compactBig(Img.idLimit.add(1)) );
+    String res = str(Img.w) +" x "+ str(Img.h);
+    HUI_updateImgInfo( compactBig(Step), res, Img.cDepth, compactBig(Img.idLimit.add(1)) );
     HUI_updateSlider( Img.getFraction(), duration(Img.id), duration(Img.idLimit.minus(Img.id)));
     HUI_updateId( Img.getId() );
     HUI_updateToggle( AutoMode, Values, Sample );
@@ -502,6 +503,8 @@ String compactBig( bigInt n )
 
 String duration( bigInt f)
 {
+  f = bigInt(f).divide(Step);
+  
   if( f.lesser(1) )
     return( "0" );
   // f in frames
@@ -707,7 +710,7 @@ class VImage
      
     textSize(pixelSize * 0.5);
     textAlign(RIGHT, BOTTOM);
-    fill(color(0.9,0.5,0.4));
+    fill(color(1, 0.1, 0.1));
     
     
     int p=0;

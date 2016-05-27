@@ -7,8 +7,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<title>imgGen : Built with Processing and Processing.js</title>
-		<link rel="icon"  type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAQAAVzABAEAjBQAaDwYAWjUGAGE6CQBrQQ0ATS8PAFhAJwBUQC8AbFI6AHVXPACBZk4A4NrWAPb19QAAAAAAAMmZmZmZmgAJIwAAAAAAcMIjPjA+PjAKpxIuMDMzMAm0Ii4zMzMACaIiLt3dMAAJtyIuIzPQAAm0Un5yM+IzKLRkfncy4iIotRF+dyLkIiq0QX53F+EiGrQUTkd34iIatEVu7u5iIVrBVVRBRFRVbAtGZGZla2uwAMu7u7u8vADAAwAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAADAAwAA" />
+		<title>Finite Image Generator</title>
+		<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 		<meta name="Generator" content="Processing" />
 		<!-- - - - - - - - - - - - - - - - - - - - -
 		+
@@ -27,6 +28,18 @@
 		<link rel="stylesheet" href="css/foundation.css">
 		<link rel="stylesheet" href="css/app.css">
 
+
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-78150654-1', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+
 		<script type="text/javascript" src="processing.js"></script>
 		<script type="text/javascript" src="js/bind.js"></script>
 	</head>
@@ -36,22 +49,23 @@
 
 
 	<body>
-
-
+	<p></p>
 		<div class="row">
 			<div class="small-12 columns">
 				<div class="panel">
 				
 					<div class="row">		
-						<div class="small-12 medium-8 large-8 columns">
-							<h1><font color="grey">in</font>Finite Image Generator</h1>
+						<div class="small-12 medium-10 large-10 columns">
+							<h1><font color="#525252">in</font><font color="#d1d1d1">Finite Image Generator</font></h1>
 						</div>
 
-						<div class="small-6 medium-2 large-2 columns">
-							<div id="buttonMinimal" type="button" class="tiny expanded button" onclick="HUI_minimalToggle()">Minimal</div>
-						</div>
-						<div class="small-6 medium-2 large-2 columns">
-							<div type="button" class="tiny expanded button" data-open="about-modal">About</div>
+						<div class="small-12 medium-2 large-2 columns">
+							<div class="small-6  medium-12 large-12 columns">
+								<div id="buttonMinimal" type="button" class="tiny expanded button" onclick="HUI_minimalToggle()">Min</div>
+							</div>
+							<div class="small-6  medium-12 large-12 columns">
+								<div type="button" class="tiny expanded button" data-open="about-modal">About</div>
+							</div>
 						</div>
 					</div>
 			
@@ -60,8 +74,11 @@
 		</div>
 
 
+
+
+
 		<div class="row">
-			<div id="canvasDiv" class="small-12 large-8 columns" >
+			<div id="canvasDiv" class="small-12 large-7 columns" >
 				<fieldset>
 					<legend>The canvas</legend>
 
@@ -108,141 +125,133 @@
 
 
 
-			<div class="small-12 large-4 columns minimal" >
-				<div class="row" >
-					<div class="small-4 large-12 columns">
+			<div class="small-12 large-5 columns minimal" >
+				<div class="row">
 
+					<div class="small-6 medium-4 large-6 columns">
 						<fieldset>
 							<legend>Iterate</legend>
 
 							<div class="row" >
 							
-								<div class="small-4 columns">
-									<div type="button" onclick="processingCall('prev')" class="large expanded button">Prev</div>
+								<div class="small-12 columns">
+									<div type="button" onclick="processingCall('next')" class="small expanded button">Next</div>
 								</div>
-								
-								<div class="small-4 columns">
-									<div class="row" >
-										<div class="large-12 columns">
-											<div type="button" onclick="processingCall('incUp')" class="small expanded button">Step Up</div>
-										</div>
-										<div class="large-12 columns">
-											<p id="stepSize" style="text-align: center"> Step size</p>
-										</div>
-										<div class="large-12 columns">
-											<div type="button" onclick="processingCall('incDown')" class="small expanded button">Step down</div>
-										</div>
-									</div>
+								<div class="small-12 columns">
+									<div type="button" onclick="processingCall('prev')" class="small expanded button">Prev</div>
 								</div>
-
-
-
-								<div class="small-4 columns">
-									<div type="button" onclick="processingCall('next')" class="large expanded button">Next</div>
+								<div class="small-12 columns">
+									<div id="buttonAuto" type="button" onclick="processingCall('autoMode')" class="small expanded button">Auto</div>
 								</div>
-								
-
 							</div>
+
 						</fieldset>
 					</div>
 
-
-					<div class="small-4 large-12 columns">
+					<div class="small-6 medium-4 large-6 columns">
 						<fieldset>
-							<legend>Resolution and Color Depth</legend>
-							
-							<div class="row">
+							<legend>Step Size</legend>
 
-								<div class="small-2 large-2 large-offset-1 columns">
-									<div type="button" onclick="processingCall('xUp')" class="tiny expanded button">X</div>
+							<div class="small-12 columns">
+								<div class="row" >
+									<p></p>
+									<div class="large-12 columns">
+										<div type="button" onclick="processingCall('incUp')" class="small expanded button">+</div>
+									</div>
+									<div class="large-12 columns">
+										<p id="stepSize" class="text-center"> Step size</p>
+									</div>
+									<div class="large-12 columns">
+										<div type="button" onclick="processingCall('incDown')" class="small expanded button">-</div>
+									</div>
 								</div>
-								<div class="small-4 large-3 columns">
-									<div type="button" onclick="processingCall('rUp')" class="tiny expanded button">+</div>
-								</div>
-								<div class="small-2 large-2 columns">
-									<div type="button" onclick="processingCall('yUp')" class="tiny expanded button">Y</div>
-								</div>
-								<div class="small-3 large-2 small-offset-1 large-offset-1 end columns">
-									<div type="button" onclick="processingCall('cUp')" class="tiny expanded button">C+</div>
-								</div>
-
-							</div>
-							
-
-							<div class="row">
-
-								<div class="small-2 large-2 large-offset-1 columns">
-									<p id="xSize" style="text-align: center"> X size</p/>
-								</div>
-
-								<div class="small-2 small-offset-4 large-2 large-offset-3 columns">
-									<p id="ySize" style="text-align: center"> Y size</p/>
-								</div>
-								
-								<div class="small-3 small-offset-1 large-2 large-offset-1 columns end">
-									<p id="cDepth" style="text-align: center"> Color depth </p/>
-								</div>
-
 							</div>
 
+						</fieldset>
+					</div>
 
+				
+					<div class="small-12 medium-4 large-12 columns">
+						<fieldset>
+							<legend>Set Canvas</legend>
 							<div class="row">
 
-								<div class="small-2 large-2 large-offset-1 columns">
-									<div type="button" onclick="processingCall('xDown')" class="tiny expanded button">X</div>
-								</div>
-								<div class="small-4 large-3 columns">
-									<div type="button" onclick="processingCall('rDown')" class="tiny expanded button">-</div>
-								</div>
-								<div class="small-2 large-2 columns">
-									<div type="button" onclick="processingCall('yDown')" class="tiny expanded button">Y</div>
-								</div>
-								<div class="small-3 large-2 small-offset-1 large-offset-1 end columns">
-									<div type="button" onclick="processingCall('cDown')" class="tiny expanded button">C-</div>
+								<div class="small-6 columns">
+									<p class="text-center"> Resolution </p>
+									<div class="row">
+										<div class="small-12 columns text-center">
+											<div type="button" onclick="processingCall('rUp')" class="small expanded button">+</div>
+										</div>
+
+										<div class="row">
+											<div class="small-12 columns text-center">
+												<p id="res">X / Y</p>
+											</div>
+										</div>
+
+										<div class="small-12 columns text-center">
+											<div type="button" onclick="processingCall('rDown')" class="small expanded button">-</div>
+										</div>
+									</div>
+									
 								</div>
 
+								<div class="small-6 columns">
+									<p class="text-center"> Colors </p>
+									<div class="row">
+										<div class="small-12 columns text-center">
+											<div type="button" onclick="processingCall('cUp')" class="small expanded button">+</div>
+										</div>
+
+										<div class="row">
+											<div class="small-12 columns text-center">
+												<p id="cDepth">Color depth</p>
+											</div>
+										</div>
+
+										<div class="small-12 columns text-center">
+											<div type="button" onclick="processingCall('cDown')" class="small expanded button">-</div>
+										</div>
+									</div>
+									
+								</div>
 							</div>
-
 
 							<div class="row">
 								<div class="small-12 columns small-centered">
-									<p id="limit" style="text-align: center"> Combinations </p>
+									<p id="limit" class="text-center"> Combinations </p>
 								</div>
 							</div>
 
 						</fieldset>
 					</div>
 
+				
+
+				</div>
 
 
-
-					<div class="small-4 large-12 columns">
+				<div class="row">
+					<div class="small-12 medium-6 large-12 columns">
 						<fieldset>
-							<legend>Control</legend>
-
+							<legend>Options</legend>
 							<div class="row">
-								<div class="small-6 columns">
-									<div id="buttonAuto" type="button" onclick="processingCall('autoMode')" class="large expanded button">Auto</div>
+								<div class="small-4 columns">
+									<div type="button" onclick="processingCall('randomize')" class="small expanded button">Random</div>
 								</div>
-								<div class="small-6 columns">
-									<div id="buttonValues"  type="checkbox" onclick="processingCall('showValues')" class="large expanded button">Values</div>
+								<div class="small-4 columns">
+									<div type="button" onclick="processingCall('clearCanvas')" class="small expanded button">Clear</div>
 								</div>
-							</div>
-
-							<div class="row">
-								<div class="small-6 columns">
-									<div type="button" onclick="processingCall('randomize')" class="large expanded button">Random</div>
-								</div>
-								<div class="small-6 columns">
-									<div type="button" onclick="processingCall('clearCanvas')" class="large expanded button">Clear</div>
+								<div class="small-4 columns">
+									<div id="buttonValues"  type="checkbox" onclick="processingCall('showValues')" class="small expanded button">Values</div>
 								</div>
 							</div>
 						</fieldset>
+					</div>
 
-
+					<div class="small-12 medium-6 large-12 columns">
 						<fieldset>
 							<legend>Sample Images</legend>
-							<div class="row">
 								<div class="small-3 columns">
 									<div id="buttonS1" type="button" onclick="processingCall('sample1')" class="small expanded button single">1</div>
 								</div>
@@ -255,12 +264,12 @@
 								<div class="small-3 columns">
 									<div id="buttonS4" type="button" onclick="processingCall('sample4')" class="small expanded button single">4</div>
 								</div>
-							</div>
-
 						</fieldset>
 					</div>
 				</div>
 			</div>
+
+
 		</div>
 
 
@@ -281,8 +290,8 @@
 
 
 
-		<div class="reveal medium" id="about-modal" data-reveal>
-			<h1>inFinite Image Generator</h1>
+		<div id="about-modal" class="reveal large" data-reveal>
+			<h2> inFinite Image Generator </h2>
 			<hr>
 			<p class="text-justify">
 			Two dimensional images of any kind, have long been stored and displayed digitally. To do so, the image is broken down into a set of pixels, with a pre-defined color depth. The digital representation of an image is essentially just a series of color values.
@@ -303,16 +312,22 @@
 			So what happens when and if we get to that point? Will this be the end of human creativity?
 			What about intellectual property? Who will own the rights to all the images?
 			</p>
+			<p></p>
+			<p>FAQ</p>
 			<p class="text-justify">
-
-			Q&A:
-
 			Q. Why don't I see any meaningful images when I move the slider?
+			<br>
 			A. The slider's accuracy is limited by the screen resolution. Moving the slider just by one pixel, may translate to an increment of many trillion iterations, which means it's easy to miss some.
-
+			</p>
+			<p class="text-justify">
 			Q. Why are there only grey colors?
+			<br>
 			A. Colors require 3 values per pixel, so for the purpose of keeping this experiment simple, only tones of grey are used. The logic can easily be transferred into color images, or even moving images.
 			</p>
+			<hr>
+			<a href="http://ch3.gr">ch3.gr</a>
+			<p>2016</p>
+			
 
 
 
@@ -327,10 +342,9 @@
 		<script src="js/app.js"></script>
 
 
-
+	<p></p>
 	</body>
 </html>
-
 
 
 
