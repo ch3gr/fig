@@ -18,13 +18,13 @@ class VImage
     size = w * h;
     msg = "_";
 
-    bitmap = createImage(w,h,RGB);
+    bitmap = new PImage(w,h,RGB);
     
     pix = new int[size];
     
     
+    id = bigInt(1000);
     
-    id = bigInt(0);
     
     //randomise();
   }
@@ -168,17 +168,31 @@ class VImage
   void setIdFromDate()
   {
     var now = new Date();
-    var timeCode = now.getTime()-RefTime.getTime();
+    var timeCode = now.getTime() - RefTime.getTime();
     timeCode *= 1/60.0;
     timeCode = int(timeCode);
     
     //msg = timeCode; 
     setId(timeCode, cDepth);
-    
-    
   }
   
   
+  
+  void setIdFromImg(PImage imgIn)
+  {
+    // make a copy of the input image, to resize without loss of information
+    PImage imgR = new PImage(imgIn.width, imgIn.height);
+    for(int p=0; p<imgR.width*imgR.height; ++p)
+      imgR.pixels[p] = imgIn.pixels[p]; 
+    
+    imgR.resize(w,h);
+    imgR.loadPixels();
+    
+    for(int p=0; p<size; ++p)
+      pix[p] = floor(brightness(imgR.pixels[p]) * (cDepth));
+    
+    updateId();
+  }
   
   
   
@@ -209,7 +223,8 @@ class VImage
         if( isNaN(pix[p]) )
           pix[p] = 0;
         
-        pix[p] = map( pix[p], 0, cDepth, 0, cDepthIn );
+        //pix[p] = map( pix[p], 0, cDepth, 0, cDepthIn );
+        pix[p] = floor((pix[p]/cDepth) * cDepthIn + 0.5) ;
       }
       
       cDepth = cDepthIn;
@@ -218,5 +233,17 @@ class VImage
     bitmap = new PImage(w,h,RGB);
     
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
+  }
+  
+  
+  String estimateComputeTime()
+  {
+    time = bigInt(id);
+    //time = time.divide(60).divide(60).divide(60).divide(24).divide(356);
+    float div = 60*60*60*24*356;
+    //time = time.divide(60).divide(60).divide(60).divide(24).divide(356);
+    time=time.divide(div);
+    return time;
+    
   }
 }

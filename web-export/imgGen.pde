@@ -5,9 +5,16 @@
 var RefTime = new Date(1981, 2, 18);
 
 
-vImage Img ;
-VImage ImgUser = new VImage(2,2,2); //(100,100,2) tooooo much
-VImage ImgDate = new VImage(25,25,3);
+VImage Img ;
+VImage ImgUser = new VImage(30,30,4); //(100,100,2) tooooo much
+VImage ImgDate = new VImage(5,5,5);
+VImage ImgFile = new VImage(100,100,5);
+
+
+
+// @pjs preload must be used to preload the image 
+/* @pjs preload="georgios.jpg"; */
+PImage ImgInput;
 
 
 
@@ -31,14 +38,16 @@ void setup ()
   
 
   ImgDate.setIdFromDate();
+  //ImgDate.id = 100;
   if( SinceMode )
     Img = ImgDate;
   else
     Img = ImgUser;
   
+/* @pjs preload="in/georgios.jpg"; */
+  ImgInput = loadImage("georgios.jpg");
   
   text("Hello World!", 50, 50);
-  
 }
 
 
@@ -49,20 +58,16 @@ void draw()
   smooth();
   
   if( SinceMode )
-    Img.shift();
+    ImgDate.shift();
 
   pushMatrix();
   translate(50,50);
   scale(600.0/Img.h);  //fit height in 500 pixels
   
-  Img.drawBitmap();
-  //Img.draw(Overlay);
+  //Img.drawBitmap();
+  Img.draw(Overlay);
   
   popMatrix();
-  
-  
-  
-  
   
   
   
@@ -72,18 +77,19 @@ void draw()
   textSize(14);
   
   textSize(11);
-  string t = Img.getId();
-  text("id              : " +t, 10, 10);
-  text("id length  : " + t.length(), 10, 20);
+  string idStr = Img.getId();
+  text("id              : " +idStr, 10, 10);
+  text("id length  : " + idStr.length(), 10, 20);
   text("framerate : " +floor(frameRate), 10, 30);
   text("rate : " +floor(1000.0/(millis()-Mill)), 100, 30);
   Mill = millis();
   text("input      : " +uivars.theId, 10, 40);
   
   
-  text(Img.msg, 10, 665);
-  text(Img.msg, 10, 675);
-  text("Since :" + RefTime, 200, 40);
+  text(Img.estimateComputeTime(), 10, 680);
+  text(Img.msg, 10, 690);
+  if(SinceMode)
+    text("Since :" + RefTime, 200, 30);
   
   if( LastSize != uivars.theId.length() )
   {
@@ -115,10 +121,13 @@ void keyPressed()
     if( SinceMode )
     {
       Img = ImgDate;
-      Img.setIdFromDate();
+//      Img.setIdFromDate();
     }
     else
+    {
       Img = ImgUser;
+//      Img.updateId();
+    }
   }
   
   
@@ -139,18 +148,6 @@ void keyPressed()
     Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
   }
   
-  // DELETE - test class copy /////////////////////
-  if(key=='t')
-  {
-    Img = ImgDate;
-    Img.setCanvas(10, 10, 4);
-  }
-  if(key=='T')
-  {
-    Img = ImgUser;
-    Img.setCanvas(40, 40, 2);
-  }
-  /////////////////////////////////////////////////
   
   if(key=='o')
     Overlay = !Overlay;
@@ -158,15 +155,55 @@ void keyPressed()
   if(key=='i')
   {
     ImgUser.setId(uivars.theId, ImgUser.cDepth);
-  } 
+  }
+  if(key=='p')
+  {
+    ImgUser.setIdFromImg(ImgInput);
+  }
 }
 
 void mousePressed()
 {
-  ImgUser.shift();
-  
+  ImgDate.setIdFromDate();
 }
 
+
+
+/*
+  OLD MOUSE CONTROL
+  
+  if(mouseX>50 && mouseY>50 && mouseX<width-50 && mouseY<height-50)
+    ImgUser.shift();
+  
+  
+  if(mouseX<50 && mouseY<50)
+  {
+    SinceMode = !SinceMode;
+    if( SinceMode )
+    {
+      Img = ImgDate;
+      Img.setIdFromDate();
+    }
+    else
+    {
+      Img = ImgUser;
+      Img.updateId();
+    }
+  }
+  
+  if(mouseX<50 && mouseY>height-50)
+    ImgUser.setIdFromImg(ImgInput);
+  
+  if(mouseX>50 && mouseX<width-50 && mouseY<50)
+    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);  
+  if(mouseX>50 && mouseX<width-50 && mouseY>height-50)
+    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
+  if(mouseX<50 && mouseY>50 && mouseY<height-50)
+    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
+  if(mouseX>50 && mouseY>50 && mouseY<height-50)
+    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
+    
+*/
 
 
 
@@ -203,13 +240,13 @@ class VImage
     size = w * h;
     msg = "_";
 
-    bitmap = createImage(w,h,RGB);
+    bitmap = new PImage(w,h,RGB);
     
     pix = new int[size];
     
     
+    id = bigInt(1000);
     
-    id = bigInt(0);
     
     //randomise();
   }
@@ -353,17 +390,31 @@ class VImage
   void setIdFromDate()
   {
     var now = new Date();
-    var timeCode = now.getTime()-RefTime.getTime();
+    var timeCode = now.getTime() - RefTime.getTime();
     timeCode *= 1/60.0;
     timeCode = int(timeCode);
     
     //msg = timeCode; 
     setId(timeCode, cDepth);
-    
-    
   }
   
   
+  
+  void setIdFromImg(PImage imgIn)
+  {
+    // make a copy of the input image, to resize without loss of information
+    PImage imgR = new PImage(imgIn.width, imgIn.height);
+    for(int p=0; p<imgR.width*imgR.height; ++p)
+      imgR.pixels[p] = imgIn.pixels[p]; 
+    
+    imgR.resize(w,h);
+    imgR.loadPixels();
+    
+    for(int p=0; p<size; ++p)
+      pix[p] = floor(brightness(imgR.pixels[p]) * (cDepth));
+    
+    updateId();
+  }
   
   
   
@@ -394,7 +445,8 @@ class VImage
         if( isNaN(pix[p]) )
           pix[p] = 0;
         
-        pix[p] = map( pix[p], 0, cDepth, 0, cDepthIn );
+        //pix[p] = map( pix[p], 0, cDepth, 0, cDepthIn );
+        pix[p] = floor((pix[p]/cDepth) * cDepthIn + 0.5) ;
       }
       
       cDepth = cDepthIn;
@@ -403,6 +455,18 @@ class VImage
     bitmap = new PImage(w,h,RGB);
     
     msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
+  }
+  
+  
+  String estimateComputeTime()
+  {
+    time = bigInt(id);
+    //time = time.divide(60).divide(60).divide(60).divide(24).divide(356);
+    float div = 60*60*60*24*356;
+    //time = time.divide(60).divide(60).divide(60).divide(24).divide(356);
+    time=time.divide(div);
+    return time;
+    
   }
 }
 
