@@ -15,10 +15,11 @@ JavaScript javascript;
 
 
 
-// UI buttons
+// UI buttons and info
 HashMap UI_Simple = new HashMap();
 HashMap UI_Explore = new HashMap();
 HashMap UI_Common = new HashMap();
+HashMap UI_Info = new HashMap();
 
 
 
@@ -32,11 +33,11 @@ VImage ImgDate = new VImage(30,30,3);
 
 
 PImage[] ImgFile = new PImage[4];
-PGraphics Overlay;
+
 
 int HUI_lastId = uivars.id.length();
 
-//int Mill = 0;
+
 
 
 boolean AutoMode = false;
@@ -74,8 +75,6 @@ void setup ()
   frameRate(60);
 
 
-  Overlay = createGraphics(width, height, JAVA2D);
-  Overlay.colorMode(RGB,1);
 
 // @pjs preload must be used to preload the image 
 /* @pjs preload="georgios.jpg"; */
@@ -182,6 +181,15 @@ void setup ()
   
   UI_Common.get("explore").click = Explore;
   update_UI();
+  
+  
+  
+  ///////////////////////////////////////////////////////////////
+  // UI_Info
+  
+  UI_Info.put( "sliderA", new Info("?", 5, height-25, 50, 15, "??", LEFT) );
+  UI_Info.put( "sliderB", new Info("?", width-5, height-25, 50, 15, "??", RIGHT) );
+  
 }
 
 
@@ -221,10 +229,6 @@ void draw()
   
   background(0.18);
   
-//  Overlay.beginDraw();
-//  Overlay.fill(1,0,0);
-  Overlay.background(0,0);
-//  Overlay.endDraw();
   
   smooth();
   pushMatrix();
@@ -249,8 +253,7 @@ void draw()
   
   
   
-  //// Canvas UI
-  ui_common();
+
   
   
   
@@ -259,9 +262,23 @@ void draw()
   else
     ui_simple();
   
+  //// Canvas UI
+  ui_common();
+  
+  // draw popUps
+  
+
   
   
-  image(Overlay,0,0);
+  
+  Iterator i = UI_Info.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    if( me.getValue().popUp )
+      popUp( Img.id );
+  }
+  
   
   
 
@@ -282,12 +299,12 @@ void draw()
   
   
   //// Temp text
-  /*
+  
   textAlign(LEFT, BOTTOM);
   fill(color(1,0,0));
   textSize(18);
-  //text(frameRate, 50, 50);
-  
+  text(frameRate, 50, 50);
+  /*
   
   ////////////////////////////////////
   // MUTHERFUCKING BRAINFUCK!!!!
@@ -573,9 +590,8 @@ void mouseReleased()
 TO DO
 
 touch screen buttons?
-
-Finish layout/graphics
-hardcode text coord
+Finish layout/graphics/fonts!?!
+hardcode text coord?
 About
 
 
@@ -640,17 +656,18 @@ class Button
   boolean over = false;
   boolean down = false;
   boolean click = false;
+  boolean popUp = false;
   boolean toggle;
   int downTime;
   int overTime;
   
   String label;
-  String msg;
+  String info;
 
   Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy)
   {
     label = ilabel;
-    msg = "nothing to see here";
+    info = "nothing to see here";
     x = ix;
     y = iy;
     sx = isx;
@@ -663,10 +680,10 @@ class Button
     overTime = -1;
   }
   
-  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, String imsg)
+  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, String iinfo)
   {
     label = ilabel;
-    msg = imsg;
+    info = iinfo;
     x = ix;
     y = iy;
     sx = isx;
@@ -771,6 +788,12 @@ class Button
        click = !click;
     }
     
+    
+    // Pop up message
+    if( over && millis() - overTime > 500 )
+      popUp = true;
+    else
+      popUp = false;
   }
   
   
@@ -794,30 +817,6 @@ class Button
     textAlign(CENTER, CENTER);
     text(label, x+sx/2, y+sy/2);
     
-    // Pop up message
-    if( over && millis() - overTime > 500 )
-    {
-      String hor, ver;
-      if( mouseX > width/2 )
-        hor = RIGHT;
-      else
-        hor = LEFT;
-      
-      if( mouseY < 20 )
-        ver = TOP;
-      else
-        hour = BOTTOM;
-       
-      Overlay.beginDraw();
-      Overlay.textAlign(hor, ver);
-      Overlay.textSize(16);
-      Overlay.fill(0);
-      Overlay.text( msg, mouseX+1, mouseY+1 );
-      Overlay.fill(1);
-      Overlay.text( msg, mouseX, mouseY );
-      Overlay.endDraw();
-      
-    }
     
     
     // Debug info
@@ -894,6 +893,16 @@ void ui_common()
     me.getValue().draw();
   }
   
+  // draw popUps, after everything else as overlay
+  Iterator i = UI_Common.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    if( me.getValue().popUp )
+      popUp( me.getValue().info );
+  }
+  
+  
   
   ////////////////////////////////////////////////////
   // Button actions
@@ -919,14 +928,12 @@ void ui_simple()
   ////////////////////////////////////////////////////
   // RENDER UI  
   
-  // Loop through all the buttons
-  Iterator i = UI_Simple.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-    me.getValue().draw();
-  }
+  // No need to iterate through the hashtable - it's just one
+  UI_Simple.get("next").update();
+  UI_Simple.get("next").draw();
+  if( UI_Simple.get("next").popUp )
+    popUp( UI_Simple.get("next").info );
+  
   
   ////////////////////////////////////////////////////
   // Button actions
@@ -940,6 +947,9 @@ void ui_simple()
       resetSamples(-1);
   }
 }
+
+
+
 
 
 
@@ -960,7 +970,9 @@ void ui_explore()
     me.getValue().draw();
   }
   
+  
   // Print some info
+  String info;
   textSize(20);
   textAlign(CENTER, CENTER);
   fill(0.8);
@@ -968,7 +980,7 @@ void ui_explore()
   
   xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
   yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
-  text( compact2Big(Step), xc, yc);
+  text( compactBig(Step), xc, yc);
   
   yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
   xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
@@ -982,19 +994,43 @@ void ui_explore()
   
   textSize(18);
   textAlign(LEFT, BOTTOM);
-  text( compact2Big(Img.idLimit.add(1)), 735, 325);
+  text( compactBig(Img.idLimit.add(1)), 735, 325);
   textAlign(RIGHT, BOTTOM);
   text( "combinations", 965, 325);
   
   
+  
+  
+  
+  
   // Slider range
+  
+  UI_Info.get("sliderA").update();
+  UI_Info.get("sliderA").label = duration(Img.id);
+  UI_Info.get("sliderA").draw();
+  
+  
+  
+  
   textSize(14);
   textAlign(LEFT, BOTTOM);
-  text( duration(Img.id), 5, height-25);
+  info = duration(Img.id);
+  text( info, 5, height-25);
   
+  info = duration(Img.idLimit.minus(Img.id));
   textAlign(RIGHT, BOTTOM);
-  text( duration(Img.idLimit.minus(Img.id)), width-5, height-25);
+  text( info, width-5, height-25);
   
+  
+  
+  // draw popUps, after everything else as overlay
+  Iterator i = UI_Explore.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    if( me.getValue().popUp )
+      popUp( me.getValue().info );
+  }
   
   
   
@@ -1152,7 +1188,22 @@ void ui_explore()
   }
   
   
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1177,6 +1228,40 @@ void resetSamples(int exclude)
   
   Sample = exclude;
 }
+
+
+
+
+
+
+
+
+void popUp(String info)
+{
+  String hor, ver;
+  if( mouseX > width/2 )
+    hor = RIGHT;
+  else
+    hor = LEFT;
+  
+  if( mouseY < 20 )
+    ver = TOP;
+  else
+    hour = BOTTOM;
+
+
+  
+  textAlign(hor, ver);
+  textSize(16);
+  fill(0);
+  text( info, mouseX+1, mouseY+1 );
+  fill(1);
+  text( info, mouseX, mouseY );
+  
+}
+     
+
+
 
 
 
@@ -1233,6 +1318,7 @@ String compactBig( bigInt n )
 
 
 
+// Not used! alternative print of big numbers
 String compact2Big( bigInt n )
 {
   String nStr = n.toString();
@@ -1336,7 +1422,7 @@ String duration( bigInt f)
     if( t.lesser(2) )
       return (t.toString() + " year");
     else
-      return (compact2Big(t) + " years");
+      return (compactBig(t) + " years");
   }
   /*
   // t in decades
@@ -1445,6 +1531,80 @@ universe : 14 billion years
 
 
 
+
+
+class Info
+{
+  int x, y, sx, sy;
+  
+  boolean over = false;
+  boolean popUp = false;
+  int overTime;
+  
+  String label;
+  String info;
+  String align;
+
+  Info(String ilabel, int ix, int iy, int isx, int isy, String iinfo, String ialign)
+  {
+    label = ilabel;
+    info = iinfo;
+    align = ialign;
+    x = ix;
+    y = iy;
+    sx = isx;
+    sy = isy;
+    overTime = -1;
+  }
+
+
+  boolean isOver() 
+  {
+    if ( MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
+    {
+      over = true;
+      return true;
+    }
+    else
+    {
+      over = false;
+      return false;
+    }
+  }
+  
+  
+  
+  void update()
+  {
+    boolean pOver = over;
+    isOver();
+    
+    // first frame over
+    if( !pOver && over )
+      overTime = millis();
+    
+    // last frame over
+    if( pOver && !over )
+      overTime = -1;
+      
+    if( over && millis() - overTime > 500 )
+      popUp = true;
+    else
+      popUp = false;
+  }
+  
+  
+  
+  void draw()
+  {
+    // Draw label
+    textSize(14);
+    textAlign(align);
+    text( label, 5, height-25);
+  }
+  
+  
+}
 
 
 class Slider

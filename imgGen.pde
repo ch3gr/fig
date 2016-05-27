@@ -15,10 +15,11 @@ JavaScript javascript;
 
 
 
-// UI buttons
+// UI buttons and info
 HashMap UI_Simple = new HashMap();
 HashMap UI_Explore = new HashMap();
 HashMap UI_Common = new HashMap();
+HashMap UI_Info = new HashMap();
 
 
 
@@ -32,11 +33,11 @@ VImage ImgDate = new VImage(30,30,3);
 
 
 PImage[] ImgFile = new PImage[4];
-PGraphics Overlay;
+
 
 int HUI_lastId = uivars.id.length();
 
-//int Mill = 0;
+
 
 
 boolean AutoMode = false;
@@ -74,8 +75,6 @@ void setup ()
   frameRate(60);
 
 
-  Overlay = createGraphics(width, height, JAVA2D);
-  Overlay.colorMode(RGB,1);
 
 // @pjs preload must be used to preload the image 
 /* @pjs preload="georgios.jpg"; */
@@ -182,6 +181,15 @@ void setup ()
   
   UI_Common.get("explore").click = Explore;
   update_UI();
+  
+  
+  
+  ///////////////////////////////////////////////////////////////
+  // UI_Info
+  
+  UI_Info.put( "sliderA", new Info("?", 5, height-25, 50, 15, "??", LEFT) );
+  UI_Info.put( "sliderB", new Info("?", width-5, height-25, 50, 15, "??", RIGHT) );
+  
 }
 
 
@@ -221,10 +229,6 @@ void draw()
   
   background(0.18);
   
-//  Overlay.beginDraw();
-//  Overlay.fill(1,0,0);
-  Overlay.background(0,0);
-//  Overlay.endDraw();
   
   smooth();
   pushMatrix();
@@ -249,8 +253,7 @@ void draw()
   
   
   
-  //// Canvas UI
-  ui_common();
+
   
   
   
@@ -259,9 +262,23 @@ void draw()
   else
     ui_simple();
   
+  //// Canvas UI
+  ui_common();
+  
+  // draw popUps
+  
+
   
   
-  image(Overlay,0,0);
+  
+  Iterator i = UI_Info.entrySet().iterator();  // Get an iterator
+  while (i.hasNext())
+  {
+    Map.Entry me = (Map.Entry)i.next();
+    if( me.getValue().popUp )
+      popUp( Img.id );
+  }
+  
   
   
 
@@ -282,12 +299,12 @@ void draw()
   
   
   //// Temp text
-  /*
+  
   textAlign(LEFT, BOTTOM);
   fill(color(1,0,0));
   textSize(18);
-  //text(frameRate, 50, 50);
-  
+  text(frameRate, 50, 50);
+  /*
   
   ////////////////////////////////////
   // MUTHERFUCKING BRAINFUCK!!!!
@@ -573,9 +590,8 @@ void mouseReleased()
 TO DO
 
 touch screen buttons?
-
-Finish layout/graphics
-hardcode text coord
+Finish layout/graphics/fonts!?!
+hardcode text coord?
 About
 
 

@@ -29,17 +29,18 @@ class Button
   boolean over = false;
   boolean down = false;
   boolean click = false;
+  boolean popUp = false;
   boolean toggle;
   int downTime;
   int overTime;
   
   String label;
-  String msg;
+  String info;
 
   Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy)
   {
     label = ilabel;
-    msg = "nothing to see here";
+    info = "nothing to see here";
     x = ix;
     y = iy;
     sx = isx;
@@ -52,10 +53,10 @@ class Button
     overTime = -1;
   }
   
-  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, String imsg)
+  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, String iinfo)
   {
     label = ilabel;
-    msg = imsg;
+    info = iinfo;
     x = ix;
     y = iy;
     sx = isx;
@@ -160,6 +161,12 @@ class Button
        click = !click;
     }
     
+    
+    // Pop up message
+    if( over && millis() - overTime > 500 )
+      popUp = true;
+    else
+      popUp = false;
   }
   
   
@@ -183,30 +190,6 @@ class Button
     textAlign(CENTER, CENTER);
     text(label, x+sx/2, y+sy/2);
     
-    // Pop up message
-    if( over && millis() - overTime > 500 )
-    {
-      String hor, ver;
-      if( mouseX > width/2 )
-        hor = RIGHT;
-      else
-        hor = LEFT;
-      
-      if( mouseY < 20 )
-        ver = TOP;
-      else
-        hour = BOTTOM;
-       
-      Overlay.beginDraw();
-      Overlay.textAlign(hor, ver);
-      Overlay.textSize(16);
-      Overlay.fill(0);
-      Overlay.text( msg, mouseX+1, mouseY+1 );
-      Overlay.fill(1);
-      Overlay.text( msg, mouseX, mouseY );
-      Overlay.endDraw();
-      
-    }
     
     
     // Debug info
