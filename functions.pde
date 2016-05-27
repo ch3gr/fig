@@ -3,15 +3,13 @@
 void prev()
 {
   Img.offset(-Step);
-  update_UI();
-  resetSamples(-1);
+  Sample = -1;
   HUI_Update = true;
 }
 void next()
 {
   Img.offset(Step);
-  update_UI();
-  resetSamples(-1);
+  Sample = -1;
   HUI_Update = true;
 }
 
@@ -111,19 +109,17 @@ void showValues()
   Values = !Values;
 }
 
-void randomize()
+void randomImg()
 {
-  resetSamples(-1);
   Img.randomise();
-  update_UI();
+  Sample = -1;
   HUI_Update = true;
 }
 
 void clearCanvas()
 {
-  resetSamples(-1);
   Img.clear();
-  update_UI();
+  Sample = -1;
   HUI_Update = true;
 }
 
@@ -142,416 +138,21 @@ void sample(int inSample)
 void slider( float value)
 {
   Img.setIdFromRange( value );
-  update_UI();
   HUI_Update = true;
   
   if(Sample > -1)
-    resetSamples(-1);
+    Sample = -1;
 }  
 
 
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void update_UI()
+void setIdFromTextField( String inId )
 {
-  
-  ////////////////////////////////////////////////////
-  // Calculate and Update sliders
-  // integer that holds id/idLimit * 1000000
-  bigInt mil = bigInt(Img.id.multiply(1000000)).divide(Img.idLimit.multiply(1));
-  float portion = mil.toString();
-  portion /= 1000000.0;
-  
-  // Update HTML slider
-  if(javascript!=null)
-  {
-    boolean explore = UI_Common.get("explore").click;
-    boolean about = UI_Common.get("about").click;
-    
-    // Prefix id with ImgAttr -- Nah
-    //id = str(Img.w)+":"+str(Img.w)+":"+str(Img.cDepth)+"|";
-    String id = Img.getId();
-    
-    
-    javascript.HUI_updateId(id);
-  }
-
-  // Update processing slider
-  UI_Explore.get("slider").v = portion;
+  Img.setId(inId);
+  Img.setPixFromId();
 }
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
-// UI SETS
-////////////////////////////////////////////////////
-
-
-
-
-void ui_common()
-{
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // Loop through all the buttons
-  Iterator i = UI_Common.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-    me.getValue().draw();
-  }
-  
-  // draw popUps, after everything else as overlay
-  Iterator i = UI_Common.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    if( me.getValue().popUp )
-      popUp( me.getValue().info );
-  }
-  
-  
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  boolean lastExplore = Explore;
-  boolean lastAbout = About;
-  
-  Explore = UI_Common.get("explore").click;
-  About = UI_Common.get("about").click;
-  
-  if( lastExplore != Explore || lastAbout != About )
-    HUI_updateDivs( Explore, About );
-  
-    
-}
-
-
-
-
-
-void ui_simple()
-{
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // No need to iterate through the hashtable - it's just one
-  UI_Simple.get("next").update();
-  UI_Simple.get("next").draw();
-  if( UI_Simple.get("next").popUp )
-    popUp( UI_Simple.get("next").info );
-  
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  if( UI_Simple.get("next").click )
-  {
-    Img.offset(Step);
-    update_UI();
-    
-    if(Sample > -1)
-      resetSamples(-1);
-  }
-}
-
-
-
-
-
-
-
-
-
-void ui_explore()
-{
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // Loop through all the buttons
-  Iterator i = UI_Explore.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-    me.getValue().draw();
-  }
-  
-  
-  // Print some info
-  String info;
-  textSize(20);
-  textAlign(CENTER, CENTER);
-  fill(0.8);
-  int xc, yc;
-  
-  xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
-  yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
-  text( compactBig(Step), xc, yc);
-  
-  yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
-  xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
-  text( Img.w, xc, yc);
-  xc = (UI_Explore.get("yUp").x + UI_Explore.get("yUp").sx/2);
-  text( Img.h, xc, yc);
-  xc = (UI_Explore.get("cUp").x + UI_Explore.get("cUp").sx/2);
-  text( Img.cDepth, xc, yc);
-  
-  
-  
-  textSize(18);
-  textAlign(LEFT, BOTTOM);
-  text( compactBig(Img.idLimit.add(1)), 435, 325);
-  textAlign(RIGHT, BOTTOM);
-  text( "combinations", 965, 325);
-  
-  
-  
-  
-  
-  
-  // Slider range
-  /*
-  UI_Info.get("sliderA").update();
-  UI_Info.get("sliderA").label = duration(Img.id);
-  UI_Info.get("sliderA").draw();
-  */
-  
-  
-  
-  textSize(14);
-  textAlign(LEFT, BOTTOM);
-  info = duration(Img.id);
-  text( info, 5, height-25);
-  
-  info = duration(Img.idLimit.minus(Img.id));
-  textAlign(RIGHT, BOTTOM);
-  text( info, width-5, height-25);
-  
-  
-  
-  // draw popUps, after everything else as overlay
-  Iterator i = UI_Explore.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    if( me.getValue().popUp )
-      popUp( me.getValue().info );
-  }
-  
-  
-  
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  if( UI_Explore.get("prev").click )
-  {
-    Img.offset(-Step);
-    update_UI();
-    resetSamples(-1);
-  }
-  if( UI_Explore.get("next").click )
-  {
-    Img.offset(Step);
-    update_UI();
-    resetSamples(-1);
-  }
-  
-  
-  if( UI_Explore.get("incUp").click )
-  {
-    Step = Step.multiply(2);
-    HUI_Update = true;
-    
-  }
-  if( UI_Explore.get("incDown").click )
-  {
-    Step = Step.divide(2);
-    if( Step.lesser(1) )
-      Step = bigInt(1);
-    
-    HUI_Update = true;
-  }
-  
-  
-  
-  if( UI_Explore.get("rUp").click )
-  {
-    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
-    applySample(Sample);
-  }
-  if( UI_Explore.get("rDown").click )
-  {
-    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
-    applySample(Sample);
-  }
-  
-  
-  if( UI_Explore.get("xUp").click )
-  {
-    Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
-    applySample(Sample);
-  }
-  if( UI_Explore.get("xDown").click )
-  {
-    Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
-    applySample(Sample);
-  }
-    
-  if( UI_Explore.get("yUp").click )
-  {
-    
-    if( Sample > -1 )
-    {
-      Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
-      applySample(Sample);
-    }
-    else
-      Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
-  }
-  if( UI_Explore.get("yDown").click )
-  {
-    if( Sample > -1 )
-    {
-      Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
-      applySample(Sample);
-    }
-    else
-      Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
-  }
-    
-  if( UI_Explore.get("cUp").click )
-  {
-    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-    applySample(Sample);
-  }
-  if( UI_Explore.get("cDown").click )
-  {
-    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
-    applySample(Sample);
-  }
-    
-  /*
-  if( UI_Explore.get("values").click )
-    Values = true;
-  else
-    Values = false;
-  */
-  
-  if( UI_Explore.get("random").click )
-  {
-    resetSamples(-1);
-    Img.randomise();
-    update_UI();
-  }
-  if( UI_Explore.get("clear").click )
-  {
-    resetSamples(-1);
-    Img.clear();
-    update_UI();
-  }
   
 
 
-  if( UI_Explore.get("slider").changed )
-  {
-    Img.setIdFromRange( UI_Explore.get("slider").v );
-    update_UI();
-    HUI_Update = true;
-    
-    if(Sample > -1)
-      resetSamples(-1);
-  }  
-  
-  
-  
-  /*
-  // Deal with the multiple samples - ma ti poutsa!!!
-  boolean pressed = false;
-  for(int s=0; s<ImgFile.length(); s++)  
-  {
-    if( UI_Explore.get("sample"+str(s)).click )
-    {
-      pressed = true;
-      // skip currently pressed button
-      if( s==Sample )
-        continue;
-
-      resetSamples(s);
-      applySample(s);
-    }
-  }
-  // reset global if non is pressed
-  if(!pressed)
-    Sample = -1;
-  */
-  ////////////////////
-  
-  
-  
-  /*
-  // Sto telos to auto gia na to kanoun over-ride oi ypolipes leitourgies (samples, random, slider)
-  if( UI_Explore.get("auto").click )
-  {
-    Img.offset(Step);
-    update_UI();
-    
-    resetSamples(-1);
-  }
-  */
-  
-  
-
-}
 
 
 
@@ -574,22 +175,10 @@ void applySample(int sample)
   if( sample>-1 )
   {
     ImgUser.setIdFromImg(ImgFile[sample-1]);
-    update_UI();
   }
 }
 
-void resetSamples(int exclude)
-{
-  for(int i=0; i<ImgFile.length(); i++)
-  {
-    if( i == exclude )
-      continue;
-    else
-      UI_Explore.get("sample"+str(i)).click = false;
-  }
-  
-  Sample = exclude;
-}
+
 
 
 

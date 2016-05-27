@@ -29,7 +29,7 @@ function numbersOnly(elem) {
   }
   elem.onkeyup=function(e) {
     this.value=this.value.replace(/[^\d]/g,'');
-    uivars.id = this.value;
+    Processing.getInstanceById("imgGen").setIdFromTextField(this.value);
   }
 };
 

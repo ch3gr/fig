@@ -1,9 +1,9 @@
 //  html javascript functions
-interface JavaScript {
-  void HUI_updateId(String theId);
-  void HUI_updateDivs( boolean explore, boolean about );
-  void HUI_debug(String text);
-}
+//interface JavaScript {
+//  void HUI_updateId(String theId);
+//  void HUI_updateDivs( boolean explore, boolean about );
+//  void HUI_debug(String text);
+//}
 
 void bindJavascript(JavaScript js) {
   javascript = js;
@@ -14,12 +14,6 @@ JavaScript javascript;
 
 
 
-
-// UI buttons and info
-HashMap UI_Simple = new HashMap();
-HashMap UI_Explore = new HashMap();
-HashMap UI_Common = new HashMap();
-HashMap UI_Info = new HashMap();
 
 
 
@@ -35,7 +29,7 @@ VImage ImgDate = new VImage(30,30,3);
 PImage[] ImgFile = new PImage[4];
 
 
-int HUI_lastId = uivars.id.length();
+//int HUI_lastId = uivars.id.length();
 
 
 
@@ -53,7 +47,7 @@ var Step = bigInt(1);
 
 
 
-int FrameSize = 350;
+int FrameSize = 700;
 
 
 
@@ -96,101 +90,6 @@ void setup ()
   else
     Img = ImgUser;
     
-    
-    
-    
-    
-  ///////////////////////////////////////////////////////////////
-  // UIs
-
-  ///////////////////////////////////////////////////////////////
-  // UI_Simple
-  int px = 750;
-  int py = 0;
-  int pw = 300;
-  int bh = 50;
-  int gap = 5;
-  
-
-
-  UI_Simple.put( "next", new Button("next", false, px, py, width-px, bh*2, "Next iteration") );
-  
-  
-
-  ///////////////////////////////////////////////////////////////
-  // UI_Explore
-  px = 400;
-  py = 0;
-  pw = 300;
-  bh = 50;
-  gap = 5;
-  
-  
-  UI_Explore.put( "prev", new Button("-", false, px, py, pw/3-gap, bh*2, "Previous iteration") );
-  UI_Explore.put( "next", new Button("+", false, px+2*(pw/3)+gap, py, pw/3-gap, bh*2, "Next iteration") );
-  
-  UI_Explore.put( "incUp", new Button("incUp", false, px+(pw/3), py, pw/3, (bh*0.6), "Double the iteration step") );
-  UI_Explore.put( "incDown", new Button("incDown", false, px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), "Half the iteration step") );
-  
-  py += bh*3;
-  int px1 = px + pw/6; 
-  int px2 = px + pw/2;
-  int px3 = px + pw*5.0/6.0;
-  int bs = 35;
-  UI_Explore.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, "Increase image resolution by 1 pixel in X axis") );
-  UI_Explore.put( "rUp", new Button("+", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, "Increase image resolution by 1 pixel in both axis") );
-  UI_Explore.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, "Increase image resolution by 1 pixel in Y axis") );
-  UI_Explore.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, "Increase color depth by 1 color") );
-  py += 80;
-  UI_Explore.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, "Decrease image resolution by 1 pixel in X axis") );
-  UI_Explore.put( "rDown", new Button("-", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, "Decrease image resolution by 1 pixel in both axis") );
-  UI_Explore.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, "Decrease image resolution by 1 pixel in Y axis") );
-  UI_Explore.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, "Decrease color depth by 1 color") );
-  
-  py = height - bh*2;
-  
-  py -= bh*1 + gap ;
-  int bs = 4;
-  float bw = (pw+gap)/float(bs);
-  for( int b=0; b<bs; b++ )
-    UI_Explore.put( ("sample"+str(b)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, "Sample image") );
-  
-  py -= bh + gap;
-  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, "Randomize canvas") );
-  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "Clear canvas") );
-  
-  
-  
-  
-  py -= bh + gap;
-  UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, "Auto increment at 60 about iterations per second") );
-  UI_Explore.put( "values", new Button("values", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "Display color values") );
-  
-  UI_Explore.put( "slider", new Slider(0,height-20-gap, width, 20) );
-
-  
-  
-  ///////////////////////////////////////////////////////////////
-  // UI_Common
-  
-  
-  py = height - bh*2;
-  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-(gap/2), bh, "Explore mode") );
-  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "About ImgGen") );
-  
-  
-  
-  UI_Common.get("explore").click = Explore;
-  update_UI();
-  
-  
-  
-  ///////////////////////////////////////////////////////////////
-  // UI_Info
-  
-  UI_Info.put( "sliderA", new Info("?", 5, height-25, 50, 15, "??", LEFT) );
-  UI_Info.put( "sliderB", new Info("?", width-5, height-25, 50, 15, "??", RIGHT) );
-  
 }
 
 
@@ -216,14 +115,9 @@ void draw()
   
   if( AutoMode )
   {
-    //ImgDate.step();
-    
-    update_UI();
     Img.offset(Step);
+    Sample = -1;
     HUI_Update = true;
-    
-    
-    //Img.setIdFromDate( RefTime );
   }
   
     
@@ -257,46 +151,20 @@ void draw()
   
   
   
-
-  
-  
-  
-  if( UI_Common.get("explore").click )
-    ui_explore();
-  else
-    ui_simple();
-  
-  //// Canvas UI
-  ui_common();
-  
-  // draw popUps
-  
-
-  
-  
-  /*
-  Iterator i = UI_Info.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    if( me.getValue().popUp )
-      popUp( Img.id );
-  }
-  */
-  
   
 
   //// HTML UI to Processing
-  
+  /*
   // when the input chages
   if( HUI_lastId != uivars.id )
   {
     HUI_lastId = uivars.id;
     Img.setId(uivars.id);
     Img.setPixFromId();
-    update_UI();
   }
-
+  */
+  
+  //// update HTML UI if needed
   if( HUI_Update )
   {
     HUI_updateImgInfo( compactBig(Step), Img.w, Img.h, Img.cDepth, compactBig(Img.idLimit.add(1)) );
@@ -317,93 +185,9 @@ void draw()
   text(frameRate, 50, 500);
   text("AutoMode: "+AutoMode, 50, 530);
   text("Sample: "+Sample, 50, 560);
-  /*
-  
-  ////////////////////////////////////
-  // MUTHERFUCKING BRAINFUCK!!!!
-  bigInt a = bigInt(Img.id);
-  
-  text( a.toString(), 50, 100);
-  String aa = a.toString(Img.cDepth);
-  text( aa, 50, 130);
-  
-  String out = "";
-  for(int i=0; i<aa.length(); i++)
-  {
-    if( aa[i] != "<" )
-    {
-      out += bigInt(aa[i], Img.cDepth);
-      out += "_";
-    }
-    else
-    {
-      i++;
-      while( aa[i] != ">" )
-       out += aa[i++];
-      
-      out += "_";
-    }
-  }
-  text( out, 50, 160);
-  text(Img.msg, 50,200);
-  
-  
-  bigInt b = bigInt(50);
-  String bb = b.toString(12);
-  bigInt c = bigInt(bb,100);
-  text( bigInt(36).toString(100), 300, 100);
-  
-  text( bigInt(36).toString(100).length(), 300, 130);
-  ////////////////////////////////////
-  ////////////////////////////////////
-  */
-  
-  
-  //textAlign(RIGHT, TOP);
-  //text( str(mouseX)+":"+str(mouseY+5), mouseX-5, mouseY+5);
-  
-  
-  //text(Sample, 700, 330);
-  /*
-  float slider = uivars.slider;
-  textSize(12);
-  fill(1,1,1);
-  text(slider, 10,510);
-  text(Img.idLimit, 10,520);
-  text("4", 10,530);
-  text(Img.msg, 10,540);
-  
-  text(duration(Img.id), 10, 560);
-  text(duration(Img.idLimit.minus(Img.id)), 200, 560);
-  
-  
-  fill(color(0.7));
-  textSize(14);
-  
-  textSize(11);
-  string idStr = Img.getId();
-  text("id              : " +idStr, 10, 10);
-  text("id length  : " + idStr.length(), 10, 20);
-  text("framerate : " +floor(frameRate), 10, 30);
-  text("rate : " +floor(1000.0/(millis()-Mill)), 100, 30);
-  Mill = millis();
-  text("input      : " +uivars.id, 10, 40);
-  
-  
-  text(Img.estimateComputeTime(), 10, 680);
-  if(AutoMode)
-    text("Since :" + RefTime, 200, 30);
-    
-    
-  text( "Img         : "+Img.getId(), 10, 700);
-  text( "ImgUser : "+ImgUser.getId() , 10, 710);
-  text( "ImgDate : "+ImgDate.getId() , 10, 720);
-  
-  text( "Img         : "+Img.msg, 300, 700);
-  text( "ImgUser : "+ImgUser.msg, 300, 710);
-  text( "ImgDate : "+ImgDate.msg, 300, 720);  
-  */
+  text("Msg: "+Img.msg, 50, 590);
 
+  
 }
 
 
@@ -443,24 +227,20 @@ void keyPressed()
   if(key=='c')
   {
     Img.clear();
-    update_UI();
   }
     
   if(key=='r')
   {
     Img.randomise();
-    update_UI();
   }
 
   if(key=='s')
   {
     Img.offset(1);
-    update_UI();
   }
   if(key=='S')
   {
     Img.offset(-1);
-    update_UI();
   }
   
   if(key=='d')
@@ -506,8 +286,7 @@ void keyPressed()
     
   if(key=='i')
   {
-    ImgUser.setId(uivars.id);
-    update_UI();
+    //ImgUser.setId(uivars.id);
   }
   if(key=='p')
   {
@@ -532,10 +311,6 @@ void keyPressed()
     var t = bigInt( Img.id );
     //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
   }
-  if(key=='u')
-  {
-    update_UI();
-  }
 }
 
 
@@ -546,64 +321,6 @@ void keyPressed()
 
 
 
-
-
-/*
-void checkButtons()
-{
-  Iterator i;
-  
-  i = UI_Common.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-  }
-  
-  if( Explore )
-  {
-    i = UI_Explore.entrySet().iterator();  // Get an iterator
-    while (i.hasNext())
-    {
-      Map.Entry me = (Map.Entry)i.next();
-      me.getValue().update();
-      me.getValue().draw();
-    }
-  }
-  else
-  {
-    i = UI_Simple.entrySet().iterator();  // Get an iterator
-    while (i.hasNext())
-    {
-      Map.Entry me = (Map.Entry)i.next();
-      me.getValue().update();
-      me.getValue().draw();
-    }
-  }
-}
-
-void mouseClicked()
-{
-  checkButtons();
-}
-void mouseDragged()
-{
-  checkButtons();
-}
-void mouseMoved()
-{
-  checkButtons();
-}
-void mousePressed()
-{
-  checkButtons();
-}
-void mouseReleased()
-{
-  checkButtons();
-}
-
-*/
 
 
 
@@ -612,7 +329,7 @@ void mouseReleased()
 /*
 TO DO
 
-touch screen buttons?
+
 Finish layout/graphics/fonts!?!
 hardcode text coord?
 About
@@ -625,6 +342,7 @@ setIdFromDate()
 
 
 DONE:
+touch screen buttons?
 Slider YES!
 fix bug with picture not updating slider
 non square ratio image
@@ -648,231 +366,18 @@ prefix ID with canvas resolution
 Bug: breaks in certain colorDepths (perfectly fits the step increment)
 
 */
-// Global that holds whether and which sample image is clicked 
-
-
-// Global to track if one button is pressed, to prevent more at any one time
-boolean OneButtonClicked = false;
-
-// Need this global to check if mouse is over the sketch
-boolean MouseOver = true;
-void mouseOver()
-{
-  MouseOver = true;
-}
-void mouseOut()
-{
-  MouseOver = false;
-  mousePressed = false;
-}
-
-
-
-// http://processingjs.org/learning/topic/buttons/
-// by Casey Reas and Ben Fry
-
-class Button
-{
-  int x, y, sx, sy;
-  color baseC, overC, downC;
-  
-  boolean over = false;
-  boolean down = false;
-  boolean click = false;
-  boolean popUp = false;
-  boolean toggle;
-  int downTime;
-  int overTime;
-  
-  String label;
-  String info;
-
-  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy)
-  {
-    label = ilabel;
-    info = "nothing to see here";
-    x = ix;
-    y = iy;
-    sx = isx;
-    sy = isy;
-    baseC = color(0.1,0.1,0.1);
-    overC = color(0.15,0.15,0.15);
-    downC = color(0.8,0.8,0.8);
-    toggle = itoggle;
-    downTime = -1;
-    overTime = -1;
-  }
-  
-  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, String iinfo)
-  {
-    label = ilabel;
-    info = iinfo;
-    x = ix;
-    y = iy;
-    sx = isx;
-    sy = isy;
-    baseC = color(0.1,0.1,0.1);
-    overC = color(0.15,0.15,0.15);
-    downC = color(0.8,0.8,0.8);
-    toggle = itoggle;
-    downTime = -1;
-    overTime = -1;
-  }
-
-
-  boolean isOver() 
-  {
-    if ( !OneButtonClicked && MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
-    {
-      over = true;
-      return true;
-    }
-    else
-    {
-      over = false;
-      return false;
-    }
-  }
-  
-  boolean isDown()
-  {
-    if( !down && mousePressed && over )
-    {
-      down = true;
-      OneButtonClicked = true;
-      return true;
-    }
-    // Keep it down even not over
-    if( down && !mousePressed )
-    {
-      down = false;
-      OneButtonClicked = false;
-      return false;
-    }
-    
-    // Auto release when not over
-    /*
-    else
-    {
-      down = false;
-      return false;
-    }
-    */
-  }
-  
-  
-  
-  
-  void update() 
-  {
-    boolean pDown = down;
-    boolean pOver = over;
-    
-    isOver();
-    isDown();
-    
-    
-    
-    // first frame over
-    if( !pOver && over )
-      overTime = millis();
-    
-    // last frame over
-    if( pOver && !over )
-      overTime = -1;
-
-
-    if( !toggle )
-    {
-      click = false;
-
-      // first frame down
-      if( !pDown && down )
-      {
-        click = true;
-        downTime = millis();
-      }
-      
-      // continious press
-      if( downTime>-1 && millis()-downTime > 500 )
-        click = true;
-      
-      // last frame down
-      if( pDown && !down )
-      {
-        click = false;
-        downTime = -1;
-      }
-      
-    }
-    else
-    {
-     if( !pDown && down )
-       click = !click;
-    }
-    
-    
-    // Pop up message
-    if( over && millis() - overTime > 500 )
-      popUp = true;
-    else
-      popUp = false;
-  }
-  
-  
-  void draw() 
-  {
-    color c; 
-    if( down || click )
-      c = downC;
-    else if ( over )
-      c = overC;
-    else
-      c = baseC;
- 
-    stroke(0.2,0.2,0.2);
-    strokeWeight(2);
-    fill(c);
-    rect(x, y, sx, sy);
-    
-    fill(0.2,0.2,0.2);
-    textSize(sy* 0.75);
-    textAlign(CENTER, CENTER);
-    text(label, x+sx/2, y+sy/2);
-    
-    
-    
-    // Debug info
-    /*
-    fill(0.8,0,0);
-    textSize(10);
-    textAlign(LEFT, TOP);
-    text(x, x, y);
-    text(down, x, y+sy/2);
-    text(click, x, y+sy-10);
-    text(overTime, x, y+sy/4);
-    text(downTime, x+sx*0.75, y+sy/4);
-    */
-    
-  }
-
-}
-
-
 // UI button related functions
 
 void prev()
 {
   Img.offset(-Step);
-  update_UI();
-  resetSamples(-1);
+  Sample = -1;
   HUI_Update = true;
 }
 void next()
 {
   Img.offset(Step);
-  update_UI();
-  resetSamples(-1);
+  Sample = -1;
   HUI_Update = true;
 }
 
@@ -972,19 +477,17 @@ void showValues()
   Values = !Values;
 }
 
-void randomize()
+void randomImg()
 {
-  resetSamples(-1);
   Img.randomise();
-  update_UI();
+  Sample = -1;
   HUI_Update = true;
 }
 
 void clearCanvas()
 {
-  resetSamples(-1);
   Img.clear();
-  update_UI();
+  Sample = -1;
   HUI_Update = true;
 }
 
@@ -1003,416 +506,21 @@ void sample(int inSample)
 void slider( float value)
 {
   Img.setIdFromRange( value );
-  update_UI();
   HUI_Update = true;
   
   if(Sample > -1)
-    resetSamples(-1);
+    Sample = -1;
 }  
 
 
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void update_UI()
+void setIdFromTextField( String inId )
 {
-  
-  ////////////////////////////////////////////////////
-  // Calculate and Update sliders
-  // integer that holds id/idLimit * 1000000
-  bigInt mil = bigInt(Img.id.multiply(1000000)).divide(Img.idLimit.multiply(1));
-  float portion = mil.toString();
-  portion /= 1000000.0;
-  
-  // Update HTML slider
-  if(javascript!=null)
-  {
-    boolean explore = UI_Common.get("explore").click;
-    boolean about = UI_Common.get("about").click;
-    
-    // Prefix id with ImgAttr -- Nah
-    //id = str(Img.w)+":"+str(Img.w)+":"+str(Img.cDepth)+"|";
-    String id = Img.getId();
-    
-    
-    javascript.HUI_updateId(id);
-  }
-
-  // Update processing slider
-  UI_Explore.get("slider").v = portion;
+  Img.setId(inId);
+  Img.setPixFromId();
 }
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
-// UI SETS
-////////////////////////////////////////////////////
-
-
-
-
-void ui_common()
-{
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // Loop through all the buttons
-  Iterator i = UI_Common.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-    me.getValue().draw();
-  }
-  
-  // draw popUps, after everything else as overlay
-  Iterator i = UI_Common.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    if( me.getValue().popUp )
-      popUp( me.getValue().info );
-  }
-  
-  
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  boolean lastExplore = Explore;
-  boolean lastAbout = About;
-  
-  Explore = UI_Common.get("explore").click;
-  About = UI_Common.get("about").click;
-  
-  if( lastExplore != Explore || lastAbout != About )
-    HUI_updateDivs( Explore, About );
-  
-    
-}
-
-
-
-
-
-void ui_simple()
-{
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // No need to iterate through the hashtable - it's just one
-  UI_Simple.get("next").update();
-  UI_Simple.get("next").draw();
-  if( UI_Simple.get("next").popUp )
-    popUp( UI_Simple.get("next").info );
-  
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  if( UI_Simple.get("next").click )
-  {
-    Img.offset(Step);
-    update_UI();
-    
-    if(Sample > -1)
-      resetSamples(-1);
-  }
-}
-
-
-
-
-
-
-
-
-
-void ui_explore()
-{
-  ////////////////////////////////////////////////////
-  // RENDER UI  
-  
-  // Loop through all the buttons
-  Iterator i = UI_Explore.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    me.getValue().update();
-    me.getValue().draw();
-  }
-  
-  
-  // Print some info
-  String info;
-  textSize(20);
-  textAlign(CENTER, CENTER);
-  fill(0.8);
-  int xc, yc;
-  
-  xc = ((UI_Explore.get("prev").x + UI_Explore.get("prev").sx/2) + (UI_Explore.get("next").x + UI_Explore.get("next").sx/2))/2;
-  yc = ((UI_Explore.get("incUp").y + UI_Explore.get("incUp").sy/2) + (UI_Explore.get("incDown").y + UI_Explore.get("incDown").sy/2))/2;
-  text( compactBig(Step), xc, yc);
-  
-  yc = ((UI_Explore.get("xUp").y + UI_Explore.get("xUp").sy/2) + (UI_Explore.get("xDown").y + UI_Explore.get("xDown").sy/2))/2;
-  xc = (UI_Explore.get("xUp").x + UI_Explore.get("xUp").sx/2);
-  text( Img.w, xc, yc);
-  xc = (UI_Explore.get("yUp").x + UI_Explore.get("yUp").sx/2);
-  text( Img.h, xc, yc);
-  xc = (UI_Explore.get("cUp").x + UI_Explore.get("cUp").sx/2);
-  text( Img.cDepth, xc, yc);
-  
-  
-  
-  textSize(18);
-  textAlign(LEFT, BOTTOM);
-  text( compactBig(Img.idLimit.add(1)), 435, 325);
-  textAlign(RIGHT, BOTTOM);
-  text( "combinations", 965, 325);
-  
-  
-  
-  
-  
-  
-  // Slider range
-  /*
-  UI_Info.get("sliderA").update();
-  UI_Info.get("sliderA").label = duration(Img.id);
-  UI_Info.get("sliderA").draw();
-  */
-  
-  
-  
-  textSize(14);
-  textAlign(LEFT, BOTTOM);
-  info = duration(Img.id);
-  text( info, 5, height-25);
-  
-  info = duration(Img.idLimit.minus(Img.id));
-  textAlign(RIGHT, BOTTOM);
-  text( info, width-5, height-25);
-  
-  
-  
-  // draw popUps, after everything else as overlay
-  Iterator i = UI_Explore.entrySet().iterator();  // Get an iterator
-  while (i.hasNext())
-  {
-    Map.Entry me = (Map.Entry)i.next();
-    if( me.getValue().popUp )
-      popUp( me.getValue().info );
-  }
-  
-  
-  
-  
-  ////////////////////////////////////////////////////
-  // Button actions
-  
-  if( UI_Explore.get("prev").click )
-  {
-    Img.offset(-Step);
-    update_UI();
-    resetSamples(-1);
-  }
-  if( UI_Explore.get("next").click )
-  {
-    Img.offset(Step);
-    update_UI();
-    resetSamples(-1);
-  }
-  
-  
-  if( UI_Explore.get("incUp").click )
-  {
-    Step = Step.multiply(2);
-    HUI_Update = true;
-    
-  }
-  if( UI_Explore.get("incDown").click )
-  {
-    Step = Step.divide(2);
-    if( Step.lesser(1) )
-      Step = bigInt(1);
-    
-    HUI_Update = true;
-  }
-  
-  
-  
-  if( UI_Explore.get("rUp").click )
-  {
-    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
-    applySample(Sample);
-  }
-  if( UI_Explore.get("rDown").click )
-  {
-    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
-    applySample(Sample);
-  }
-  
-  
-  if( UI_Explore.get("xUp").click )
-  {
-    Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
-    applySample(Sample);
-  }
-  if( UI_Explore.get("xDown").click )
-  {
-    Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
-    applySample(Sample);
-  }
-    
-  if( UI_Explore.get("yUp").click )
-  {
-    
-    if( Sample > -1 )
-    {
-      Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
-      applySample(Sample);
-    }
-    else
-      Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
-  }
-  if( UI_Explore.get("yDown").click )
-  {
-    if( Sample > -1 )
-    {
-      Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
-      applySample(Sample);
-    }
-    else
-      Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
-  }
-    
-  if( UI_Explore.get("cUp").click )
-  {
-    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-    applySample(Sample);
-  }
-  if( UI_Explore.get("cDown").click )
-  {
-    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
-    applySample(Sample);
-  }
-    
-  /*
-  if( UI_Explore.get("values").click )
-    Values = true;
-  else
-    Values = false;
-  */
-  
-  if( UI_Explore.get("random").click )
-  {
-    resetSamples(-1);
-    Img.randomise();
-    update_UI();
-  }
-  if( UI_Explore.get("clear").click )
-  {
-    resetSamples(-1);
-    Img.clear();
-    update_UI();
-  }
   
 
 
-  if( UI_Explore.get("slider").changed )
-  {
-    Img.setIdFromRange( UI_Explore.get("slider").v );
-    update_UI();
-    HUI_Update = true;
-    
-    if(Sample > -1)
-      resetSamples(-1);
-  }  
-  
-  
-  
-  /*
-  // Deal with the multiple samples - ma ti poutsa!!!
-  boolean pressed = false;
-  for(int s=0; s<ImgFile.length(); s++)  
-  {
-    if( UI_Explore.get("sample"+str(s)).click )
-    {
-      pressed = true;
-      // skip currently pressed button
-      if( s==Sample )
-        continue;
-
-      resetSamples(s);
-      applySample(s);
-    }
-  }
-  // reset global if non is pressed
-  if(!pressed)
-    Sample = -1;
-  */
-  ////////////////////
-  
-  
-  
-  /*
-  // Sto telos to auto gia na to kanoun over-ride oi ypolipes leitourgies (samples, random, slider)
-  if( UI_Explore.get("auto").click )
-  {
-    Img.offset(Step);
-    update_UI();
-    
-    resetSamples(-1);
-  }
-  */
-  
-  
-
-}
 
 
 
@@ -1435,22 +543,10 @@ void applySample(int sample)
   if( sample>-1 )
   {
     ImgUser.setIdFromImg(ImgFile[sample-1]);
-    update_UI();
   }
 }
 
-void resetSamples(int exclude)
-{
-  for(int i=0; i<ImgFile.length(); i++)
-  {
-    if( i == exclude )
-      continue;
-    else
-      UI_Explore.get("sample"+str(i)).click = false;
-  }
-  
-  Sample = exclude;
-}
+
 
 
 
@@ -1756,250 +852,6 @@ universe : 14 billion years
 
 
 
-class Info
-{
-  int x, y, sx, sy;
-  
-  boolean over = false;
-  boolean popUp = false;
-  int overTime;
-  
-  String label;
-  String info;
-  String align;
-
-  Info(String ilabel, int ix, int iy, int isx, int isy, String iinfo, String ialign)
-  {
-    label = ilabel;
-    info = iinfo;
-    align = ialign;
-    x = ix;
-    y = iy;
-    sx = isx;
-    sy = isy;
-    overTime = -1;
-  }
-
-
-  boolean isOver() 
-  {
-    if ( MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
-    {
-      over = true;
-      return true;
-    }
-    else
-    {
-      over = false;
-      return false;
-    }
-  }
-  
-  
-  
-  void update()
-  {
-    boolean pOver = over;
-    isOver();
-    
-    // first frame over
-    if( !pOver && over )
-      overTime = millis();
-    
-    // last frame over
-    if( pOver && !over )
-      overTime = -1;
-      
-    if( over && millis() - overTime > 500 )
-      popUp = true;
-    else
-      popUp = false;
-  }
-  
-  
-  
-  void draw()
-  {
-    // Draw label
-    textSize(14);
-    textAlign(align);
-    text( label, 5, height-25);
-  }
-  
-  
-}
-
-
-class Slider
-{
-  int x, y, sx, sy;
-  float v, vLast;
-  Button b;
-  
-  boolean over = false;
-  boolean down = false;
-  boolean click = false;
-  int timer;
-  
-  boolean changed = false;
-  
-  int bs = 10;
-  
-  Slider( int ix, int iy, int isx, int isy )
-  {
-    x = ix;
-    y = iy;
-    sx = isx;
-    sy = isy;
-    
-    v = 0;
-    vLast = 0;
-    timer = -1;
-    
-    
-    b = new Button("", false, x, y, bs*2, sy, "Slide through the entire range of possible combinations");
-  }
-  
-  
-  boolean isOver() 
-  {
-    if ( !OneButtonClicked && MouseOver && mouseX >= x && mouseX <= x+sx && mouseY >= y && mouseY <= y+sy)
-    {
-      over = true;
-      return true;
-    }
-    else
-    {
-      over = false;
-      return false;
-    }
-  }
-  
-  boolean isDown()
-  {
-    if( !down && mousePressed && over )
-    {
-      down = true;
-      OneButtonClicked = true;
-      return true;
-    }
-    // Keep it down even not over
-    if( down && !mousePressed )
-    {
-      down = false;
-      OneButtonClicked = false;
-      return false;
-    }
-  }
-  
-  
-  
-  void update() 
-  {
-    // Check button
-    b.update();
-    changed = false;
-    if(b.down)
-    {
-      v = ( map( mouseX, x+bs, x+sx-bs, 0, 1) );
-      if(v<0) v=0;
-      if(v>1) v=1;
-      
-      if( v != vLast )
-      {
-        changed = true;
-        vLast = v;
-      }
-      else
-        changed = false;
-      
-    }
-    
-    
-    
-    // press on the side
-    boolean pDown = down;
-    
-    isOver();
-    isDown();
-    
-    click = false;
-    // first frame down
-    if( !pDown && down )
-    {
-      click = true;
-      timer = millis();
-    }
-    
-    // continious press
-    if( timer>-1 && millis()-timer > 500 )
-      click = true;
-    
-    // last frame down
-    if( pDown && !down )
-    {
-      click = false;
-      timer = -1;
-    }
-
-    if( click )
-    {
-      if( mouseX < b.x )
-      {
-        v -= 1.0/(sx-2*bs) ;
-        changed = true;
-      }
-      else if( mouseX > b.x+b.sx )
-      {
-        v += 1.0/(sx-2*bs) ;
-        changed = true;
-      }
-    }
-    
-    
-    
-    
-    
-    
-    
-    // move slider
-    b.x = map( v, 0,1, x, x+sx-2*bs );
-  }
-  
-  
-  void draw() 
-  {
-    color c = color(0.5,0.5,0.5);
-
- 
-    
-    noFill();
-    stroke(0.2);
-    strokeWeight(0.5);
-    rect(x, y, sx, sy);
-    
-    strokeWeight(3);
-    stroke(0.1);
-    line(x+bs, y+sy/2.0, x+sx-bs, y+sy/2.0);
-    b.draw();
-    
-    
-    // DEBUG
-    /*
-    fill(0.8);
-    textAlign(LEFT, TOP);
-    textSize(14);
-    text(v, b.x, y);
-    textAlign(LEFT, BOTTOM);
-    text(changed, x, y+sy);
-    
-    text(over, x+100, y+20);
-    text(down, x+150, y+20);
-    text(click, x+200, y+20);
-    */
-  }
-  
-}
 class VImage
 {
   int cDepth;
@@ -2188,7 +1040,7 @@ class VImage
     // numbers 10 to 35 are letters
     // numbers higher than 35 are like <65>
     String idBaseConvert = bigInt(id).toString(cDepth);
-    msg = idBaseConvert;
+    
     
     // temp array to hold the pixel values in reverse order.
     float[] pix2 = {};
@@ -2312,7 +1164,6 @@ class VImage
       id = id.add( dDigit );
     }
     
-    //update_UI();
     
   }
   
@@ -2349,7 +1200,6 @@ class VImage
     setPixFromId();
     canvasToId();
     HUI_updateId(id);
-    update_UI();
     
     // Reset bitmat as well
     bitmap = new PImage(w,h,RGB);

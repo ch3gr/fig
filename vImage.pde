@@ -186,7 +186,7 @@ class VImage
     // numbers 10 to 35 are letters
     // numbers higher than 35 are like <65>
     String idBaseConvert = bigInt(id).toString(cDepth);
-    msg = idBaseConvert;
+    
     
     // temp array to hold the pixel values in reverse order.
     float[] pix2 = {};
@@ -310,7 +310,6 @@ class VImage
       id = id.add( dDigit );
     }
     
-    //update_UI();
     
   }
   
@@ -347,7 +346,6 @@ class VImage
     setPixFromId();
     canvasToId();
     HUI_updateId(id);
-    update_UI();
     
     // Reset bitmat as well
     bitmap = new PImage(w,h,RGB);

@@ -1,8 +1,3 @@
-var uivars =
-{
-	id: "0"
-};
-
 
 var bound = false;
 
@@ -55,6 +50,8 @@ function HUI_updateDivs( explore, about )
 ////////////////////////////
 
 
+// Processing to HTML
+
 function HUI_updateImgInfo( inStep, inX, inY, inCd, inLimit )
 {
 	document.getElementById('stepSize').innerHTML = inStep;
@@ -80,6 +77,12 @@ function HUI_updateId( inId )
 
 
 
+// HTML JS to Processing
+
+function processingSetId( value )
+{
+	Processing.getInstanceById("imgGen").setIdFromTextField(value);
+}
 
 function processingSlider( value )
 {
@@ -118,7 +121,7 @@ function processingCall( func )
 	else if( func === "showValues" )
 		Processing.getInstanceById("imgGen").showValues();
 	else if( func === "randomize" )
-		Processing.getInstanceById("imgGen").randomize();
+		Processing.getInstanceById("imgGen").randomImg();
 	else if( func === "clearCanvas" )
 		Processing.getInstanceById("imgGen").clearCanvas();
 	else if( func === "slider" )

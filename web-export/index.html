@@ -138,16 +138,16 @@
 					<button type="button" onclick="processingCall('autoMode')" class="large expanded button">Auto</button>
 				</div>
 				<div class="small-6 columns">
-					<button type="checkbox" onclick="processingCall('showValues')" class="large expanded button">values</button>
+					<button type="checkbox" onclick="processingCall('showValues')" class="large expanded button">Values</button>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="small-6 columns">
-					<button type="button" onclick="processingCall('randomize')" class="large expanded button">random</button>
+					<button type="button" onclick="processingCall('randomize')" class="large expanded button">Random</button>
 				</div>
 				<div class="small-6 columns">
-					<button type="button" onclick="processingCall('clearCanvas')" class="large expanded button">clear</button>
+					<button type="button" onclick="processingCall('clearCanvas')" class="large expanded button">Clear</button>
 				</div>
 			</div>
 
@@ -257,7 +257,8 @@
 
 
 			<div id="idField">
-				<textarea id="uiId" type="number" rows="10" cols="100"></textarea>
+				<textarea id="uiId" type="number" rows="10" cols="100" onkeypress="processingSetId(this.value)"></textarea>
+
 			</div>
 
 			<div id="about">
