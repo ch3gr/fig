@@ -11,12 +11,8 @@ VImage Img ;
 VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
-PImage ImgFile1;
-PImage ImgFile2;
-PImage ImgFile3;
-PImage ImgFile4;
-PImage ImgFile5;
 
+PImage[] ImgFile = new PImage[4];
 
 
 int HUI_lastId = uivars.id.length();
@@ -29,6 +25,8 @@ boolean AutoMode = false;
 boolean Overlay = false;
 boolean About = false;
 boolean Explore = true;
+
+int Sample = -1;
 
 
 var Step = bigInt(1);
@@ -76,10 +74,10 @@ void setup ()
 /* @pjs preload="cat.jpg"; */
 /* @pjs preload="emc.jpg"; */
 /* @pjs preload="monaLisa.jpg"; */
-  ImgFile1 = loadImage("georgios.jpg");
-  ImgFile2 = loadImage("monaLisa.jpg");
-  ImgFile3 = loadImage("cat.jpg");
-  ImgFile4 = loadImage("emc2.jpg");
+  ImgFile[0] = loadImage("georgios.jpg");
+  ImgFile[1] = loadImage("monaLisa.jpg");
+  ImgFile[2] = loadImage("cat.jpg");
+  ImgFile[3] = loadImage("emc2.jpg");
   
 
 
@@ -145,7 +143,7 @@ void setup ()
   int bs = 4;
   float bw = (pw+gap)/float(bs);
   for( int b=0; b<bs; b++ )
-    UI_Explore.put( ("sample"+str(b+1)), new Button(("s"+str(b+1)), false, px+(bw*b), py, bw-gap, bh, baseC, overC, downC) );
+    UI_Explore.put( ("sample"+str(b)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, baseC, overC, downC) );
   
   py -= bh + gap;
   UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
@@ -260,9 +258,10 @@ void draw()
   
   
  
-  /*
+  
   //// Temp text
-
+  text(Sample, 700, 330);
+  /*
   float slider = uivars.slider;
   textSize(12);
   fill(1,1,1);
@@ -446,14 +445,13 @@ void keyPressed()
 /*
 TO DO
 
-Bug: breaks in certain colorDepths
+
 sliders/id dont update when canvas is adjusted
-slider doesn't update Img when in auto mode
 
 touch screen buttons?
 
 HTML UI doesn't update when it's running online
-no characters to id textArea
+no characters in id textArea
 clean up javascript/jQuery, check if everything can be on a tab
 
 
@@ -467,12 +465,13 @@ fix bug with picture not updating slider
 non square ratio image
 shift backwards
 calculate since / until, in nice text
-
+slider doesn't update Img when in auto mode
 
 
 Nah
 load image
 mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
 prefix ID with canvas resolution
+Bug: breaks in certain colorDepths (perfectly fits the step increment)
 
 */

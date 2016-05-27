@@ -95,6 +95,9 @@ void ui_simple()
   {
     Img.offset(Step);
     update_UI();
+    
+    if(Sample > -1)
+      resetSamples(-1);
   }
 }
 
@@ -155,11 +158,13 @@ void ui_explore()
   {
     Img.offset(-Step);
     update_UI();
+    resetSamples(-1);
   }
   if( UI_Explore.get("next").click )
   {
     Img.offset(Step);
     update_UI();
+    resetSamples(-1);
   }
   
   
@@ -177,25 +182,39 @@ void ui_explore()
   
   
   if( UI_Explore.get("xUp").click )
+  {
     Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
+    applySample(Sample);
+  }
   if( UI_Explore.get("xDown").click )
+  {
     Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
+    applySample(Sample);
+  }
     
   if( UI_Explore.get("yUp").click )
+  {
     Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
+    applySample(Sample);
+  }
   if( UI_Explore.get("yDown").click )
+  {
     Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
+    applySample(Sample);
+  }
     
   if( UI_Explore.get("cUp").click )
-    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-  if( UI_Explore.get("cDown").click )
-    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
-    
-  if( UI_Explore.get("auto").click )
   {
-    Img.offset(Step);
-    update_UI();
+    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
+    applySample(Sample);
   }
+  if( UI_Explore.get("cDown").click )
+  {
+    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
+    applySample(Sample);
+  }
+    
+
   if( UI_Explore.get("overlay").click )
   {
     Overlay = true;
@@ -206,43 +225,89 @@ void ui_explore()
   
   if( UI_Explore.get("random").click )
   {
+    resetSamples(-1);
     Img.randomise();
     update_UI();
   }
   if( UI_Explore.get("clear").click )
   {
+    resetSamples(-1);
     Img.clear();
     update_UI();
   }
-    
-  if( UI_Explore.get("sample1").click )
-  {
-    ImgUser.setIdFromImg(ImgFile1);
-    update_UI();
-  }
-  if( UI_Explore.get("sample2").click )
-  {
-    ImgUser.setIdFromImg(ImgFile2);
-    update_UI();
-  }
-  if( UI_Explore.get("sample3").click )
-  {
-    ImgUser.setIdFromImg(ImgFile3);
-    update_UI();
-  }
-  if( UI_Explore.get("sample4").click )
-  {
-    ImgUser.setIdFromImg(ImgFile4);
-    update_UI();
-  }
+  
 
 
   if( UI_Explore.get("slider").changed )
   {
     Img.setIdFromRange( UI_Explore.get("slider").v );
     update_UI();
+    
+    if(Sample > -1)
+      resetSamples(-1);
+  }  
+  
+  
+  
+  
+  // Deal with the multiple samples - ma ti poutsa!!!
+  boolean pressed = false;
+  for(int s=0; s<ImgFile.length(); s++)  
+  {
+    if( UI_Explore.get("sample"+str(s)).click )
+    {
+      pressed = true;
+      // skip currently pressed button
+      if( s==Sample )
+        continue;
+
+      resetSamples(s);
+      applySample(s);
+      text("recalc", 700, 300);
+    }
+  }
+  // reset global if non is pressed
+  if(!pressed)
+    Sample = -1;
+  ////////////////////
+  
+  
+  
+  
+  // Sto telos to auto gia na to kanoun over-ride oi ypolipes leitourgies (samples, random, slider)
+  if( UI_Explore.get("auto").click )
+  {
+    Img.offset(Step);
+    update_UI();
+    
+    resetSamples(-1);
   }
 }
+
+
+
+void applySample(int sample)
+{
+  if( sample>-1 )
+  {
+    ImgUser.setIdFromImg(ImgFile[sample]);
+    update_UI();
+  }
+}
+
+void resetSamples(int exclude)
+{
+  for(int i=0; i<ImgFile.length(); i++)
+  {
+    if( i == exclude )
+      continue;
+    else
+      UI_Explore.get("sample"+str(i)).click = false;
+  }
+  
+  Sample = exclude;
+}
+
 
 
 

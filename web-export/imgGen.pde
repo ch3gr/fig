@@ -11,12 +11,8 @@ VImage Img ;
 VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
-PImage ImgFile1;
-PImage ImgFile2;
-PImage ImgFile3;
-PImage ImgFile4;
-PImage ImgFile5;
 
+PImage[] ImgFile = new PImage[4];
 
 
 int HUI_lastId = uivars.id.length();
@@ -29,6 +25,8 @@ boolean AutoMode = false;
 boolean Overlay = false;
 boolean About = false;
 boolean Explore = true;
+
+int Sample = -1;
 
 
 var Step = bigInt(1);
@@ -76,10 +74,10 @@ void setup ()
 /* @pjs preload="cat.jpg"; */
 /* @pjs preload="emc.jpg"; */
 /* @pjs preload="monaLisa.jpg"; */
-  ImgFile1 = loadImage("georgios.jpg");
-  ImgFile2 = loadImage("monaLisa.jpg");
-  ImgFile3 = loadImage("cat.jpg");
-  ImgFile4 = loadImage("emc2.jpg");
+  ImgFile[0] = loadImage("georgios.jpg");
+  ImgFile[1] = loadImage("monaLisa.jpg");
+  ImgFile[2] = loadImage("cat.jpg");
+  ImgFile[3] = loadImage("emc2.jpg");
   
 
 
@@ -145,7 +143,7 @@ void setup ()
   int bs = 4;
   float bw = (pw+gap)/float(bs);
   for( int b=0; b<bs; b++ )
-    UI_Explore.put( ("sample"+str(b+1)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, baseC, overC, downC) );
+    UI_Explore.put( ("sample"+str(b)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, baseC, overC, downC) );
   
   py -= bh + gap;
   UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
@@ -260,9 +258,10 @@ void draw()
   
   
  
-  /*
+  
   //// Temp text
-
+  text(Sample, 700, 330);
+  /*
   float slider = uivars.slider;
   textSize(12);
   fill(1,1,1);
@@ -446,14 +445,13 @@ void keyPressed()
 /*
 TO DO
 
-Bug: breaks in certain colorDepths
+
 sliders/id dont update when canvas is adjusted
-slider doesn't update Img when in auto mode
 
 touch screen buttons?
 
 HTML UI doesn't update when it's running online
-no characters to id textArea
+no characters in id textArea
 clean up javascript/jQuery, check if everything can be on a tab
 
 
@@ -467,13 +465,14 @@ fix bug with picture not updating slider
 non square ratio image
 shift backwards
 calculate since / until, in nice text
-
+slider doesn't update Img when in auto mode
 
 
 Nah
 load image
 mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
 prefix ID with canvas resolution
+Bug: breaks in certain colorDepths (perfectly fits the step increment)
 
 */
 // Global to track if one button is pressed, to prevent more at any one time
@@ -737,6 +736,9 @@ void ui_simple()
   {
     Img.offset(Step);
     update_UI();
+    
+    if(Sample > -1)
+      resetSamples(-1);
   }
 }
 
@@ -797,11 +799,13 @@ void ui_explore()
   {
     Img.offset(-Step);
     update_UI();
+    resetSamples(-1);
   }
   if( UI_Explore.get("next").click )
   {
     Img.offset(Step);
     update_UI();
+    resetSamples(-1);
   }
   
   
@@ -819,25 +823,39 @@ void ui_explore()
   
   
   if( UI_Explore.get("xUp").click )
+  {
     Img.setCanvas(Img.w+1, Img.h, Img.cDepth);
+    applySample(Sample);
+  }
   if( UI_Explore.get("xDown").click )
+  {
     Img.setCanvas(Img.w-1, Img.h, Img.cDepth);
+    applySample(Sample);
+  }
     
   if( UI_Explore.get("yUp").click )
+  {
     Img.setCanvas(Img.w, Img.h+1, Img.cDepth);
+    applySample(Sample);
+  }
   if( UI_Explore.get("yDown").click )
+  {
     Img.setCanvas(Img.w, Img.h-1, Img.cDepth);
+    applySample(Sample);
+  }
     
   if( UI_Explore.get("cUp").click )
-    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-  if( UI_Explore.get("cDown").click )
-    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
-    
-  if( UI_Explore.get("auto").click )
   {
-    Img.offset(Step);
-    update_UI();
+    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
+    applySample(Sample);
   }
+  if( UI_Explore.get("cDown").click )
+  {
+    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
+    applySample(Sample);
+  }
+    
+
   if( UI_Explore.get("overlay").click )
   {
     Overlay = true;
@@ -848,43 +866,89 @@ void ui_explore()
   
   if( UI_Explore.get("random").click )
   {
+    resetSamples(-1);
     Img.randomise();
     update_UI();
   }
   if( UI_Explore.get("clear").click )
   {
+    resetSamples(-1);
     Img.clear();
     update_UI();
   }
-    
-  if( UI_Explore.get("sample1").click )
-  {
-    ImgUser.setIdFromImg(ImgFile1);
-    update_UI();
-  }
-  if( UI_Explore.get("sample2").click )
-  {
-    ImgUser.setIdFromImg(ImgFile2);
-    update_UI();
-  }
-  if( UI_Explore.get("sample3").click )
-  {
-    ImgUser.setIdFromImg(ImgFile3);
-    update_UI();
-  }
-  if( UI_Explore.get("sample4").click )
-  {
-    ImgUser.setIdFromImg(ImgFile4);
-    update_UI();
-  }
+  
 
 
   if( UI_Explore.get("slider").changed )
   {
     Img.setIdFromRange( UI_Explore.get("slider").v );
     update_UI();
+    
+    if(Sample > -1)
+      resetSamples(-1);
+  }  
+  
+  
+  
+  
+  // Deal with the multiple samples - ma ti poutsa!!!
+  boolean pressed = false;
+  for(int s=0; s<ImgFile.length(); s++)  
+  {
+    if( UI_Explore.get("sample"+str(s)).click )
+    {
+      pressed = true;
+      // skip currently pressed button
+      if( s==Sample )
+        continue;
+
+      resetSamples(s);
+      applySample(s);
+      text("recalc", 700, 300);
+    }
+  }
+  // reset global if non is pressed
+  if(!pressed)
+    Sample = -1;
+  ////////////////////
+  
+  
+  
+  
+  // Sto telos to auto gia na to kanoun over-ride oi ypolipes leitourgies (samples, random, slider)
+  if( UI_Explore.get("auto").click )
+  {
+    Img.offset(Step);
+    update_UI();
+    
+    resetSamples(-1);
   }
 }
+
+
+
+void applySample(int sample)
+{
+  if( sample>-1 )
+  {
+    ImgUser.setIdFromImg(ImgFile[sample]);
+    update_UI();
+  }
+}
+
+void resetSamples(int exclude)
+{
+  for(int i=0; i<ImgFile.length(); i++)
+  {
+    if( i == exclude )
+      continue;
+    else
+      UI_Explore.get("sample"+str(i)).click = false;
+  }
+  
+  Sample = exclude;
+}
+
 
 
 
