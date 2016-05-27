@@ -29,38 +29,46 @@
 		<![endif]-->
 		<script src="processing.js" type="text/javascript"></script>
 		<script type="text/javascript">
-		var bound = false;
-
-		function bindJavascript()
-		{
-			var pjs = Processing.getInstanceById("@@id@@");
-			if(pjs!=null)
-			{
-				pjs.bindJavascript(this);
-				bound = true;
-			}
-			if(!bound)
-				setTimeout(bindJavascript, 250);
-		}
-		bindJavascript();
-
-
-		function HUI_updateId( theId )
-		{
-			document.getElementById('uiId').value = id;
-		}
 
 		var uivars =
 		{
 			id: "0"
 		};
-       </script>
+
+
+
+		var bound = false;
+
+		function bindJavascript()
+		{
+		  var pjs = Processing.getInstanceById("@@id@@");
+		  if(pjs!=null) {
+			pjs.bindJavascript(this);
+			bound = true; }
+		  if(!bound) setTimeout(bindJavascript, 250);
+		}
+		bindJavascript();
+
+		function showXYCoordinates(x, y)
+		{
+		  document.getElementById('xcoord').value = x;
+		  document.getElementById('ycoord').value = y;
+		}
+
+		function HUI_updateId( theId )
+		{
+			document.getElementById('uiId').value = theId;
+		}
+		</script>
 
 
 
 
 	</head>
 	<body>
+	    <div id="coordinates">
+	      x/y: <input type="textfield" id="xcoord">/<input type="textfield" id="ycoord">
+    	</div>
 		<div id="content">
 			<div id="processing">
 				<canvas id="@@id@@" data-processing-sources="@@sketch@@.pde"

@@ -4,6 +4,24 @@ HashMap UI_Explore = new HashMap();
 HashMap UI_Common = new HashMap();
 
 
+interface JavaScript
+{
+  void HUI_updateId(String t);
+  void showXYCoordinates(int x, int y);
+}
+
+void bindJavascript(JavaScript js)
+{
+  javascript = js;
+}
+
+JavaScript javascript;
+
+
+
+
+
+
 // Date( year, month(0-11), date(1-31))
 var RefTime = new Date(1981, 2, 18);
 
@@ -35,17 +53,7 @@ var Step = bigInt(1);
 int FrameSize = 650;
 
 
-interface JavaScript
-{
-  void HUI_updateId(String t);
-}
 
-void bindJavascript(JavaScript js)
-{
-  javascript = js;
-}
-
-JavaScript javascript;
 
 
 
@@ -488,7 +496,12 @@ void keyPressed()
 
 
 
+void mouseMoved() {
 
+  if(javascript!=null){
+    javascript.showXYCoordinates(mouseX, mouseY);
+  }
+}
 
 
 
