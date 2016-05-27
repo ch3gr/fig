@@ -8,7 +8,7 @@ HashMap UI_Common = new HashMap();
 var RefTime = new Date(1981, 2, 18);
 
 VImage Img ;
-VImage ImgUser = new VImage(20,20,3); //(100,100,2) tooooo much
+VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
 PImage ImgInput;
@@ -23,8 +23,10 @@ float HUI_lastSlider = uivars.slider;
 
 boolean AutoMode = false;
 boolean Overlay = false;
-boolean Explore = true;
 boolean About = false;
+boolean Explore = true;
+
+
 var Step = bigInt(1);
 
 
@@ -133,14 +135,15 @@ void setup ()
   UI_Explore.put( "samples", new Button("samples", false, px, py, pw, bh*1.5, baseC, overC, downC) );
   
   py -= bh + gap;
-  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-gap, bh, baseC, overC, downC) );
-  UI_Explore.put( "clear", new Button("clear", false, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
   
   
   py -= bh + gap;
-  UI_Explore.put( "auto", new Button("auto iterate", true, px, py, pw, bh, baseC, overC, downC) );
+  UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   UI_Explore.put( "slider", new Slider(0,660, width, 30) );
 
@@ -151,10 +154,12 @@ void setup ()
   
   
   py = height - bh*2;
-  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-gap, bh, baseC, overC, downC) );
-  UI_Common.put( "about", new Button("about", true, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
+  
+  UI_Common.get("explore").click = Explore;
   update_UI();
 }
 
@@ -366,7 +371,7 @@ void keyPressed()
   }
   
   if(key=='e')
-    Explore = !Explore;
+    UI_Common.get("explore").click = !UI_Common.get("explore").click;
     
   if(key=='o')
     Overlay = !Overlay;
@@ -428,6 +433,7 @@ void keyPressed()
 /*
 TO DO
 
+Bug: breaks in certain colorDepths
 sliders/id dont update when canvas is adjusted
 slider doesn't update Img when in auto mode
 

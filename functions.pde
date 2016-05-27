@@ -58,6 +58,11 @@ void ui_common()
   
   ////////////////////////////////////////////////////
   // Button actions
+
+  if( UI_Common.get("explore").click )
+    Explore = true;
+  else
+    Explore = false;
   
   if( UI_Common.get("about").down )  // Bit crap that updates all the time while it's down, but oh well
     update_UI();
@@ -134,11 +139,11 @@ void ui_explore()
   yc = height/2;
   textSize(14);
   textAlign(LEFT, BOTTOM);
-  text( ("limit: "+ compactBig(Img.idLimit)), xc, yc);
+  text( ("Set : "+ compactBig(Img.idLimit)), xc, yc);
   
   
-  text( "Start: "+ duration(Img.id), xc, yc+20);
-  text( "End  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
+  text( "From A  : "+ duration(Img.id), xc, yc+20);
+  text( "To       B  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
   
   
   
@@ -191,6 +196,13 @@ void ui_explore()
     Img.offset(Step);
     update_UI();
   }
+  if( UI_Explore.get("overlay").click )
+  {
+    Overlay = true;
+    update_UI();
+  }
+  else
+    Overlay = false;
   
   if( UI_Explore.get("random").click )
   {
@@ -221,6 +233,23 @@ void ui_explore()
 
 
 
+String commas( String numberIn )
+{
+  String out = "";
+  for( int c=0; c<numberIn.length(); c++ )
+  {
+    int d = numberIn.length()-1 - c;
+    
+    out += numberIn[c];
+    
+    if( d!=0 && d%3==0 )
+      out += ",";
+  }
+  return out;
+}
+
+
+
 
 
 String compact( var n )
@@ -244,13 +273,16 @@ String compactBig( bigInt n )
   {
     String out = nStr.charAt(0);
     out += " * 10 ^ ";
-    out += str(nStr.length()-1);
+    out += commas(str(nStr.length()-1));
     return out;
   }
   else
-    return n;
+    return commas(nStr);
+    
   
 }
+
+
 
 
 
@@ -321,14 +353,15 @@ String duration( bigInt f)
   
   // t in years
   t = y;
-  if( t.lesser(10) )
+  // Years is the limit
+  //if( t.lesser(10) )
   {
     if( t.lesser(2) )
       return (t.toString() + " year");
     else
-      return (t.toString() + " years");
+      return (compactBig(t) + " years");
   }
-  
+  /*
   // t in decades
   t = y.divide(10);
   if( t.lesser(10) )
@@ -396,8 +429,9 @@ String duration( bigInt f)
     if( t.lesser(2) )
       return (t.toString() + " cosmic year");
     else
-      return (compactBig(t) + " cosmic years");
+      return (t.toString() + " cosmic years");
   }
+  */
 }
 
 

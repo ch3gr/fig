@@ -8,7 +8,7 @@ HashMap UI_Common = new HashMap();
 var RefTime = new Date(1981, 2, 18);
 
 VImage Img ;
-VImage ImgUser = new VImage(20,20,3); //(100,100,2) tooooo much
+VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
 PImage ImgInput;
@@ -23,8 +23,10 @@ float HUI_lastSlider = uivars.slider;
 
 boolean AutoMode = false;
 boolean Overlay = false;
-boolean Explore = true;
 boolean About = false;
+boolean Explore = true;
+
+
 var Step = bigInt(1);
 
 
@@ -133,14 +135,15 @@ void setup ()
   UI_Explore.put( "samples", new Button("samples", false, px, py, pw, bh*1.5, baseC, overC, downC) );
   
   py -= bh + gap;
-  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-gap, bh, baseC, overC, downC) );
-  UI_Explore.put( "clear", new Button("clear", false, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
   
   
   py -= bh + gap;
-  UI_Explore.put( "auto", new Button("auto iterate", true, px, py, pw, bh, baseC, overC, downC) );
+  UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   UI_Explore.put( "slider", new Slider(0,660, width, 30) );
 
@@ -151,10 +154,12 @@ void setup ()
   
   
   py = height - bh*2;
-  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-gap, bh, baseC, overC, downC) );
-  UI_Common.put( "about", new Button("about", true, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
   
   
+  
+  UI_Common.get("explore").click = Explore;
   update_UI();
 }
 
@@ -366,7 +371,7 @@ void keyPressed()
   }
   
   if(key=='e')
-    Explore = !Explore;
+    UI_Common.get("explore").click = !UI_Common.get("explore").click;
     
   if(key=='o')
     Overlay = !Overlay;
@@ -428,6 +433,7 @@ void keyPressed()
 /*
 TO DO
 
+Bug: breaks in certain colorDepths
 sliders/id dont update when canvas is adjusted
 slider doesn't update Img when in auto mode
 
@@ -681,6 +687,11 @@ void ui_common()
   
   ////////////////////////////////////////////////////
   // Button actions
+
+  if( UI_Common.get("explore").click )
+    Explore = true;
+  else
+    Explore = false;
   
   if( UI_Common.get("about").down )  // Bit crap that updates all the time while it's down, but oh well
     update_UI();
@@ -757,11 +768,11 @@ void ui_explore()
   yc = height/2;
   textSize(14);
   textAlign(LEFT, BOTTOM);
-  text( ("limit: "+ compactBig(Img.idLimit)), xc, yc);
+  text( ("Set : "+ compactBig(Img.idLimit)), xc, yc);
   
   
-  text( "Start: "+ duration(Img.id), xc, yc+20);
-  text( "End  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
+  text( "From A  : "+ duration(Img.id), xc, yc+20);
+  text( "To       B  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
   
   
   
@@ -814,6 +825,13 @@ void ui_explore()
     Img.offset(Step);
     update_UI();
   }
+  if( UI_Explore.get("overlay").click )
+  {
+    Overlay = true;
+    update_UI();
+  }
+  else
+    Overlay = false;
   
   if( UI_Explore.get("random").click )
   {
@@ -844,6 +862,23 @@ void ui_explore()
 
 
 
+String commas( String numberIn )
+{
+  String out = "";
+  for( int c=0; c<numberIn.length(); c++ )
+  {
+    int d = numberIn.length()-1 - c;
+    
+    out += numberIn[c];
+    
+    if( d!=0 && d%3==0 )
+      out += ",";
+  }
+  return out;
+}
+
+
+
 
 
 String compact( var n )
@@ -867,13 +902,16 @@ String compactBig( bigInt n )
   {
     String out = nStr.charAt(0);
     out += " * 10 ^ ";
-    out += str(nStr.length()-1);
+    out += commas(str(nStr.length()-1));
     return out;
   }
   else
-    return n;
+    return commas(nStr);
+    
   
 }
+
+
 
 
 
@@ -944,14 +982,15 @@ String duration( bigInt f)
   
   // t in years
   t = y;
-  if( t.lesser(10) )
+  // Years is the limit
+  //if( t.lesser(10) )
   {
     if( t.lesser(2) )
       return (t.toString() + " year");
     else
-      return (t.toString() + " years");
+      return (compactBig(t) + " years");
   }
-  
+  /*
   // t in decades
   t = y.divide(10);
   if( t.lesser(10) )
@@ -1019,8 +1058,9 @@ String duration( bigInt f)
     if( t.lesser(2) )
       return (t.toString() + " cosmic year");
     else
-      return (compactBig(t) + " cosmic years");
+      return (t.toString() + " cosmic years");
   }
+  */
 }
 
 
