@@ -113,11 +113,9 @@ void setup ()
   int bh = 50;
   int gap = 5;
   
-  color baseC = color(0.1,0.1,0.1);
-  color overC = color(0.15,0.15,0.15);
-  color downC = color(0.8,0.8,0.8);
 
-  UI_Simple.put( "next", new Button("next", false, px, py, width-px, bh*2, baseC, overC, downC));
+
+  UI_Simple.put( "next", new Button("next", false, px, py, width-px, bh*2, "Next iteration") );
   
   
 
@@ -128,26 +126,28 @@ void setup ()
   pw = 300;
   bh = 50;
   gap = 5;
-  UI_Explore.put( "prev", new Button("-", false, px, py, pw/3-gap, bh*2, baseC, overC, downC) );
-  UI_Explore.put( "next", new Button("+", false, px+2*(pw/3)+gap, py, pw/3-gap, bh*2, baseC, overC, downC) );
   
-  UI_Explore.put( "incUp", new Button("incUp", false, px+(pw/3), py, pw/3, (bh*0.6), baseC, overC, downC) );
-  UI_Explore.put( "incDown", new Button("incDown", false, px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), baseC, overC, downC) );
+  
+  UI_Explore.put( "prev", new Button("-", false, px, py, pw/3-gap, bh*2, "Previous iteration") );
+  UI_Explore.put( "next", new Button("+", false, px+2*(pw/3)+gap, py, pw/3-gap, bh*2, "Next iteration") );
+  
+  UI_Explore.put( "incUp", new Button("incUp", false, px+(pw/3), py, pw/3, (bh*0.6), "Double the iteration step") );
+  UI_Explore.put( "incDown", new Button("incDown", false, px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), "Half the iteration step") );
   
   py += bh*3;
   int px1 = px + pw/6; 
   int px2 = px + pw/2;
   int px3 = px + pw*5.0/6.0;
   int bs = 35;
-  UI_Explore.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
-  UI_Explore.put( "rUp", new Button("+", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, baseC, overC, downC) );
-  UI_Explore.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
-  UI_Explore.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, "Increase image resolution by 1 pixel in X axis") );
+  UI_Explore.put( "rUp", new Button("+", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, "Increase image resolution by 1 pixel in both axis") );
+  UI_Explore.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, "Increase image resolution by 1 pixel in Y axis") );
+  UI_Explore.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, "Increase color depth by 1 color") );
   py += 80;
-  UI_Explore.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
-  UI_Explore.put( "rDown", new Button("-", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, baseC, overC, downC) );
-  UI_Explore.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
-  UI_Explore.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, "Decrease image resolution by 1 pixel in X axis") );
+  UI_Explore.put( "rDown", new Button("-", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, "Decrease image resolution by 1 pixel in both axis") );
+  UI_Explore.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, "Decrease image resolution by 1 pixel in Y axis") );
+  UI_Explore.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, "Decrease color depth by 1 color") );
   
   py = height - bh*2;
   
@@ -155,18 +155,18 @@ void setup ()
   int bs = 4;
   float bw = (pw+gap)/float(bs);
   for( int b=0; b<bs; b++ )
-    UI_Explore.put( ("sample"+str(b)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, baseC, overC, downC) );
+    UI_Explore.put( ("sample"+str(b)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, "Sample image") );
   
   py -= bh + gap;
-  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, "Randomize canvas") );
+  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "Clear canvas") );
   
   
   
   
   py -= bh + gap;
-  UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, "Auto increment at 60 about iterations per second") );
+  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "Display color values") );
   
   UI_Explore.put( "slider", new Slider(0,height-20-gap, width, 20) );
 
@@ -177,8 +177,8 @@ void setup ()
   
   
   py = height - bh*2;
-  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-(gap/2), bh, "Explore mode") );
+  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "About ImgGen") );
   
   
   

@@ -25,7 +25,7 @@ class Slider
     timer = -1;
     
     
-    b = new Button("", false, x, y, bs*2, sy, color(0.1), color(0.2), color(0.3));
+    b = new Button("", false, x, y, bs*2, sy, "Slide through the entire range of possible combinations");
   }
   
   

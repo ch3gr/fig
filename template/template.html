@@ -33,13 +33,21 @@
 		var bound = false;
 
 		function bindJavascript() {
+		  console.log("1");
 		  var pjs = Processing.getInstanceById("@@id@@");
 		  if(pjs!=null) {
+		  	console.log("2");
 			pjs.bindJavascript(this);
 			bound = true; }
-		  if(!bound) setTimeout(bindJavascript, 1000);
+		  if(!bound)
+		  {
+		  	setTimeout(bindJavascript, 1000);
+		  	console.log("3");
+		  }
 		}
+		console.log("4");
 		bindJavascript();
+		console.log("5");
 
 
 		function HUI_updateId( theId )
@@ -92,7 +100,7 @@
 
 			<div id="about">
 				<h1> About </h1>
-
+				<p> ...blah blah blah... </p>
 				<p>Two dimensional images of any kind, have long been stored and displayed digitally. To do so the image is broken down into a set of pixels, with a pre-defined color depth. So the digital representation of an image is essentially just a series of color values.</p>
 				<p>If we look at this the other way, we can say that any given digital canvas has a certain number of possible combinations of color values among its pixels. [ie a small image with a resolution of 4?4 pixels and 2 colors has 2^16=65536 possible color combinations.] So since any kind of image can be digitized, we could also assume that every single representation can be found in one of these possible combinations, as long as the canvas has enough resolution and color definition.</p>
 				<p>The number of possible combinations are increasing in an exponential rate in relation to the amount of pixels. This means that the possible combinations of a digital canvas of a substantial resolution, may be an astronomical number, but never the less a finite number.</p>
@@ -104,6 +112,8 @@
 				<p>In a potential version 2 of this program, the output images can be fed into an image recognition algorithm, which will be responsible for identifying meaningful results. The process can run in parallel with a farm of computers and allow us to explore this vast amount of images faster. As the time passes, we will be able to retrieve sets of images that resemble known objects. And as the processing power of the computers gets faster and faster, such a brute force solution may become more and more feasible.</p>
 				<p>ImgGen also questions the intellectual property of digital content. Who would own the rights of the images generated with this program?</p>
 				<p>It also questions the...</p>
+				<p> ...blah blah blah... </p>
+
 				<p>Q&A:</p>
 				<p>
 				Q. Why don't I see any meaningful images when I move the slider?

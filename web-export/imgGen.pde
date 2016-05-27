@@ -113,11 +113,9 @@ void setup ()
   int bh = 50;
   int gap = 5;
   
-  color baseC = color(0.1,0.1,0.1);
-  color overC = color(0.15,0.15,0.15);
-  color downC = color(0.8,0.8,0.8);
 
-  UI_Simple.put( "next", new Button("next", false, px, py, width-px, bh*2, baseC, overC, downC));
+
+  UI_Simple.put( "next", new Button("next", false, px, py, width-px, bh*2, "Next iteration") );
   
   
 
@@ -128,26 +126,28 @@ void setup ()
   pw = 300;
   bh = 50;
   gap = 5;
-  UI_Explore.put( "prev", new Button("-", false, px, py, pw/3-gap, bh*2, baseC, overC, downC) );
-  UI_Explore.put( "next", new Button("+", false, px+2*(pw/3)+gap, py, pw/3-gap, bh*2, baseC, overC, downC) );
   
-  UI_Explore.put( "incUp", new Button("incUp", false, px+(pw/3), py, pw/3, (bh*0.6), baseC, overC, downC) );
-  UI_Explore.put( "incDown", new Button("incDown", false, px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), baseC, overC, downC) );
+  
+  UI_Explore.put( "prev", new Button("-", false, px, py, pw/3-gap, bh*2, "Previous iteration") );
+  UI_Explore.put( "next", new Button("+", false, px+2*(pw/3)+gap, py, pw/3-gap, bh*2, "Next iteration") );
+  
+  UI_Explore.put( "incUp", new Button("incUp", false, px+(pw/3), py, pw/3, (bh*0.6), "Double the iteration step") );
+  UI_Explore.put( "incDown", new Button("incDown", false, px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), "Half the iteration step") );
   
   py += bh*3;
   int px1 = px + pw/6; 
   int px2 = px + pw/2;
   int px3 = px + pw*5.0/6.0;
   int bs = 35;
-  UI_Explore.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
-  UI_Explore.put( "rUp", new Button("+", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, baseC, overC, downC) );
-  UI_Explore.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
-  UI_Explore.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, "Increase image resolution by 1 pixel in X axis") );
+  UI_Explore.put( "rUp", new Button("+", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, "Increase image resolution by 1 pixel in both axis") );
+  UI_Explore.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, "Increase image resolution by 1 pixel in Y axis") );
+  UI_Explore.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, "Increase color depth by 1 color") );
   py += 80;
-  UI_Explore.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
-  UI_Explore.put( "rDown", new Button("-", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, baseC, overC, downC) );
-  UI_Explore.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
-  UI_Explore.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  UI_Explore.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, "Decrease image resolution by 1 pixel in X axis") );
+  UI_Explore.put( "rDown", new Button("-", false, (px1+px2)/2-bs+gap, py, bs*2-gap*2, bs, "Decrease image resolution by 1 pixel in both axis") );
+  UI_Explore.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, "Decrease image resolution by 1 pixel in Y axis") );
+  UI_Explore.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, "Decrease color depth by 1 color") );
   
   py = height - bh*2;
   
@@ -155,18 +155,18 @@ void setup ()
   int bs = 4;
   float bw = (pw+gap)/float(bs);
   for( int b=0; b<bs; b++ )
-    UI_Explore.put( ("sample"+str(b)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, baseC, overC, downC) );
+    UI_Explore.put( ("sample"+str(b)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, "Sample image") );
   
   py -= bh + gap;
-  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, "Randomize canvas") );
+  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "Clear canvas") );
   
   
   
   
   py -= bh + gap;
-  UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, "Auto increment at 60 about iterations per second") );
+  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "Display color values") );
   
   UI_Explore.put( "slider", new Slider(0,height-20-gap, width, 20) );
 
@@ -177,8 +177,8 @@ void setup ()
   
   
   py = height - bh*2;
-  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
+  UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-(gap/2), bh, "Explore mode") );
+  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, "About ImgGen") );
   
   
   
@@ -633,22 +633,42 @@ class Button
   boolean down = false;
   boolean click = false;
   boolean toggle;
-  int timer;
+  int downTime;
+  int overTime;
   
   String label;
+  String msg;
 
-  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, color ibaseC, color ioverC, color idownC)
+  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy)
   {
     label = ilabel;
+    msg = "nothing to see here";
     x = ix;
     y = iy;
     sx = isx;
     sy = isy;
-    baseC = ibaseC;
-    overC = ioverC;
-    downC = idownC;
+    baseC = color(0.1,0.1,0.1);
+    overC = color(0.15,0.15,0.15);
+    downC = color(0.8,0.8,0.8);
     toggle = itoggle;
-    timer = -1;
+    downTime = -1;
+    overTime = -1;
+  }
+  
+  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, String imsg)
+  {
+    label = ilabel;
+    msg = imsg;
+    x = ix;
+    y = iy;
+    sx = isx;
+    sy = isy;
+    baseC = color(0.1,0.1,0.1);
+    overC = color(0.15,0.15,0.15);
+    downC = color(0.8,0.8,0.8);
+    toggle = itoggle;
+    downTime = -1;
+    overTime = -1;
   }
 
 
@@ -698,30 +718,44 @@ class Button
   void update() 
   {
     boolean pDown = down;
+    boolean pOver = over;
     
     isOver();
     isDown();
     
+    
+    
+    // first frame over
+    if( !pOver && over )
+      overTime = millis();
+    
+    // last frame over
+    if( pOver && !over )
+      overTime = -1;
+
+
     if( !toggle )
     {
       click = false;
+
       // first frame down
       if( !pDown && down )
       {
         click = true;
-        timer = millis();
+        downTime = millis();
       }
       
       // continious press
-      if( timer>-1 && millis()-timer > 500 )
+      if( downTime>-1 && millis()-downTime > 500 )
         click = true;
       
       // last frame down
       if( pDown && !down )
       {
         click = false;
-        timer = -1;
+        downTime = -1;
       }
+      
     }
     else
     {
@@ -752,6 +786,14 @@ class Button
     textAlign(CENTER, CENTER);
     text(label, x+sx/2, y+sy/2);
     
+    // Pop up message
+    if( over && millis() - overTime > 500 )
+    {
+      fill(0.6, 0.5);
+      textAlign(RIGHT, BOTTOM);
+      textSize(14);
+      text( msg, mouseX, mouseY );
+    }
     
     
     // Debug info
@@ -759,10 +801,13 @@ class Button
     fill(0.8,0,0);
     textSize(10);
     textAlign(LEFT, TOP);
-    text(over, x, y);
+    text(x, x, y);
     text(down, x, y+sy/2);
     text(click, x, y+sy-10);
+    text(overTime, x, y+sy/4);
+    text(downTime, x+sx*0.75, y+sy/4);
     */
+    
   }
 
 }
@@ -1081,6 +1126,8 @@ void ui_explore()
     
     resetSamples(-1);
   }
+  
+  
 }
 
 
@@ -1379,7 +1426,7 @@ class Slider
     timer = -1;
     
     
-    b = new Button("", false, x, y, bs*2, sy, color(0.1), color(0.2), color(0.3));
+    b = new Button("", false, x, y, bs*2, sy, "Slide through the entire range of possible combinations");
   }
   
   

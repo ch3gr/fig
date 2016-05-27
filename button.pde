@@ -30,22 +30,42 @@ class Button
   boolean down = false;
   boolean click = false;
   boolean toggle;
-  int timer;
+  int downTime;
+  int overTime;
   
   String label;
+  String msg;
 
-  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, color ibaseC, color ioverC, color idownC)
+  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy)
   {
     label = ilabel;
+    msg = "nothing to see here";
     x = ix;
     y = iy;
     sx = isx;
     sy = isy;
-    baseC = ibaseC;
-    overC = ioverC;
-    downC = idownC;
+    baseC = color(0.1,0.1,0.1);
+    overC = color(0.15,0.15,0.15);
+    downC = color(0.8,0.8,0.8);
     toggle = itoggle;
-    timer = -1;
+    downTime = -1;
+    overTime = -1;
+  }
+  
+  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, String imsg)
+  {
+    label = ilabel;
+    msg = imsg;
+    x = ix;
+    y = iy;
+    sx = isx;
+    sy = isy;
+    baseC = color(0.1,0.1,0.1);
+    overC = color(0.15,0.15,0.15);
+    downC = color(0.8,0.8,0.8);
+    toggle = itoggle;
+    downTime = -1;
+    overTime = -1;
   }
 
 
@@ -95,30 +115,44 @@ class Button
   void update() 
   {
     boolean pDown = down;
+    boolean pOver = over;
     
     isOver();
     isDown();
     
+    
+    
+    // first frame over
+    if( !pOver && over )
+      overTime = millis();
+    
+    // last frame over
+    if( pOver && !over )
+      overTime = -1;
+
+
     if( !toggle )
     {
       click = false;
+
       // first frame down
       if( !pDown && down )
       {
         click = true;
-        timer = millis();
+        downTime = millis();
       }
       
       // continious press
-      if( timer>-1 && millis()-timer > 500 )
+      if( downTime>-1 && millis()-downTime > 500 )
         click = true;
       
       // last frame down
       if( pDown && !down )
       {
         click = false;
-        timer = -1;
+        downTime = -1;
       }
+      
     }
     else
     {
@@ -149,6 +183,14 @@ class Button
     textAlign(CENTER, CENTER);
     text(label, x+sx/2, y+sy/2);
     
+    // Pop up message
+    if( over && millis() - overTime > 500 )
+    {
+      fill(0.6, 0.5);
+      textAlign(RIGHT, BOTTOM);
+      textSize(14);
+      text( msg, mouseX, mouseY );
+    }
     
     
     // Debug info
@@ -156,10 +198,13 @@ class Button
     fill(0.8,0,0);
     textSize(10);
     textAlign(LEFT, TOP);
-    text(over, x, y);
+    text(x, x, y);
     text(down, x, y+sy/2);
     text(click, x, y+sy-10);
+    text(overTime, x, y+sy/4);
+    text(downTime, x+sx*0.75, y+sy/4);
     */
+    
   }
 
 }
