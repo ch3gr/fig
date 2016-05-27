@@ -1,38 +1,7 @@
-//  html javascript functions
-//interface JavaScript {
-//  void HUI_updateId(String theId);
-//  void HUI_updateDivs( boolean explore, boolean about );
-//  void HUI_debug(String text);
-//}
 
-void bindJavascript(JavaScript js) {
-  javascript = js;
-}
-
-JavaScript javascript;
-
-
-
-
-
-
-
-
-// Date( year, month(0-11), date(1-31))
-var RefTime = new Date(1981, 2, 18);
-
-VImage Img ;
-VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
-VImage ImgDate = new VImage(30,30,3);
-
+VImage Img = new VImage(25,25,3); //(100,100,2) tooooo much
 
 PImage[] ImgFile = new PImage[4];
-
-
-//int HUI_lastId = uivars.id.length();
-
-
-
 
 boolean AutoMode = false;
 boolean Values = false;
@@ -42,22 +11,10 @@ boolean HUI_Update = true;
 
 int Sample = -1;
 
-
 var Step = bigInt(1);
 
 
-
 int FrameSize = 700;
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -82,14 +39,6 @@ void setup ()
   ImgFile[3] = loadImage("emc2.jpg");
   
 
-
-  ImgDate.setIdFromDate( RefTime );
-  
-  if( AutoMode )
-    Img = ImgDate;
-  else
-    Img = ImgUser;
-    
 }
 
 
@@ -152,18 +101,6 @@ void draw()
   
   
   
-
-  //// HTML UI to Processing
-  /*
-  // when the input chages
-  if( HUI_lastId != uivars.id )
-  {
-    HUI_lastId = uivars.id;
-    Img.setId(uivars.id);
-    Img.setPixFromId();
-  }
-  */
-  
   //// update HTML UI if needed
   if( HUI_Update )
   {
@@ -201,116 +138,54 @@ void draw()
 
 
 
-
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////////
 // KEYBOARD
 
 void keyPressed()
 {
-  if(key=='z')
-  {
+  if(key=='n' || key==' ' || keyCode == RIGHT)
     next();
-  }
-  if(key=='Z')
-  {
+  
+  if(key=='p' || keyCode == BACKSPACE || keyCode == LEFT)
     prev();
-  }
-
   
   if(key=='c')
-  {
-    Img.clear();
-  }
+    clearCanvas();
     
   if(key=='r')
-  {
-    Img.randomise();
-  }
+    randomImg();
 
-  if(key=='s')
-  {
-    Img.offset(1);
-  }
-  if(key=='S')
-  {
-    Img.offset(-1);
-  }
+  if(key=='a')
+    autoMode();
   
-  if(key=='d')
-  {
-    AutoMode = !AutoMode;
-    if( AutoMode )
-    {
-      Img = ImgDate;
-      //Img.setIdFromDate( RefTime );
-    }
-    else
-    {
-      Img = ImgUser;
-    }
-  }
-  
-  
-  if(key=='+')
-  {
-    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
-  }
-    if(key=='-')
-  {
-    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
-  }
-  if(key=='*')
-  {
-    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-  }
-  if(key=='.')
-  {
-    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
-  }
-  
-  if(key=='e')
-    UI_Common.get("explore").click = !UI_Common.get("explore").click;
+  if(key=='t')
+    xUp();
+
+  if(key=='g')
+    xDown();
+
+  if(key=='y')
+    rUp();
+
+  if(key=='h')
+    rDown();
+
+  if(key=='u')
+    yUp();
     
-  if(key=='o')
-  {
-    Values = !Values;
-    //UI_Common.get("values").click = !UI_Common.get("values").click;
-  }
-    
+  if(key=='j')
+    yDown();
+  
   if(key=='i')
-  {
-    //ImgUser.setId(uivars.id);
-  }
-  if(key=='p')
-  {
-    ImgUser.setIdFromImg(ImgInput);
-  }
+    cUp();
+  
+  if(key=='k')
+    cDown();
   
   if(key=='v')
-  {
-    ImgDate.setIdFromDate( RefTime );
-    
-    var time = new Date(1970, 1, 1);
-    println( time.getTime() );
-  }
+    showValues();
   
-  if(key=='l')
-  {
-    Img.setIdFromRange(float(mouseX)/float(width));
-  }
   
-  if(key=='z')
-  {
-    var t = bigInt( Img.id );
-    //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
-  }
 }
 
 
@@ -331,7 +206,6 @@ TO DO
 
 
 Finish layout/graphics/fonts!?!
-hardcode text coord?
 About
 
 
@@ -364,7 +238,7 @@ load image
 mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
 prefix ID with canvas resolution
 Bug: breaks in certain colorDepths (perfectly fits the step increment)
-
+hardcode text coord?
 */
 // UI button related functions
 
@@ -500,6 +374,7 @@ void sample(int inSample)
   
   applySample(Sample);
   HUI_Update = true;
+  
 }
 
 
@@ -517,6 +392,7 @@ void setIdFromTextField( String inId )
 {
   Img.setId(inId);
   Img.setPixFromId();
+  HUI_Update = true;
 }
   
 
@@ -531,19 +407,10 @@ void setIdFromTextField( String inId )
 
 
 
-
-
-
-
-
-
-
 void applySample(int sample)
 {
-  if( sample>-1 )
-  {
-    ImgUser.setIdFromImg(ImgFile[sample-1]);
-  }
+  if( sample != -1 )
+    Img.setIdFromImg(ImgFile[sample-1]);
 }
 
 
@@ -551,9 +418,7 @@ void applySample(int sample)
 
 
 
-
-
-
+/*
 
 void popUp(String info)
 {
@@ -579,7 +444,7 @@ void popUp(String info)
   
 }
      
-
+*/
 
 
 
@@ -607,19 +472,6 @@ String commas( String numberIn )
 
 
 
-String compact( var n )
-{
-  if( n < 1000000000 )
-    return str(n);
-  else
-  {
-    var out = n.toExponential(0);
-    return out.replace("e+", "x10^");
-  }
-  // limit : 9*10^307
-  
-}
-
 String compactBig( bigInt n )
 {
   String nStr = n.toString();
@@ -634,35 +486,6 @@ String compactBig( bigInt n )
   else
     return commas(nStr);
 }
-
-
-
-// Not used! alternative print of big numbers
-String compact2Big( bigInt n )
-{
-  String nStr = n.toString();
-  int strl = nStr.length();
-  if( strl > 12 )
-  {
-    String out = "";
-    for(int i=0; i<3; i++)
-      out += nStr.charAt(i);
-    
-    out += "...";
-    out += str(strl);
-    out += "digits";
-    out += "...";
-    
-    for(int i=strl-3; i<strl; i++)
-      out += nStr.charAt(i);
-    
-    return out;
-  }
-  else
-    return commas(nStr);
-  
-}
-
 
 
 
@@ -743,77 +566,7 @@ String duration( bigInt f)
     else
       return (compactBig(t) + " years");
   }
-  /*
-  // t in decades
-  t = y.divide(10);
-  if( t.lesser(10) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " decade");
-    else
-      return (t.toString() + " decades");
-  }
-  
-  // t in centuries
-  t = y.divide(100);
-  if( t.lesser(10) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " century");
-    else
-      return (t.toString() + " centuries");
-  }
-  
-  // t in millenia
-  t = y.divide(1000);
-  if( t.lesser(1000) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " millenium");
-    else
-      return (t.toString() + " millenia");
-  }
-  
-  // t in megga-annums
-  t = y.divide(1000000);
-  if( t.lesser(230) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " mega-annum");
-    else
-      return (t.toString() + " mega-annums");
-  }
-  
-  // t in galactic years
-  t = y.divide(230000000);
-  if( t.lesser(5) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " galactic year");
-    else
-      return (t.toString() + " galactic years");
-  }
-  
-  // t in gigaannum
-  t = y.divide(1000000000);
-  if( t.lesser(14) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " gigaannum");
-    else
-      return (t.toString() + " gigaannums");
-  }
-  
-  // t in Cosmic years
-  t = y.divide(14000000000);
-//  if( t.lesser(72) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " cosmic year");
-    else
-      return (t.toString() + " cosmic years");
-  }
-  */
+
 }
 
 
@@ -881,23 +634,6 @@ class VImage
     bitmap = new PImage(w,h,RGB);
   }
   
-  // OVERLOAD constructor
-  VImage(int wIn, int hIn, int cIn, var idIn)
-  {
-    cDepth = cIn;
-    w = wIn;
-    h = hIn;
-    size = w * h;
-    idLimit = bigInt(cDepth).pow(w*h).subtract(1);
-    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
-    pix = new int[size];
-    
-    
-    bitmap = new PImage(w,h,RGB);
-    
-    setPixFromId();
-  }
-  
 
 
 
@@ -916,14 +652,9 @@ class VImage
       pix[p] = floor(random(cDepth));
     
     canvasToId();
-    
   }
   
   
-  
-  
-  
-
   
   
   
@@ -989,10 +720,7 @@ class VImage
   void drawBitmap()
   {
     for( int p = 0; p<size; ++p )
-    {
       bitmap.pixels[p] = color(pix[p]/float(cDepth-1));
-      //bitmap.pixels[p] = color(0.5,0.5,1);
-    }
     
     image(bitmap,0,0);
   }
@@ -1003,15 +731,11 @@ class VImage
 
 
 
-
-
-
-
-
   String getId()
   {
     return id.toString();
   } 
+  
   
   float getFraction()
   {
@@ -1020,6 +744,7 @@ class VImage
     fraction /= 1000000.0;
     return fraction;
   }
+  
   
   void setId(String idIn)
   {
@@ -1088,21 +813,6 @@ class VImage
   
   
   
-  void setIdFromDate( Date dateIn)
-  {
-    /*
-    double now = new Date();
-    // Calculate how many milliseconds since the input date
-    double frame = now.getTime() - dateIn.getTime();
-    
-    frame *= 0.06;  // milliseconds * frames/milli
-     
-    setId(frame);
-    */
-  }
-  
-  
-  
   void setIdFromRange( float v )
   {
     bigInt newId = idLimit;
@@ -1144,11 +854,7 @@ class VImage
       pix[p] = floor(brightness(imgR.pixels[p])*0.99999 * (cDepth));
     
     
-    
     canvasToId();
-    
-    
-    //msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   
@@ -1157,21 +863,15 @@ class VImage
   {
     id = bigInt(0);
     
-    
     for( int p = 0; p<size; ++p )
     {
       dDigit = bigInt(cDepth).pow(p).multiply(pix[p]);
       id = id.add( dDigit );
     }
-    
-    
   }
   
   
 
-
-  
-  
 
   
   
@@ -1206,20 +906,6 @@ class VImage
   }
   
   
-  
-
-  
-  
-  String estimateComputeTime()
-  {
-    time = bigInt(id);
-    //time = time.divide(60).divide(60).divide(60).divide(24).divide(356);
-    float div = 60*60*60*24*356;
-    //time = time.divide(60).divide(60).divide(60).divide(24).divide(356);
-    time=time.divide(div);
-    return time;
-    
-  }
   
   
 }

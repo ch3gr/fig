@@ -132,6 +132,7 @@ void sample(int inSample)
   
   applySample(Sample);
   HUI_Update = true;
+  
 }
 
 
@@ -149,6 +150,7 @@ void setIdFromTextField( String inId )
 {
   Img.setId(inId);
   Img.setPixFromId();
+  HUI_Update = true;
 }
   
 
@@ -163,19 +165,10 @@ void setIdFromTextField( String inId )
 
 
 
-
-
-
-
-
-
-
 void applySample(int sample)
 {
-  if( sample>-1 )
-  {
-    ImgUser.setIdFromImg(ImgFile[sample-1]);
-  }
+  if( sample != -1 )
+    Img.setIdFromImg(ImgFile[sample-1]);
 }
 
 
@@ -183,9 +176,7 @@ void applySample(int sample)
 
 
 
-
-
-
+/*
 
 void popUp(String info)
 {
@@ -211,7 +202,7 @@ void popUp(String info)
   
 }
      
-
+*/
 
 
 
@@ -239,19 +230,6 @@ String commas( String numberIn )
 
 
 
-String compact( var n )
-{
-  if( n < 1000000000 )
-    return str(n);
-  else
-  {
-    var out = n.toExponential(0);
-    return out.replace("e+", "x10^");
-  }
-  // limit : 9*10^307
-  
-}
-
 String compactBig( bigInt n )
 {
   String nStr = n.toString();
@@ -266,35 +244,6 @@ String compactBig( bigInt n )
   else
     return commas(nStr);
 }
-
-
-
-// Not used! alternative print of big numbers
-String compact2Big( bigInt n )
-{
-  String nStr = n.toString();
-  int strl = nStr.length();
-  if( strl > 12 )
-  {
-    String out = "";
-    for(int i=0; i<3; i++)
-      out += nStr.charAt(i);
-    
-    out += "...";
-    out += str(strl);
-    out += "digits";
-    out += "...";
-    
-    for(int i=strl-3; i<strl; i++)
-      out += nStr.charAt(i);
-    
-    return out;
-  }
-  else
-    return commas(nStr);
-  
-}
-
 
 
 
@@ -375,77 +324,7 @@ String duration( bigInt f)
     else
       return (compactBig(t) + " years");
   }
-  /*
-  // t in decades
-  t = y.divide(10);
-  if( t.lesser(10) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " decade");
-    else
-      return (t.toString() + " decades");
-  }
-  
-  // t in centuries
-  t = y.divide(100);
-  if( t.lesser(10) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " century");
-    else
-      return (t.toString() + " centuries");
-  }
-  
-  // t in millenia
-  t = y.divide(1000);
-  if( t.lesser(1000) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " millenium");
-    else
-      return (t.toString() + " millenia");
-  }
-  
-  // t in megga-annums
-  t = y.divide(1000000);
-  if( t.lesser(230) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " mega-annum");
-    else
-      return (t.toString() + " mega-annums");
-  }
-  
-  // t in galactic years
-  t = y.divide(230000000);
-  if( t.lesser(5) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " galactic year");
-    else
-      return (t.toString() + " galactic years");
-  }
-  
-  // t in gigaannum
-  t = y.divide(1000000000);
-  if( t.lesser(14) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " gigaannum");
-    else
-      return (t.toString() + " gigaannums");
-  }
-  
-  // t in Cosmic years
-  t = y.divide(14000000000);
-//  if( t.lesser(72) )
-  {
-    if( t.lesser(2) )
-      return (t.toString() + " cosmic year");
-    else
-      return (t.toString() + " cosmic years");
-  }
-  */
+
 }
 
 

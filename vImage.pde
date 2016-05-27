@@ -27,23 +27,6 @@ class VImage
     bitmap = new PImage(w,h,RGB);
   }
   
-  // OVERLOAD constructor
-  VImage(int wIn, int hIn, int cIn, var idIn)
-  {
-    cDepth = cIn;
-    w = wIn;
-    h = hIn;
-    size = w * h;
-    idLimit = bigInt(cDepth).pow(w*h).subtract(1);
-    msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
-    pix = new int[size];
-    
-    
-    bitmap = new PImage(w,h,RGB);
-    
-    setPixFromId();
-  }
-  
 
 
 
@@ -62,14 +45,9 @@ class VImage
       pix[p] = floor(random(cDepth));
     
     canvasToId();
-    
   }
   
   
-  
-  
-  
-
   
   
   
@@ -135,10 +113,7 @@ class VImage
   void drawBitmap()
   {
     for( int p = 0; p<size; ++p )
-    {
       bitmap.pixels[p] = color(pix[p]/float(cDepth-1));
-      //bitmap.pixels[p] = color(0.5,0.5,1);
-    }
     
     image(bitmap,0,0);
   }
@@ -149,15 +124,11 @@ class VImage
 
 
 
-
-
-
-
-
   String getId()
   {
     return id.toString();
   } 
+  
   
   float getFraction()
   {
@@ -166,6 +137,7 @@ class VImage
     fraction /= 1000000.0;
     return fraction;
   }
+  
   
   void setId(String idIn)
   {
@@ -234,21 +206,6 @@ class VImage
   
   
   
-  void setIdFromDate( Date dateIn)
-  {
-    /*
-    double now = new Date();
-    // Calculate how many milliseconds since the input date
-    double frame = now.getTime() - dateIn.getTime();
-    
-    frame *= 0.06;  // milliseconds * frames/milli
-     
-    setId(frame);
-    */
-  }
-  
-  
-  
   void setIdFromRange( float v )
   {
     bigInt newId = idLimit;
@@ -290,11 +247,7 @@ class VImage
       pix[p] = floor(brightness(imgR.pixels[p])*0.99999 * (cDepth));
     
     
-    
     canvasToId();
-    
-    
-    //msg = "w: " + w + " h: "+h +"cDepth: " + cDepth;
   }
   
   
@@ -303,21 +256,15 @@ class VImage
   {
     id = bigInt(0);
     
-    
     for( int p = 0; p<size; ++p )
     {
       dDigit = bigInt(cDepth).pow(p).multiply(pix[p]);
       id = id.add( dDigit );
     }
-    
-    
   }
   
   
 
-
-  
-  
 
   
   
@@ -352,20 +299,6 @@ class VImage
   }
   
   
-  
-
-  
-  
-  String estimateComputeTime()
-  {
-    time = bigInt(id);
-    //time = time.divide(60).divide(60).divide(60).divide(24).divide(356);
-    float div = 60*60*60*24*356;
-    //time = time.divide(60).divide(60).divide(60).divide(24).divide(356);
-    time=time.divide(div);
-    return time;
-    
-  }
   
   
 }

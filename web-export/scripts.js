@@ -37,4 +37,4 @@ function numbersOnly(elem) {
 
 
 // make sure the id in the html div is zero when you start
-document.getElementById('uiId').value = 0;
+//document.getElementById('uiId').value = 0;

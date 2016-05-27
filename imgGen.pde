@@ -1,38 +1,7 @@
-//  html javascript functions
-//interface JavaScript {
-//  void HUI_updateId(String theId);
-//  void HUI_updateDivs( boolean explore, boolean about );
-//  void HUI_debug(String text);
-//}
 
-void bindJavascript(JavaScript js) {
-  javascript = js;
-}
-
-JavaScript javascript;
-
-
-
-
-
-
-
-
-// Date( year, month(0-11), date(1-31))
-var RefTime = new Date(1981, 2, 18);
-
-VImage Img ;
-VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
-VImage ImgDate = new VImage(30,30,3);
-
+VImage Img = new VImage(25,25,3); //(100,100,2) tooooo much
 
 PImage[] ImgFile = new PImage[4];
-
-
-//int HUI_lastId = uivars.id.length();
-
-
-
 
 boolean AutoMode = false;
 boolean Values = false;
@@ -42,22 +11,10 @@ boolean HUI_Update = true;
 
 int Sample = -1;
 
-
 var Step = bigInt(1);
 
 
-
 int FrameSize = 700;
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -82,14 +39,6 @@ void setup ()
   ImgFile[3] = loadImage("emc2.jpg");
   
 
-
-  ImgDate.setIdFromDate( RefTime );
-  
-  if( AutoMode )
-    Img = ImgDate;
-  else
-    Img = ImgUser;
-    
 }
 
 
@@ -152,18 +101,6 @@ void draw()
   
   
   
-
-  //// HTML UI to Processing
-  /*
-  // when the input chages
-  if( HUI_lastId != uivars.id )
-  {
-    HUI_lastId = uivars.id;
-    Img.setId(uivars.id);
-    Img.setPixFromId();
-  }
-  */
-  
   //// update HTML UI if needed
   if( HUI_Update )
   {
@@ -201,116 +138,54 @@ void draw()
 
 
 
-
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////////
 // KEYBOARD
 
 void keyPressed()
 {
-  if(key=='z')
-  {
+  if(key=='n' || key==' ' || keyCode == RIGHT)
     next();
-  }
-  if(key=='Z')
-  {
+  
+  if(key=='p' || keyCode == BACKSPACE || keyCode == LEFT)
     prev();
-  }
-
   
   if(key=='c')
-  {
-    Img.clear();
-  }
+    clearCanvas();
     
   if(key=='r')
-  {
-    Img.randomise();
-  }
+    randomImg();
 
-  if(key=='s')
-  {
-    Img.offset(1);
-  }
-  if(key=='S')
-  {
-    Img.offset(-1);
-  }
+  if(key=='a')
+    autoMode();
   
-  if(key=='d')
-  {
-    AutoMode = !AutoMode;
-    if( AutoMode )
-    {
-      Img = ImgDate;
-      //Img.setIdFromDate( RefTime );
-    }
-    else
-    {
-      Img = ImgUser;
-    }
-  }
-  
-  
-  if(key=='+')
-  {
-    Img.setCanvas(Img.w+1, Img.h+1, Img.cDepth);
-  }
-    if(key=='-')
-  {
-    Img.setCanvas(Img.w-1, Img.h-1, Img.cDepth);
-  }
-  if(key=='*')
-  {
-    Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
-  }
-  if(key=='.')
-  {
-    Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
-  }
-  
-  if(key=='e')
-    UI_Common.get("explore").click = !UI_Common.get("explore").click;
+  if(key=='t')
+    xUp();
+
+  if(key=='g')
+    xDown();
+
+  if(key=='y')
+    rUp();
+
+  if(key=='h')
+    rDown();
+
+  if(key=='u')
+    yUp();
     
-  if(key=='o')
-  {
-    Values = !Values;
-    //UI_Common.get("values").click = !UI_Common.get("values").click;
-  }
-    
+  if(key=='j')
+    yDown();
+  
   if(key=='i')
-  {
-    //ImgUser.setId(uivars.id);
-  }
-  if(key=='p')
-  {
-    ImgUser.setIdFromImg(ImgInput);
-  }
+    cUp();
+  
+  if(key=='k')
+    cDown();
   
   if(key=='v')
-  {
-    ImgDate.setIdFromDate( RefTime );
-    
-    var time = new Date(1970, 1, 1);
-    println( time.getTime() );
-  }
+    showValues();
   
-  if(key=='l')
-  {
-    Img.setIdFromRange(float(mouseX)/float(width));
-  }
   
-  if(key=='z')
-  {
-    var t = bigInt( Img.id );
-    //var t = bigInt( (float(mouseX)/float(width)) * 10000000000000000000000000000);
-  }
 }
 
 
@@ -331,7 +206,6 @@ TO DO
 
 
 Finish layout/graphics/fonts!?!
-hardcode text coord?
 About
 
 
@@ -364,5 +238,5 @@ load image
 mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
 prefix ID with canvas resolution
 Bug: breaks in certain colorDepths (perfectly fits the step increment)
-
+hardcode text coord?
 */
