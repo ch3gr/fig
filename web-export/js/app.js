@@ -13,3 +13,7 @@ ctx.stroke();
 ctx.moveTo(500, 0);
 ctx.lineTo(0, 500);
 ctx.stroke();
+
+
+
+

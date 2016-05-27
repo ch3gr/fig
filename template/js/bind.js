@@ -1,5 +1,42 @@
+var Explore = true;
+function HUI_exploreToggle()
+{
+	Explore = !Explore;
+
+	var divs = document.getElementsByClassName("explore");
+	var d;
+	for (d = 0; d < divs.length; d++)
+	{
+		if( Explore )
+	    	divs[d].style.display = 'inline';
+	    else
+	    	divs[d].style.display = 'none';
+	}
+
+	if( Explore )
+	{
+		document.getElementById('buttonExplore').classList.add("toggled");
+		document.getElementById('canvasDiv').classList.remove("large-12");
+		document.getElementById('canvasDiv').classList.add("large-8");
+	}
+	else
+	{
+		document.getElementById('buttonExplore').classList.remove("toggled");
+		document.getElementById('canvasDiv').classList.remove("large-8");
+		document.getElementById('canvasDiv').classList.add("large-12");
+	}
 
 
+	//console.log("explore :" + Explore);
+}
+
+
+
+
+
+
+
+//// BIND FUNCTIONS BETWEEN JAVA SCRIPT AND PROCESSING
 
 // Processing to HTML
 

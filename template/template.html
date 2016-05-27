@@ -42,14 +42,27 @@
 		<div class="row">
 			<div class="small-12 columns">
 				<div class="panel" style="border: 1px solid white">
-					<h1>Finite Image Generator</h1>
+				
+					<div class="row">		
+						<div class="small-12 medium-8 large-8 columns">
+							<h1>Finite Image Generator</h1>
+						</div>
+
+						<div class="small-6 medium-2 large-2 columns">
+							<div id="buttonExplore" type="button" class="tiny expanded button" onclick="HUI_exploreToggle()">Explore</div>
+						</div>
+						<div class="small-6 medium-2 large-2 columns">
+							<div type="button" class="tiny expanded button" data-open="about-modal">About</div>
+						</div>
+					</div>
+			
 				</div>
 			</div>
 		</div>
 
 
 		<div class="row">
-			<div class="small-12 large-8 columns" >
+			<div id="canvasDiv" class="small-12 large-8 columns" >
 				<div class="panel" style="border: 1px solid yellow">
 
 					<div class="row">
@@ -68,25 +81,27 @@
 				    </div>
 
 
-
-					<div class="row">
-						<div class="small-6 columns">
-							<p id="since"> Running since</p/>
+				    <div class="explore">
+						<div class="row">
+							<div class="small-6 columns">
+								<p id="since"> Running since</p/>
+							</div>
+							<div class="small-6 columns" style="text-align: right">
+								<p id="until"> Running until</p/>
+							</div>
 						</div>
-						<div class="small-6 columns" style="text-align: right">
-							<p id="until"> Running until</p/>
+
+						<div class="row">
+							<div class="small-12 columns">
+								<input id="uiIdSlider" type="range" min="0.0" max="1.0" value="0" step="0.0001" oninput="processingSlider(this.value)"/>
+							</div>
+						</div>
+
+						<div class="row">
+							<p></p/>
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="small-12 columns">
-							<input id="uiIdSlider" type="range" min="0.0" max="1.0" value="0" step="0.0001" oninput="processingSlider(this.value)"/>
-						</div>
-					</div>
-
-					<div class="row">
-						<p></p/>
-					</div>
 
 			    </div>
 			</div>
@@ -96,7 +111,7 @@
 
 
 
-			<div class="small-12 large-4 columns" >
+			<div class="small-12 large-4 columns explore" >
 				<div class="row" >
 					<div class="small-4 large-12 columns">
 
@@ -136,104 +151,71 @@
 					<div class="small-4 large-12 columns">
 						<div class="panel" style="border: 1px solid green">
 							
-							<div class="row">
+							<div class="row small-collapse">
 								<div class="small-12 columns">
 									<p></p>
 								</div>
 							</div>
 
 							<div class="row">
-								<div class="small-1 columns">
-									<p></p>
+
+								<div class="small-2 large-2 large-offset-1 columns">
+									<div type="button" onclick="processingCall('xUp')" class="tiny expanded button">X</div>
+								</div>
+								<div class="small-4 large-3 columns">
+									<div type="button" onclick="processingCall('rUp')" class="tiny expanded button">+</div>
+								</div>
+								<div class="small-2 large-2 columns">
+									<div type="button" onclick="processingCall('yUp')" class="tiny expanded button">Y</div>
+								</div>
+								<div class="small-3 large-2 small-offset-1 large-offset-1 end columns">
+									<div type="button" onclick="processingCall('cUp')" class="tiny expanded button">C+</div>
 								</div>
 
-								<div class="small-2 columns">
-									<div type="button" onclick="processingCall('xUp')" class="small-2 small expanded button">X</div>
-								</div>
-								<div class="small-3 columns">
-									<div type="button" onclick="processingCall('rUp')" class="small-3 small expanded button">+</div>
-								</div>
-								<div class="small-2 columns">
-									<div type="button" onclick="processingCall('yUp')" class="small-2 small expanded button">Y</div>
-								</div>
-
-								<div class="small-1 columns">
-									<p></p>
-								</div>
-
-								<div class="small-2 columns">
-									<div type="button" onclick="processingCall('cUp')" class="small-2 small expanded button">C +</div>
-								</div>
-
-								<div class="small-1 columns">
-									<p></p>
-								</div>
 							</div>
 							
 
 							<div class="row">
-								<div class="small-1 columns">
-									<p></p>
-								</div>
 
-								<div class="small-2 columns">
+								<div class="small-2 large-2 large-offset-1 columns">
 									<p id="xSize" style="text-align: center"> X size</p/>
 								</div>
-								<div class="small-3 columns">
-									<p></p>
-								</div>
-								<div class="small-2 columns">
+
+								<div class="small-2 small-offset-4 large-2 large-offset-3 columns">
 									<p id="ySize" style="text-align: center"> Y size</p/>
 								</div>
 								
-								<div class="small-1 columns">
-									<p></p>
-								</div>
-
-								<div class="small-2 columns">
+								<div class="small-3 small-offset-1 large-2 large-offset-1 columns end">
 									<p id="cDepth" style="text-align: center"> Color depth </p/>
 								</div>
 
-								<div class="small-1 columns">
-									<p></p>
-								</div>
 							</div>
 
 
 							<div class="row">
-								<div class="small-1 columns">
-									<p></p>
+
+								<div class="small-2 large-2 large-offset-1 columns">
+									<div type="button" onclick="processingCall('xDown')" class="tiny expanded button">X</div>
+								</div>
+								<div class="small-4 large-3 columns">
+									<div type="button" onclick="processingCall('rDown')" class="tiny expanded button">-</div>
+								</div>
+								<div class="small-2 large-2 columns">
+									<div type="button" onclick="processingCall('yDown')" class="tiny expanded button">Y</div>
+								</div>
+								<div class="small-3 large-2 small-offset-1 large-offset-1 end columns">
+									<div type="button" onclick="processingCall('cDown')" class="tiny expanded button">C-</div>
 								</div>
 
-								<div class="small-2 columns">
-									<div type="button" onclick="processingCall('xDown')" class="small-2 small expanded button">X</div>
-								</div>
-								<div class="small-3 columns">
-									<div type="button" onclick="processingCall('rDown')" class="small-3 small expanded button">-</div>
-								</div>
-								<div class="small-2 columns">
-									<div type="button" onclick="processingCall('yDown')" class="small-2 small expanded button">Y</div>
-								</div>
-
-								<div class="small-1 columns">
-									<p></p>
-								</div>
-
-								<div class="small-2 columns">
-									<div type="button" onclick="processingCall('cDown')" class="small-2 small expanded button">C -</div>
-								</div>
-
-								<div class="small-1 columns">
-									<p></p>
-								</div>
 							</div>
 
 
 							<div class="row">
-								<div class="small-12 columns">
+								<div class="small-6 columns small-centered">
 									<p id="limit" style="text-align: center"> Combinations </p>
 								</div>
 							</div>
+
 						</div>
 					</div>
 
@@ -269,27 +251,19 @@
 
 							<div class="row">
 								<div class="small-3 columns">
-									<div id="buttonS1" type="button" onclick="processingCall('sample1')" class="large expanded button single">s1</div>
+									<div id="buttonS1" type="button" onclick="processingCall('sample1')" class="small expanded button single">s1</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS2" type="button" onclick="processingCall('sample2')" class="large expanded button single">s2</div>
+									<div id="buttonS2" type="button" onclick="processingCall('sample2')" class="small expanded button single">s2</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS3" type="button" onclick="processingCall('sample3')" class="large expanded button single">s3</div>
+									<div id="buttonS3" type="button" onclick="processingCall('sample3')" class="small expanded button single">s3</div>
 								</div>
 								<div class="small-3 columns">
-									<div id="buttonS4" type="button" onclick="processingCall('sample4')" class="large expanded button single">s4</div>
+									<div id="buttonS4" type="button" onclick="processingCall('sample4')" class="small expanded button single">s4</div>
 								</div>
 							</div>
 
-							<div class="row">
-								<div class="small-6 columns">
-									<div type="button" onclick="processingCall('NOTHING')" class="large expanded button disabled">disabled</div>
-								</div>
-								<div class="small-6 columns">
-									<div type="button" onclick="processingCall('NOTHING')" class="large expanded button" data-open="about-modal">About</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -298,7 +272,7 @@
 
 
 		<div class="row">
-			<div id="idField" class="small-12 columns">
+			<div id="idField" class="small-12 columns explore">
 				<div class="panel" style="border: 1px solid grey">
 					<textarea id="uiId" type="number" rows="8"  onkeypress="processingSetId(this.value)"></textarea>
 				</div>
@@ -392,13 +366,7 @@
 		<script src="js/vendor/foundation.js"></script>
 
 		<script src="js/app.js"></script>
-
-
-
-
-
-
-
+		<script> HUI_exploreToggle() </script>
 
 
 
@@ -410,6 +378,4 @@
 
 
 @@scripts@@
-
-
 

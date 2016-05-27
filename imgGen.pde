@@ -6,7 +6,7 @@ PImage[] ImgFile = new PImage[4];
 boolean AutoMode = false;
 boolean Values = false;
 boolean About = false;
-boolean Explore = true;
+//boolean Explore = true;
 boolean HUI_Update = true;
 
 int Sample = -1;
@@ -64,11 +64,9 @@ void draw()
   
   if( AutoMode )
   {
-    Img.offset(Step);
-    Sample = -1;
-    HUI_Update = true;
+    next();
   }
-  
+
     
   
   ////////////////////////////////////////////////////
@@ -195,7 +193,10 @@ void keyPressed()
 
 
 
-
+void mousePressed()
+{
+ next(); 
+}
 
 
 
