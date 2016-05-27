@@ -7,7 +7,9 @@ body {
   line-height: 1.5em;
 }
 
-
+body.is-reveal-open {
+  padding-right: 17px;
+}
 
 a:link {
   color: red;

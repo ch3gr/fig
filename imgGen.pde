@@ -3,7 +3,7 @@ VImage Img = new VImage(25,25,3); //(100,100,2) tooooo much
 
 PImage[] ImgFile = new PImage[4];
 
-boolean AutoMode = true;
+boolean AutoMode = false;
 boolean Values = false;
 boolean About = false;
 //boolean Explore = true;
@@ -208,12 +208,6 @@ void mousePressed()
 /*
 TO DO
 
-
-Finish layout/graphics/fonts!?!
-About
-
-
-
 To Del ??
 canvasToId()
 setIdFromDate()
@@ -236,11 +230,4 @@ when re-set canvas color depth, regenerate img
 no characters in id textArea
 clean up javascript/jQuery, check if everything can be on a tab
 
-
-Nah
-load image
-mipos h updateUI() kalitera sto main kai oxi stin class? (den ta katafera)
-prefix ID with canvas resolution
-Bug: breaks in certain colorDepths (perfectly fits the step increment)
-hardcode text coord?
 */

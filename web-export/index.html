@@ -349,43 +349,47 @@
 		<div id="about-modal" class="reveal large text-justify" data-reveal>
 			<h2> Finite Image Generator </h2>
 			<hr>
-			<p>
-			Two dimensional images of any kind have long been stored and displayed digitally. To do so the image is broken down into a set of pixels with a pre-defined color depth. The digital representation of an image is essentially just a series of color values.
-			</p>
-			<p>
-			If we look at this the other way, we can say that any given digital canvas has a certain number of possible color combinations among its pixels. This number is calculated by raising the amount of available colors to the power of total pixels in the image [combinations=colorDepth^pixels]. So for example a tiny canvas with a resolution of 4x4 pixels and only 2 colors can hold 2^16=65536 possible images.
-			</p>
-			<p>
-			Since any kind of image can be digitized, we could also assume that every single representation can be found in one of these possible color combinations as long as the canvas has enough resolution and color definition to make the image readable. As the above equation is exponential, an image with adequate definition may have an astronomical number of possible combinations but never the less a finite amount.
-			</p>
-			<p>
-			By definition a digital imaging device samples an infinite reality and encodes it in a finite data-set. This experimental software exploits this artifact and explores the vast universe of all image variations within a given digital canvas. FIG iterates through all the possible color combinations one by one and it will eventually generate every possible image. Contrary to the infinite monkey theorem, where a monkey pressing random keystrokes on a typewriter for infinite amount of time will almost surely compose one of Shakespeare's plays, FIG will surely generate all possible images in a finite time.
-			</p>
-			<p>
-			Even though the grand majority of the results may be nondescript, it is guaranteed that meaningful images will eventually emerge. These images could be of anything, like a photo of your cat, your own portrait, or even the photo of your unborn child. As a proof, a few sample images have been provided to show that each one has a unique iteration index within the full set.
-			</p>
-			<p>
-			Of course at the moment this only works in a theoretical level, as in practice even when running at 60 iterations per second, it would require a little less than 10 billion years, or almost the age of the known universe, to iterate through all the possible color combinations of an 8x8 pixels image with only 2 colors. But as the processing power of computers keeps increasing and with the fast progress in quantum computing, there may be a time in the future when we will be able to brute force the generation of all images and then filter the meaningful ones out of the chaos. In a potential version 2 of this program, the output images can be passed into an image recognition algorithm, which will identify, aggregate and categorize human recognizable results.
-			</p>
-			<p>
-			So what happens when and if we get to that point? Will this be the end of human creativity?
-			What about intellectual property? Who will hold the rights to all these images?
-			</p>
+
 			
 			<p>
-			</p>
-
-			<p>
-			Q&A:
+			Two dimensional images have long been stored and displayed digitally. This is done by breaking down the image into a set of pixels with a pre-defined color depth. The digital representation of an image is essentially just a series of color values.
 			</p>
 			<p>
-			Q. Why are there only grey colors?
+			If we look at this the other way, we can say that any given digital canvas has a certain number of possible color combinations among its pixels. This number is calculated by raising the amount of available colors to the power of total pixels in the image [combinations=colorDepth^pixels]. For example a tiny canvas with a resolution of 4x4 pixels and only 2 colors can hold 2^16=65536 possible images.
+			</p>
+			<p>
+			Since any image can be digitized, we can also assume that any and every representation can be found in one of these possible color combinations as long as the canvas has enough resolution and color definition to make the image readable. Since the above equation is exponential, an image with adequate definition may have an astronomical number of possible combinations but, never the less a finite amount.
+			</p>
+			<p>
+			By definition a digital imaging device samples an infinite reality and encodes it in a finite data-set. This experimental software exploits this artifact and explores the vast universe of all image variations within a given digital canvas. FIG iterates through all the possible color combinations one by one and guarantees it will eventually generate every possible image. Contrary to the <a title="Infinite Monkey Theorem" href="https://en.wikipedia.org/wiki/Infinite_monkey_theorem" target="_blank">infinite monkey theorem</a>, where a monkey pressing random keystrokes on a typewriter for infinite amount of time will <a title="Almost surely" href="https://en.wikipedia.org/wiki/Almost_surely" target="_blank">almost surely</a> compose one of Shakespeare's plays, FIG will surely generate all possible images in a finite time.
+			</p>
+			<p>
+			Even though the vast majority of the results may be nondescript, it is certain that meaningful images will eventually emerge. These images could be of anything: a photo of your cat, your own portrait, or even a photo of your unborn child. As a proof, a few sample images have been provided to show that each one has a unique iteration index within the full set.
+			</p>
+			<p>
+			At the present time this only works in a theoretical level, as even when running at 60 iterations per second, it would require a little less than 10 billion years (or almost the age of the known universe) to iterate through all the possible color combinations of an 8x8 pixels image with only 2 colors. But as the processing power of computers keeps increasing alongside the fast progress in quantum computing, we may eventually be able to brute force the generation of all images and filter the meaningful ones out of the chaos. In a potential future version of this software, the output images can be passed into an image recognition algorithm, which would identify, aggregate and categorize human recognizable results.
+			</p>
+			<p>
+			So what happens if and when we get to that point? Will this be the end of human creativity? 
+			What about intellectual property? Who will hold the rights to all these images?
+			</p>
+			<p>
+			<b>Q&A:</b></p>
+			</p>
+			<p>
+			Q. Why are there only grey colors?<br>
 			A. Colors require 3 values per pixel, so for the purpose of keeping this experiment simple, only tones of grey are used. The logic can easily be transferred into color images, or even moving images.
 			</p>
 			<p>
-			Q. Why don't I see any meaningful images when I move the slider?
+			Q. Why don't I see any meaningful images when I move the slider?<br>
 			A. The slider's accuracy is limited by the screen resolution. Moving the slider just by one pixel, may translate to an increment of many trillion iterations, which means it's easy to miss some.
 			</p>
+			<p>
+			Q. Can I take a look to the source code?<br>
+			A. This is an open source project and it's available in <a title="FIG in GitHub" href="https://github.com/ch3gr/fig" target="_blank">GitHub.</a>
+			</p>
+
+
 			<hr>
 			<a href="http://ch3.gr">ch3.gr</a>
 			<p>2016</p>
