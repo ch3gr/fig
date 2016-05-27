@@ -32,6 +32,8 @@ function()
 };
 
 
+
+
 /*
 $(function() {
   $('#staticParent').on('keydown', '#child', function(e){
@@ -54,7 +56,7 @@ $(function() {
     
     uivars.id = $(this).val();                       // update word variable,
     var p = Processing.getInstanceById('imgGen');
-    if (p) p.importId();                                // and call updateWord function in pjs sketch.
+    //if (p) p.importId();                                // and call updateWord function in pjs sketch.
   });
   $("#uiId").val(uivars.id);                // initialize input textbox contents.
   
@@ -65,7 +67,7 @@ $(function() {
   {
     uivars.slider = $(this).val();
     var p = Processing.getInstanceById('imgGen');
-    if (p) p.importId();
+    //if (p) p.importId();
   });
   $("#uiIdSlider").val(uivars.slider);
   

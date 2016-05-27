@@ -54,7 +54,7 @@ void setup ()
 
 
   color baseC = color(0.1,0.1,0.1);
-  color overC = color(0.4,0.4,0.4);
+  color overC = color(0.15,0.15,0.15);
   color downC = color(0.8,0.8,0.8);
   
   
@@ -63,37 +63,37 @@ void setup ()
   int pw = 300;
   int bh = 50;
   int gap = 5;
-  Buttons.put( "prev", new Button("-", px, py, pw/3-gap, bh*2, baseC, overC, downC) );
-  Buttons.put( "next", new Button("+", px+2*(pw/3)+gap, py, pw/3-gap, bh*2, baseC, overC, downC) );
+  Buttons.put( "prev", new Button("-", false, px, py, pw/3-gap, bh*2, baseC, overC, downC) );
+  Buttons.put( "next", new Button("+", false, px+2*(pw/3)+gap, py, pw/3-gap, bh*2, baseC, overC, downC) );
   
-  Buttons.put( "incUp", new Button("incUp", px+(pw/3), py, pw/3, (bh*0.6), baseC, overC, downC) );
-  Buttons.put( "incDown", new Button("incDown", px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), baseC, overC, downC) );
+  Buttons.put( "incUp", new Button("incUp", false, px+(pw/3), py, pw/3, (bh*0.6), baseC, overC, downC) );
+  Buttons.put( "incDown", new Button("incDown", false, px+(pw/3), py+(bh*2-bh*0.6), pw/3, (bh*0.6), baseC, overC, downC) );
   
   py += bh*3;
   int px1 = px + pw/6; 
   int px2 = px + pw/2;
   int px3 = px + pw*5.0/6.0;
   int bs = 35;
-  Buttons.put( "xUp", new Button("+", px1-bs/2, py, bs, bs, baseC, overC, downC) );
-  Buttons.put( "yUp", new Button("+", px2-bs/2, py, bs, bs, baseC, overC, downC) );
-  Buttons.put( "cUp", new Button("+", px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "xUp", new Button("+", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "yUp", new Button("+", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "cUp", new Button("+", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
   py += 80;
-  Buttons.put( "xDown", new Button("-", px1-bs/2, py, bs, bs, baseC, overC, downC) );
-  Buttons.put( "yDown", new Button("-", px2-bs/2, py, bs, bs, baseC, overC, downC) );
-  Buttons.put( "cDown", new Button("-", px3-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "xDown", new Button("-", false, px1-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "yDown", new Button("-", false, px2-bs/2, py, bs, bs, baseC, overC, downC) );
+  Buttons.put( "cDown", new Button("-", false, px3-bs/2, py, bs, bs, baseC, overC, downC) );
   
   py = height - bh;
-  Buttons.put( "about", new Button("about", px, py, pw, bh, baseC, overC, downC) );
+  Buttons.put( "about", new Button("about", false, px, py, pw, bh, baseC, overC, downC) );
   
   py -= bh*1.5 + gap ;
-  Buttons.put( "samples", new Button("samples", px, py, pw, bh*1.5, baseC, overC, downC) );
+  Buttons.put( "samples", new Button("samples", false, px, py, pw, bh*1.5, baseC, overC, downC) );
   
   py -= bh + gap;
-  Buttons.put( "random", new Button("random", px, py, pw/2-gap, bh, baseC, overC, downC) );
-  Buttons.put( "clear", new Button("clear", px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  Buttons.put( "random", new Button("random", false, px, py, pw/2-gap, bh, baseC, overC, downC) );
+  Buttons.put( "clear", new Button("clear", false, px+pw/2+gap, py, pw/2-gap, bh, baseC, overC, downC) );
 
   py -= bh + gap;
-  Buttons.put( "auto iterate", new Button("auto", px, py, pw, bh, baseC, overC, downC) );
+  Buttons.put( "auto", new Button("auto iterate", true, px, py, pw, bh, baseC, overC, downC) );
 
  
 // @pjs preload must be used to preload the image 
@@ -244,7 +244,8 @@ void ui()
     me.getValue().draw();
   }
   
-  // draw info
+  
+  // Print some info
   textSize(20);
   textAlign(CENTER, CENTER);
   fill(0.8);
@@ -262,7 +263,15 @@ void ui()
   xc = (Buttons.get("cUp").x + Buttons.get("cUp").sx/2);
   text( Img.cDepth, xc, yc);
   
+  xc = Buttons.get("auto").x;
+  yc = height/2;
+  textSize(14);
+  textAlign(LEFT, BOTTOM);
+  text( ("limit: "+ Img.idLimit), xc, yc);
   
+  
+  text( "Start: "+ duration(Img.id), xc, yc+20);
+  text( "End  : "+ duration(Img.idLimit.minus(Img.id)), xc, yc+40);
   
   
   
@@ -297,6 +306,9 @@ void ui()
     Img.setCanvas(Img.w, Img.h, Img.cDepth+1);
   if( Buttons.get("cDown").click )
     Img.setCanvas(Img.w, Img.h, Img.cDepth-1);
+    
+  if( Buttons.get("auto").click )
+    Img.offset(Step);
   
   if( Buttons.get("random").click )
     Img.randomise();

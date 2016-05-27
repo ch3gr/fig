@@ -32,6 +32,25 @@ function()
 };
 
 
+    var bound = false;
+
+    function bindJavascript() {
+      var pjs = Processing.getInstanceById('@@id@@');
+      if(pjs!=null) {
+        pjs.bindJavascript(this);
+        bound = true;
+      }
+      if(!bound) setTimeout(bindJavascript, 250);
+    }
+
+    bindJavascript();
+
+
+    function UI_updateId(id, idSlider){
+      document.getElementById('uiId').value = id;
+      document.getElementById('uiIdSlider').value = idSlider;
+    }
+
 /*
 $(function() {
   $('#staticParent').on('keydown', '#child', function(e){
@@ -54,7 +73,7 @@ $(function() {
     
     uivars.id = $(this).val();                       // update word variable,
     var p = Processing.getInstanceById('imgGen');
-    if (p) p.importId();                                // and call updateWord function in pjs sketch.
+    //if (p) p.importId();                                // and call updateWord function in pjs sketch.
   });
   $("#uiId").val(uivars.id);                // initialize input textbox contents.
   
@@ -65,7 +84,7 @@ $(function() {
   {
     uivars.slider = $(this).val();
     var p = Processing.getInstanceById('imgGen');
-    if (p) p.importId();
+    //if (p) p.importId();
   });
   $("#uiIdSlider").val(uivars.slider);
   

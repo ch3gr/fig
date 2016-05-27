@@ -9,11 +9,12 @@ class Button
   boolean over = false;
   boolean down = false;
   boolean click = false;
+  boolean toggle;
   int timer;
   
   String label;
 
-  Button(String ilabel, int ix, int iy, int isx, int isy, color ibaseC, color ioverC, color idownC)
+  Button(String ilabel, boolean itoggle, int ix, int iy, int isx, int isy, color ibaseC, color ioverC, color idownC)
   {
     label = ilabel;
     x = ix;
@@ -23,6 +24,7 @@ class Button
     baseC = ibaseC;
     overC = ioverC;
     downC = idownC;
+    toggle = itoggle;
     timer = -1;
   }
 
@@ -65,23 +67,31 @@ class Button
     isOver();
     isDown();
     
-    click = false;
-    // first frame down
-    if( !pDown && down )
-    {
-      click = true;
-      timer = millis();
-    }
-    
-    // continious press
-    if( timer>-1 && millis()-timer > 500 )
-      click = true;
-    
-    // last frame down
-    if( pDown && !down )
+    if( !toggle )
     {
       click = false;
-      timer = -1;
+      // first frame down
+      if( !pDown && down )
+      {
+        click = true;
+        timer = millis();
+      }
+      
+      // continious press
+      if( timer>-1 && millis()-timer > 500 )
+        click = true;
+      
+      // last frame down
+      if( pDown && !down )
+      {
+        click = false;
+        timer = -1;
+      }
+    }
+    else
+    {
+     if( !pDown && down )
+       click = !click;
     }
     
   }
@@ -90,7 +100,7 @@ class Button
   void draw() 
   {
     color c; 
-    if( down )
+    if( down || click )
       c = downC;
     else if ( over )
       c = overC;
