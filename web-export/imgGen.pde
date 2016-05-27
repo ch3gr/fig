@@ -8,7 +8,7 @@ HashMap UI_Common = new HashMap();
 var RefTime = new Date(1981, 2, 18);
 
 VImage Img ;
-VImage ImgUser = new VImage(2,2,51); //(100,100,2) tooooo much
+VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
 
@@ -248,12 +248,13 @@ void draw()
   
 
   //// HTML UI to Processing
-  /*
+  
   // when the input chages
   if( HUI_lastId != uivars.id )
   {
     HUI_lastId = uivars.id;
-    Img.setId(uivars.id, Img.cDepth);
+    Img.setId(uivars.id);
+    Img.setPixFromId();
     update_UI();
   }
   
@@ -264,19 +265,21 @@ void draw()
     //Img.setIdFromRange(float(mouseX)/float(width));
     update_UI();
   }
-  */
+  
   
   
   
   
   //// Temp text
-  
+  /*
   textAlign(LEFT, BOTTOM);
   fill(color(1,0,0));
   textSize(18);
   //text(frameRate, 50, 50);
-  text(Img.msg, 10,540);
   
+  
+  ////////////////////////////////////
+  // MUTHERFUCKING BRAINFUCK!!!!
   bigInt a = bigInt(Img.id);
   
   text( a.toString(), 50, 100);
@@ -301,11 +304,18 @@ void draw()
     }
   }
   text( out, 50, 160);
+  text(Img.msg, 50,200);
   
   
+  bigInt b = bigInt(50);
+  String bb = b.toString(12);
+  bigInt c = bigInt(bb,100);
+  text( bigInt(36).toString(100), 300, 100);
   
-  
-  
+  text( bigInt(36).toString(100).length(), 300, 130);
+  ////////////////////////////////////
+  ////////////////////////////////////
+  */
   
   
   //textAlign(RIGHT, TOP);
@@ -445,7 +455,7 @@ void keyPressed()
     
   if(key=='i')
   {
-    ImgUser.setId(uivars.id, ImgUser.cDepth);
+    ImgUser.setId(uivars.id);
     update_UI();
   }
   if(key=='p')
@@ -502,7 +512,7 @@ TO DO
 really clear img when reset canvas
 when re-set canvas color depth, regenerate img
 
-optimise step (kateuthian apo to id)
+
 
 
 touch screen buttons?
@@ -518,6 +528,7 @@ About
 
 To Del ??
 canvasToId()
+setIdFromDate()
 
 
 DONE:
@@ -529,7 +540,7 @@ calculate since / until, in nice text
 slider doesn't update Img when in auto mode
 sliders/id dont update when canvas is adjusted
 combined + / - button
-
+optimise step (kateuthian apo to id)
 
 Nah
 load image
@@ -1498,7 +1509,7 @@ class VImage
     
     bitmap = new PImage(w,h,RGB);
     
-    setId( idIn, cDepth );
+    setPixFromId();
   }
   
 
@@ -1507,13 +1518,10 @@ class VImage
  
   void clear()
   {
-    for( int p = 0; p<size; ++p )
+    for( int p = 0; p<pix.length; ++p )
       pix[p] = 0;
     
-    //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
     id = bigInt(0);
-    //update_UI();
-    
   }
   
   
@@ -1546,9 +1554,7 @@ class VImage
     else if( id.greater( idLimit ) )
       id = bigInt(0).add( id.minus(idLimit) ).minus(1);
     
-    setId(id, cDepth);
-    //update_UI();
-    
+    setPixFromId();
   }
   
   
@@ -1637,39 +1643,65 @@ class VImage
   
 
 
-  void setId(String idIn, int depth)
+  void setId(String idIn)
   {
     clear();
-    
-    String idBaseConvert = bigInt(idIn).toString(depth);
+    id = bigInt(idIn);
+  }
+  
+  
+  
+  
+  
+  void setPixFromId()
+  {
+    // generate a string with the pixel values by converting to a base of cDepth
+    // numbers 10 to 35 are letters
+    // numbers higher than 35 are like <65>
+    String idBaseConvert = bigInt(id).toString(cDepth);
     msg = idBaseConvert;
     
+    // temp array to hold the pixel values in reverse order.
+    float[] pix2 = {};
     
-    id = bigInt(idBaseConvert, depth);
-    /*
+    // iterator
+    int p = 0;
+    
+    // Go through the characters of the string
     for(int i=0; i<idBaseConvert.length(); i++)
     {
-      int dInv = idBaseConvert.length()-i-1;
-      
+      // if the number is smaller than 36
       if( idBaseConvert[i] != "<" )
       {
-        pix[dInv] = bigInt(idBaseConvert[i], depth);
+        pix2[p++] = float( bigInt(idBaseConvert[i], cDepth).toString() );
       }
       else
       {
+        // skip the bracket
         i++;
         String tmp = "";
+        // keep collecting numbers until you hit the end bracket
         while( idBaseConvert[i] != ">" )
-         tmp += aa[i++];
+         tmp += idBaseConvert[i++];
         
-        pix[dInv] = tmp;
+        // add the value to the reveresed array
+        pix2[p++] = float(tmp);
+        
       }
     }
-    */
     
     
-    id = bigInt(idBaseConvert, depth);
+    // copy to the pixel array, in reverse order
+    p = 0;
+    for( i = pix2.length-1; i>=0; i-- )
+      pix[p++] = pix2[i];
+    
+    
+    //// 4 hours to fix this function FUCKING HELL!!!!!
   }
+  
+  
+  
   
   
   
@@ -1677,25 +1709,28 @@ class VImage
   
   void setIdFromDate( Date dateIn)
   {
+    /*
     double now = new Date();
     // Calculate how many milliseconds since the input date
     double frame = now.getTime() - dateIn.getTime();
     
     frame *= 0.06;  // milliseconds * frames/milli
      
-    setId(frame, cDepth);
-    
+    setId(frame);
+    */
   }
   
   
   
   void setIdFromRange( float v )
   {
-    var newId = idLimit;
-    newId = newId.multiply(v);
-    setId(newId, cDepth);
-    //setId(1000, cDepth);
-    
+    bigInt newId = idLimit;
+    // multiple/divide with a million for int
+    v *= 1000000;
+    newId = newId.multiply(int(v));
+    newId = newId.divide(1000000);
+    id = newId;
+    setPixFromId();
   }
   
   

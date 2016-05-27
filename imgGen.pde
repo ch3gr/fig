@@ -8,7 +8,7 @@ HashMap UI_Common = new HashMap();
 var RefTime = new Date(1981, 2, 18);
 
 VImage Img ;
-VImage ImgUser = new VImage(2,2,51); //(100,100,2) tooooo much
+VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
 
@@ -248,12 +248,13 @@ void draw()
   
 
   //// HTML UI to Processing
-  /*
+  
   // when the input chages
   if( HUI_lastId != uivars.id )
   {
     HUI_lastId = uivars.id;
-    Img.setId(uivars.id, Img.cDepth);
+    Img.setId(uivars.id);
+    Img.setPixFromId();
     update_UI();
   }
   
@@ -264,19 +265,21 @@ void draw()
     //Img.setIdFromRange(float(mouseX)/float(width));
     update_UI();
   }
-  */
+  
   
   
   
   
   //// Temp text
-  
+  /*
   textAlign(LEFT, BOTTOM);
   fill(color(1,0,0));
   textSize(18);
   //text(frameRate, 50, 50);
-  text(Img.msg, 10,540);
   
+  
+  ////////////////////////////////////
+  // MUTHERFUCKING BRAINFUCK!!!!
   bigInt a = bigInt(Img.id);
   
   text( a.toString(), 50, 100);
@@ -301,11 +304,18 @@ void draw()
     }
   }
   text( out, 50, 160);
+  text(Img.msg, 50,200);
   
   
+  bigInt b = bigInt(50);
+  String bb = b.toString(12);
+  bigInt c = bigInt(bb,100);
+  text( bigInt(36).toString(100), 300, 100);
   
-  
-  
+  text( bigInt(36).toString(100).length(), 300, 130);
+  ////////////////////////////////////
+  ////////////////////////////////////
+  */
   
   
   //textAlign(RIGHT, TOP);
@@ -445,7 +455,7 @@ void keyPressed()
     
   if(key=='i')
   {
-    ImgUser.setId(uivars.id, ImgUser.cDepth);
+    ImgUser.setId(uivars.id);
     update_UI();
   }
   if(key=='p')
@@ -502,7 +512,7 @@ TO DO
 really clear img when reset canvas
 when re-set canvas color depth, regenerate img
 
-optimise step (kateuthian apo to id)
+
 
 
 touch screen buttons?
@@ -518,6 +528,7 @@ About
 
 To Del ??
 canvasToId()
+setIdFromDate()
 
 
 DONE:
@@ -529,7 +540,7 @@ calculate since / until, in nice text
 slider doesn't update Img when in auto mode
 sliders/id dont update when canvas is adjusted
 combined + / - button
-
+optimise step (kateuthian apo to id)
 
 Nah
 load image

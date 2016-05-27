@@ -1,6 +1,3 @@
-// https://www.npmjs.com/package/big-integer
-//  https://github.com/peterolson/BigInteger.js
-
 var bigInt = (function (undefined) {
     "use strict";
 
@@ -10,17 +7,25 @@ var bigInt = (function (undefined) {
         MAX_INT_ARR = smallToArray(MAX_INT),
         LOG_MAX_INT = Math.log(MAX_INT);
 
+    function Integer(v, radix) {
+        if (typeof v === "undefined") return Integer[0];
+        if (typeof radix !== "undefined") return +radix === 10 ? parseValue(v) : parseBase(v, radix);
+        return parseValue(v);
+    }
+
     function BigInteger(value, sign) {
         this.value = value;
         this.sign = sign;
         this.isSmall = false;
     }
+    BigInteger.prototype = Object.create(Integer.prototype);
 
     function SmallInteger(value) {
         this.value = value;
         this.sign = value < 0;
         this.isSmall = true;
     }
+    SmallInteger.prototype = Object.create(Integer.prototype);
 
     function isPrecise(n) {
         return -MAX_INT < n && n < MAX_INT;
@@ -297,7 +302,7 @@ var bigInt = (function (undefined) {
     function multiplyKaratsuba(x, y) {
         var n = Math.max(x.length, y.length);
         
-        if (n <= 400) return multiplyLong(x, y);
+        if (n <= 30) return multiplyLong(x, y);
         n = Math.ceil(n / 2);
 
         var b = x.slice(n),
@@ -309,7 +314,15 @@ var bigInt = (function (undefined) {
             bd = multiplyKaratsuba(b, d),
             abcd = multiplyKaratsuba(addAny(a, b), addAny(c, d));
 
-        return addAny(addAny(ac, shiftLeft(subtract(subtract(abcd, ac), bd), n)), shiftLeft(bd, 2 * n));
+        var product = addAny(addAny(ac, shiftLeft(subtract(subtract(abcd, ac), bd), n)), shiftLeft(bd, 2 * n));
+        trim(product);
+        return product;
+    }
+
+    // The following function is derived from a surface fit of a graph plotting the performance difference
+    // between long multiplication and karatsuba multiplication versus the lengths of the two arrays.
+    function useKaratsuba(l1, l2) {
+        return -0.012 * l1 - 0.012 * l2 + 0.000015 * l1 * l2 > 0;
     }
 
     BigInteger.prototype.multiply = function (v) {
@@ -318,7 +331,7 @@ var bigInt = (function (undefined) {
             sign = this.sign !== n.sign,
             abs;
         if (n.isSmall) {
-            if (b === 0) return CACHE[0];
+            if (b === 0) return Integer[0];
             if (b === 1) return this;
             if (b === -1) return this.negate();
             abs = Math.abs(b);
@@ -327,7 +340,7 @@ var bigInt = (function (undefined) {
             }
             b = smallToArray(abs);
         }
-        if (a.length + b.length > 4000) // Karatsuba is only faster for sufficiently large inputs
+        if (useKaratsuba(a.length, b.length)) // Karatsuba is only faster for certain array sizes
             return new BigInteger(multiplyKaratsuba(a, b), sign);
         return new BigInteger(multiplyLong(a, b), sign);
     };
@@ -340,20 +353,20 @@ var bigInt = (function (undefined) {
         }
         return new BigInteger(multiplyLong(b, smallToArray(a)), sign);
     }
-    SmallInteger.prototype["_multiplyBySmall"] = function (a) {
+    SmallInteger.prototype._multiplyBySmall = function (a) {
             if (isPrecise(a.value * this.value)) {
                 return new SmallInteger(a.value * this.value);
             }
             return multiplySmallAndArray(Math.abs(a.value), smallToArray(Math.abs(this.value)), this.sign !== a.sign);
     };
-    BigInteger.prototype["_multiplyBySmall"] = function (a) {
-            if (a.value === 0) return CACHE[0];
+    BigInteger.prototype._multiplyBySmall = function (a) {
+            if (a.value === 0) return Integer[0];
             if (a.value === 1) return this;
             if (a.value === -1) return this.negate();
             return multiplySmallAndArray(Math.abs(a.value), this.value, this.sign !== a.sign);
     };
     SmallInteger.prototype.multiply = function (v) {
-        return parseValue(v)["_multiplyBySmall"](this);
+        return parseValue(v)._multiplyBySmall(this);
     };
     SmallInteger.prototype.times = SmallInteger.prototype.multiply;
 
@@ -501,11 +514,11 @@ var bigInt = (function (undefined) {
             if (n.isSmall) {
                 return [new SmallInteger(truncate(a / b)), new SmallInteger(a % b)];
             }
-            return [CACHE[0], self];
+            return [Integer[0], self];
         }
         if (n.isSmall) {
-            if (b === 1) return [self, CACHE[0]];
-            if (b == -1) return [self.negate(), CACHE[0]];
+            if (b === 1) return [self, Integer[0]];
+            if (b == -1) return [self.negate(), Integer[0]];
             var abs = Math.abs(b);
             if (abs < BASE) {
                 value = divModSmall(a, abs);
@@ -521,8 +534,8 @@ var bigInt = (function (undefined) {
             b = smallToArray(abs);
         }
         var comparison = compareAbs(a, b);
-        if (comparison === -1) return [CACHE[0], self];
-        if (comparison === 0) return [CACHE[self.sign === n.sign ? 1 : -1], CACHE[0]];
+        if (comparison === -1) return [Integer[0], self];
+        if (comparison === 0) return [Integer[self.sign === n.sign ? 1 : -1], Integer[0]];
 
         // divMod1 is faster on smaller input sizes
         if (a.length + b.length <= 200)
@@ -568,12 +581,12 @@ var bigInt = (function (undefined) {
             a = this.value,
             b = n.value,
             value, x, y;
-        if (b === 0) return CACHE[1];
-        if (a === 0) return CACHE[0];
-        if (a === 1) return CACHE[1];
-        if (a === -1) return n.isEven() ? CACHE[1] : CACHE[-1];
+        if (b === 0) return Integer[1];
+        if (a === 0) return Integer[0];
+        if (a === 1) return Integer[1];
+        if (a === -1) return n.isEven() ? Integer[1] : Integer[-1];
         if (n.sign) {
-            return CACHE[0];
+            return Integer[0];
         }
         if (!n.isSmall) throw new Error("The exponent " + n.toString() + " is too large.");
         if (this.isSmall) {
@@ -581,7 +594,7 @@ var bigInt = (function (undefined) {
                 return new SmallInteger(truncate(value));
         }
         x = this;
-        y = CACHE[1];
+        y = Integer[1];
         while (true) {
             if (b & 1 === 1) {
                 y = y.times(x);
@@ -599,10 +612,10 @@ var bigInt = (function (undefined) {
         exp = parseValue(exp);
         mod = parseValue(mod);
         if (mod.isZero()) throw new Error("Cannot take modPow with modulus 0");
-        var r = CACHE[1],
+        var r = Integer[1],
             base = this.mod(mod);
-        if (base.isZero()) return CACHE[0];
         while (exp.isPositive()) {
+            if (base.isZero()) return Integer[0];
             if (exp.isOdd()) r = r.multiply(base).mod(mod);
             exp = exp.divide(2);
             base = base.square().mod(mod);
@@ -640,6 +653,15 @@ var bigInt = (function (undefined) {
     };
 
     BigInteger.prototype.compare = function (v) {
+        // See discussion about comparison with Infinity:
+        // https://github.com/peterolson/BigInteger.js/issues/61
+        if (v === Infinity) {
+            return -1;
+        }
+        if (v === -Infinity) {
+            return 1;
+        }
+
         var n = parseValue(v),
             a = this.value,
             b = n.value;
@@ -654,6 +676,13 @@ var bigInt = (function (undefined) {
     BigInteger.prototype.compareTo = BigInteger.prototype.compare;
 
     SmallInteger.prototype.compare = function (v) {
+        if (v === Infinity) {
+            return -1;
+        }
+        if (v === -Infinity) {
+            return 1;
+        }
+
         var n = parseValue(v),
             a = this.value,
             b = n.value;
@@ -744,7 +773,7 @@ var bigInt = (function (undefined) {
         if (value === 0) return false;
         if (value === 1) return true;
         if (value === 2) return this.isEven();
-        return this.mod(n).equals(CACHE[0]);
+        return this.mod(n).equals(Integer[0]);
     };
     SmallInteger.prototype.isDivisibleBy = BigInteger.prototype.isDivisibleBy;
 
@@ -755,7 +784,7 @@ var bigInt = (function (undefined) {
         if (n.isEven() || n.isDivisibleBy(3) || n.isDivisibleBy(5)) return false;
         if (n.lesser(25)) return true;
         // we don't know if it's prime: let the other functions figure it out
-    };
+    }
 
     BigInteger.prototype.isPrime = function () {
         var isPrime = isBasicPrime(this);
@@ -768,7 +797,7 @@ var bigInt = (function (undefined) {
         while (b.isEven()) b = b.divide(2);
         for (i = 0; i < a.length; i++) {
             x = bigInt(a[i]).modPow(b, n);
-            if (x.equals(CACHE[1]) || x.equals(nPrev)) continue;
+            if (x.equals(Integer[1]) || x.equals(nPrev)) continue;
             for (t = true, d = b; t && d.lesser(nPrev) ; d = d.multiply(2)) {
                 x = x.square().mod(n);
                 if (x.equals(nPrev)) t = false;
@@ -830,8 +859,7 @@ var bigInt = (function (undefined) {
 
     BigInteger.prototype.shiftLeft = function (n) {
         if (!shift_isSmall(n)) {
-            if (n.isNegative()) return this.shiftRight(n.abs());
-            return this.times(CACHE[2].pow(n));
+            throw new Error(String(n) + " is too large for shifting.");
         }
         n = +n;
         if (n < 0) return this.shiftRight(-n);
@@ -847,9 +875,7 @@ var bigInt = (function (undefined) {
     BigInteger.prototype.shiftRight = function (n) {
         var remQuo;
         if (!shift_isSmall(n)) {
-            if (n.isNegative()) return this.shiftLeft(n.abs());
-            remQuo = this.divmod(CACHE[2].pow(n));
-            return remQuo.remainder.isNegative() ? remQuo.quotient.prev() : remQuo.quotient;
+            throw new Error(String(n) + " is too large for shifting.");
         }
         n = +n;
         if (n < 0) return this.shiftLeft(-n);
@@ -943,7 +969,7 @@ var bigInt = (function (undefined) {
         if (a.equals(b)) return a;
         if (a.isZero()) return b;
         if (b.isZero()) return a;
-        var c = CACHE[1], d, t;
+        var c = Integer[1], d, t;
         while (a.isEven() && b.isEven()) {
             d = Math.min(roughLOB(a), roughLOB(b));
             a = a.divide(d);
@@ -987,7 +1013,7 @@ var bigInt = (function (undefined) {
         return low.add(typeof result === "number" ? new SmallInteger(result) : new BigInteger(result, false));
     }
     var parseBase = function (text, base) {
-        var val = CACHE[0], pow = CACHE[1],
+        var val = Integer[0], pow = Integer[1],
             length = text.length;
         if (2 <= base && base <= 36) {
             if (length <= LOG_MAX_INT / Math.log(base)) {
@@ -1021,7 +1047,7 @@ var bigInt = (function (undefined) {
     function stringify(digit) {
         var v = digit.value;
         if (typeof v === "number") v = [v];
-        if (v.length === 1 && v[0] <= 36) {
+        if (v.length === 1 && v[0] <= 35) {
             return "0123456789abcdefghijklmnopqrstuvwxyz".charAt(v[0]);
         }
         return "<" + v + ">";
@@ -1099,7 +1125,7 @@ var bigInt = (function (undefined) {
             var sign = v[0] === "-";
             if (sign) v = v.slice(1);
             var split = v.split(/e/i);
-            if (split.length > 2) throw new Error("Invalid integer: " + text.join("e"));
+            if (split.length > 2) throw new Error("Invalid integer: " + split.join("e"));
             if (split.length === 2) {
                 var exp = split[1];
                 if (exp[0] === "+") exp = exp.slice(1);
@@ -1108,7 +1134,7 @@ var bigInt = (function (undefined) {
                 var text = split[0];
                 var decimalPlace = text.indexOf(".");
                 if (decimalPlace >= 0) {
-                    exp -= text.length - decimalPlace;
+                    exp -= text.length - decimalPlace - 1;
                     text = text.slice(0, decimalPlace) + text.slice(decimalPlace + 1);
                 }
                 if (exp < 0) throw new Error("Cannot include negative exponent part for integers");
@@ -1129,8 +1155,11 @@ var bigInt = (function (undefined) {
     }
     
     function parseNumberValue(v) {
-            if (isPrecise(v)) return new SmallInteger(v);
-            return parseStringValue(v.toString());
+        if (isPrecise(v)) {
+            if (v !== truncate(v)) throw new Error(v + " is not an integer.");
+            return new SmallInteger(v);
+        }
+        return parseStringValue(v.toString());
     }
 
     function parseValue(v) {
@@ -1143,29 +1172,25 @@ var bigInt = (function (undefined) {
         return v;
     }
     // Pre-define numbers in range [-999,999]
-    var CACHE = function (v, radix) {
-        if (typeof v === "undefined") return CACHE[0];
-        if (typeof radix !== "undefined") return +radix === 10 ? parseValue(v) : parseBase(v, radix);
-        return parseValue(v);
-    };
     for (var i = 0; i < 1000; i++) {
-        CACHE[i] = new SmallInteger(i);
-        if (i > 0) CACHE[-i] = new SmallInteger(-i);
+        Integer[i] = new SmallInteger(i);
+        if (i > 0) Integer[-i] = new SmallInteger(-i);
     }
     // Backwards compatibility
-    CACHE.one = CACHE[1];
-    CACHE.zero = CACHE[0];
-    CACHE.minusOne = CACHE[-1];
-    CACHE.max = max;
-    CACHE.min = min;
-    CACHE.gcd = gcd;
-    CACHE.lcm = lcm;
-    CACHE.isInstance = function (x) { return x instanceof BigInteger || x instanceof SmallInteger; };
-    CACHE.randBetween = randBetween;
-    return CACHE;
+    Integer.one = Integer[1];
+    Integer.zero = Integer[0];
+    Integer.minusOne = Integer[-1];
+    Integer.max = max;
+    Integer.min = min;
+    Integer.gcd = gcd;
+    Integer.lcm = lcm;
+    Integer.isInstance = function (x) { return x instanceof BigInteger || x instanceof SmallInteger; };
+    Integer.randBetween = randBetween;
+    return Integer;
 })();
 
 // Node.js check
 if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
     module.exports = bigInt;
 }
+

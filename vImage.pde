@@ -41,7 +41,7 @@ class VImage
     
     bitmap = new PImage(w,h,RGB);
     
-    setId( idIn, cDepth );
+    setPixFromId();
   }
   
 
@@ -50,13 +50,10 @@ class VImage
  
   void clear()
   {
-    for( int p = 0; p<size; ++p )
+    for( int p = 0; p<pix.length; ++p )
       pix[p] = 0;
     
-    //canvasToId();    // oxi etsi, giati to size to canvas einai mikrotero??
     id = bigInt(0);
-    //update_UI();
-    
   }
   
   
@@ -89,9 +86,7 @@ class VImage
     else if( id.greater( idLimit ) )
       id = bigInt(0).add( id.minus(idLimit) ).minus(1);
     
-    setId(id, cDepth);
-    //update_UI();
-    
+    setPixFromId();
   }
   
   
@@ -180,39 +175,65 @@ class VImage
   
 
 
-  void setId(String idIn, int depth)
+  void setId(String idIn)
   {
     clear();
-    
-    String idBaseConvert = bigInt(idIn).toString(depth);
+    id = bigInt(idIn);
+  }
+  
+  
+  
+  
+  
+  void setPixFromId()
+  {
+    // generate a string with the pixel values by converting to a base of cDepth
+    // numbers 10 to 35 are letters
+    // numbers higher than 35 are like <65>
+    String idBaseConvert = bigInt(id).toString(cDepth);
     msg = idBaseConvert;
     
+    // temp array to hold the pixel values in reverse order.
+    float[] pix2 = {};
     
-    id = bigInt(idBaseConvert, depth);
-    /*
+    // iterator
+    int p = 0;
+    
+    // Go through the characters of the string
     for(int i=0; i<idBaseConvert.length(); i++)
     {
-      int dInv = idBaseConvert.length()-i-1;
-      
+      // if the number is smaller than 36
       if( idBaseConvert[i] != "<" )
       {
-        pix[dInv] = bigInt(idBaseConvert[i], depth);
+        pix2[p++] = float( bigInt(idBaseConvert[i], cDepth).toString() );
       }
       else
       {
+        // skip the bracket
         i++;
         String tmp = "";
+        // keep collecting numbers until you hit the end bracket
         while( idBaseConvert[i] != ">" )
-         tmp += aa[i++];
+         tmp += idBaseConvert[i++];
         
-        pix[dInv] = tmp;
+        // add the value to the reveresed array
+        pix2[p++] = float(tmp);
+        
       }
     }
-    */
     
     
-    id = bigInt(idBaseConvert, depth);
+    // copy to the pixel array, in reverse order
+    p = 0;
+    for( i = pix2.length-1; i>=0; i-- )
+      pix[p++] = pix2[i];
+    
+    
+    //// 4 hours to fix this function FUCKING HELL!!!!!
   }
+  
+  
+  
   
   
   
@@ -220,25 +241,28 @@ class VImage
   
   void setIdFromDate( Date dateIn)
   {
+    /*
     double now = new Date();
     // Calculate how many milliseconds since the input date
     double frame = now.getTime() - dateIn.getTime();
     
     frame *= 0.06;  // milliseconds * frames/milli
      
-    setId(frame, cDepth);
-    
+    setId(frame);
+    */
   }
   
   
   
   void setIdFromRange( float v )
   {
-    var newId = idLimit;
-    newId = newId.multiply(v);
-    setId(newId, cDepth);
-    //setId(1000, cDepth);
-    
+    bigInt newId = idLimit;
+    // multiple/divide with a million for int
+    v *= 1000000;
+    newId = newId.multiply(int(v));
+    newId = newId.divide(1000000);
+    id = newId;
+    setPixFromId();
   }
   
   
