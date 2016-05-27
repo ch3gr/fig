@@ -1,21 +1,70 @@
 body {
 	background: #2e2e2e;
-	color: #d0d0d0;
+	color: #bbb; line-height: normal;
+	font-family: Lucida Grande, Lucida Sans, Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
+	font-size: 12px; font-weight: normal; text-decoration: none;
+	line-height: 1.5em;
 }
 
-canvas#processing {
-	border: 1px solid black;
+
+
+
+
+
+
+/* foundation */
+
+
+
+.button{
+	background: grey;
+	text-align: center;
+	transition: background-color 0.0s ease-out, color 0.0s ease-out;
+}
+
+.button:hover{
+	background: green;
+}
+
+.button:active{
+	background: red;
+}
+
+.toggled {
+ 	background: orange;
+}
+
+
+#about-modal{
+	color: black;
+}
+
+
+
+
+
+
+
+/* general */
+
+
+#imgGen {
+	border: 2px solid purple;
+	width: 100%;
+	height: 100%;
+}
+
+#uiIdSlider {
 	width: 100%;
 }
 
-button.single{
-	background: grey;
+
+#uiId {
+	background: #2e2e2e;
+	color: #d0d0d0;
+	
+	border: none;
 }
 
-button.button{
-	background: grey;
-}
 
-#about-modal{
-	color: #2e2e2e;
-}
+

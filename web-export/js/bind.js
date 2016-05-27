@@ -25,6 +25,53 @@ function HUI_updateId( inId )
 }
 
 
+function HUI_updateToggle( inAuto, inValues, inSample )
+{
+	if( inAuto === true )
+		document.getElementById('buttonAuto').classList.add("toggled");
+	else
+		document.getElementById('buttonAuto').classList.remove("toggled");
+	
+	if( inValues === true )
+		document.getElementById('buttonValues').classList.add("toggled");
+	else
+		document.getElementById('buttonValues').classList.remove("toggled");
+
+	switch( inSample )
+	{
+		case 1:
+			document.getElementById('buttonS1').classList.add("toggled");
+			document.getElementById('buttonS2').classList.remove("toggled");
+			document.getElementById('buttonS3').classList.remove("toggled");
+			document.getElementById('buttonS4').classList.remove("toggled");
+			break;
+		case 2:
+			document.getElementById('buttonS1').classList.remove("toggled");
+			document.getElementById('buttonS2').classList.add("toggled");
+			document.getElementById('buttonS3').classList.remove("toggled");
+			document.getElementById('buttonS4').classList.remove("toggled");
+			break;
+		case 3:
+			document.getElementById('buttonS1').classList.remove("toggled");
+			document.getElementById('buttonS2').classList.remove("toggled");
+			document.getElementById('buttonS3').classList.add("toggled");
+			document.getElementById('buttonS4').classList.remove("toggled");
+			break;
+		case 4:
+			document.getElementById('buttonS1').classList.remove("toggled");
+			document.getElementById('buttonS2').classList.remove("toggled");
+			document.getElementById('buttonS3').classList.remove("toggled");
+			document.getElementById('buttonS4').classList.add("toggled");
+			break;
+		default:
+			document.getElementById('buttonS1').classList.remove("toggled");
+			document.getElementById('buttonS2').classList.remove("toggled");
+			document.getElementById('buttonS3').classList.remove("toggled");
+			document.getElementById('buttonS4').classList.remove("toggled");
+	}
+}
+
+
 
 
 

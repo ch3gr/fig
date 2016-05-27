@@ -14,13 +14,13 @@ int Sample = -1;
 var Step = bigInt(1);
 
 
-int FrameSize = 700;
+int FrameSize = 1000;
 
 
 
 void setup ()
 {
-  size( 700, 700, JAVA2D );
+  size( 1000, 1000, JAVA2D );
  
   colorMode(RGB,1);
   background(0.18);
@@ -107,6 +107,7 @@ void draw()
     HUI_updateImgInfo( compactBig(Step), Img.w, Img.h, Img.cDepth, compactBig(Img.idLimit.add(1)) );
     HUI_updateSlider( Img.getFraction(), duration(Img.id), duration(Img.idLimit.minus(Img.id)));
     HUI_updateId( Img.getId() );
+    HUI_updateToggle( AutoMode, Values, Sample );
     HUI_Update = false;
     
   }
@@ -123,6 +124,7 @@ void draw()
   text("AutoMode: "+AutoMode, 50, 530);
   text("Sample: "+Sample, 50, 560);
   text("Msg: "+Img.msg, 50, 590);
+  text("values: "+Values, 50, 620);
   */
   
 }
@@ -344,11 +346,13 @@ void autoMode()
 {
   AutoMode = !AutoMode;
   Sample = -1;
+  HUI_Update = true;
 }
 
 void showValues()
 {
   Values = !Values;
+  HUI_Update = true;
 }
 
 void randomImg()

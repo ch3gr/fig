@@ -102,11 +102,13 @@ void autoMode()
 {
   AutoMode = !AutoMode;
   Sample = -1;
+  HUI_Update = true;
 }
 
 void showValues()
 {
   Values = !Values;
+  HUI_Update = true;
 }
 
 void randomImg()
