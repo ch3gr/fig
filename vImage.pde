@@ -131,7 +131,7 @@ class VImage
     for (int y=0; y<h; y++)
       for (int x=0; x<w; x++)
       {
-        color c = color(pix[p] / float(cDepth-1));
+        color c = color(pix[p]/float(cDepth-1));
         fill(c);
         rect(x,y,1,1);
         
@@ -152,7 +152,7 @@ class VImage
   {
     for( int p = 0; p<size; ++p )
     {
-      bitmap.pixels[p] = color(pix[p]/cDepth);
+      bitmap.pixels[p] = color(pix[p]/float(cDepth-1));
       //bitmap.pixels[p] = color(0.5,0.5,1);
     }
     
@@ -267,7 +267,7 @@ class VImage
     imgR.loadPixels();
     
     for(int p=0; p<size; ++p)
-      pix[p] = floor(brightness(imgR.pixels[p]) * (cDepth));
+      pix[p] = floor(brightness(imgR.pixels[p])*0.99999 * (cDepth));
     
     
     

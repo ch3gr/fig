@@ -11,7 +11,11 @@ VImage Img ;
 VImage ImgUser = new VImage(25,25,3); //(100,100,2) tooooo much
 VImage ImgDate = new VImage(30,30,3);
 
-PImage ImgInput;
+PImage ImgFile1;
+PImage ImgFile2;
+PImage ImgFile3;
+PImage ImgFile4;
+PImage ImgFile5;
 
 
 
@@ -69,7 +73,13 @@ void setup ()
 
 // @pjs preload must be used to preload the image 
 /* @pjs preload="georgios.jpg"; */
-  ImgInput = loadImage("georgios.jpg");
+/* @pjs preload="cat.jpg"; */
+/* @pjs preload="emc.jpg"; */
+/* @pjs preload="monaLisa.jpg"; */
+  ImgFile1 = loadImage("georgios.jpg");
+  ImgFile2 = loadImage("monaLisa.jpg");
+  ImgFile3 = loadImage("cat.jpg");
+  ImgFile4 = loadImage("emc2.jpg");
   
 
 
@@ -131,19 +141,22 @@ void setup ()
   
   py = height - bh*2;
   
-  py -= bh*1.5 + gap ;
-  UI_Explore.put( "samples", new Button("samples", false, px, py, pw, bh*1.5, baseC, overC, downC) );
+  py -= bh*1 + gap ;
+  int bs = 4;
+  float bw = (pw+gap)/float(bs);
+  for( int b=0; b<bs; b++ )
+    UI_Explore.put( ("sample"+str(b+1)), new Button(("s"+str(b+1)), true, px+(bw*b), py, bw-gap, bh, baseC, overC, downC) );
   
   py -= bh + gap;
   UI_Explore.put( "random", new Button("random", false, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Explore.put( "clear", new Button("clear", false, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
   
   
   
   
   py -= bh + gap;
   UI_Explore.put( "auto", new Button("auto", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Explore.put( "overlay", new Button("overlay", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
   
   UI_Explore.put( "slider", new Slider(0,660, width, 30) );
 
@@ -155,7 +168,7 @@ void setup ()
   
   py = height - bh*2;
   UI_Common.put( "explore", new Button("explore", true, px, py, pw/2-(gap/2), bh, baseC, overC, downC) );
-  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-gap, bh, baseC, overC, downC) );
+  UI_Common.put( "about", new Button("about", true, px+pw/2-(gap/2)+gap, py, pw/2-(gap/2), bh, baseC, overC, downC) );
   
   
   
@@ -765,7 +778,7 @@ void ui_explore()
   text( Img.cDepth, xc, yc);
   
   xc = UI_Explore.get("auto").x;
-  yc = height/2;
+  yc = height/2 + 20;
   textSize(14);
   textAlign(LEFT, BOTTOM);
   text( ("Set : "+ compactBig(Img.idLimit)), xc, yc);
@@ -844,11 +857,27 @@ void ui_explore()
     update_UI();
   }
     
-  if( UI_Explore.get("samples").click )
+  if( UI_Explore.get("sample1").click )
   {
-    ImgUser.setIdFromImg(ImgInput);
+    ImgUser.setIdFromImg(ImgFile1);
     update_UI();
   }
+  if( UI_Explore.get("sample2").click )
+  {
+    ImgUser.setIdFromImg(ImgFile2);
+    update_UI();
+  }
+  if( UI_Explore.get("sample3").click )
+  {
+    ImgUser.setIdFromImg(ImgFile3);
+    update_UI();
+  }
+  if( UI_Explore.get("sample4").click )
+  {
+    ImgUser.setIdFromImg(ImgFile4);
+    update_UI();
+  }
+
 
   if( UI_Explore.get("slider").changed )
   {
@@ -1311,7 +1340,7 @@ class VImage
     for (int y=0; y<h; y++)
       for (int x=0; x<w; x++)
       {
-        color c = color(pix[p] / float(cDepth-1));
+        color c = color(pix[p]/float(cDepth-1));
         fill(c);
         rect(x,y,1,1);
         
@@ -1332,7 +1361,7 @@ class VImage
   {
     for( int p = 0; p<size; ++p )
     {
-      bitmap.pixels[p] = color(pix[p]/cDepth);
+      bitmap.pixels[p] = color(pix[p]/float(cDepth-1));
       //bitmap.pixels[p] = color(0.5,0.5,1);
     }
     
@@ -1447,7 +1476,7 @@ class VImage
     imgR.loadPixels();
     
     for(int p=0; p<size; ++p)
-      pix[p] = floor(brightness(imgR.pixels[p]) * (cDepth));
+      pix[p] = floor(brightness(imgR.pixels[p])*0.99999 * (cDepth));
     
     
     

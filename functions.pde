@@ -136,7 +136,7 @@ void ui_explore()
   text( Img.cDepth, xc, yc);
   
   xc = UI_Explore.get("auto").x;
-  yc = height/2;
+  yc = height/2 + 20;
   textSize(14);
   textAlign(LEFT, BOTTOM);
   text( ("Set : "+ compactBig(Img.idLimit)), xc, yc);
@@ -215,11 +215,27 @@ void ui_explore()
     update_UI();
   }
     
-  if( UI_Explore.get("samples").click )
+  if( UI_Explore.get("sample1").click )
   {
-    ImgUser.setIdFromImg(ImgInput);
+    ImgUser.setIdFromImg(ImgFile1);
     update_UI();
   }
+  if( UI_Explore.get("sample2").click )
+  {
+    ImgUser.setIdFromImg(ImgFile2);
+    update_UI();
+  }
+  if( UI_Explore.get("sample3").click )
+  {
+    ImgUser.setIdFromImg(ImgFile3);
+    update_UI();
+  }
+  if( UI_Explore.get("sample4").click )
+  {
+    ImgUser.setIdFromImg(ImgFile4);
+    update_UI();
+  }
+
 
   if( UI_Explore.get("slider").changed )
   {
