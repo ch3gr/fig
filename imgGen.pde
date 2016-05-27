@@ -43,7 +43,7 @@ int HUI_lastId = uivars.id.length();
 boolean AutoMode = false;
 boolean Values = false;
 boolean About = false;
-boolean Explore = true;
+boolean Explore = false;
 
 
 
@@ -270,7 +270,7 @@ void draw()
 
   
   
-  
+  /*
   Iterator i = UI_Info.entrySet().iterator();  // Get an iterator
   while (i.hasNext())
   {
@@ -278,7 +278,7 @@ void draw()
     if( me.getValue().popUp )
       popUp( Img.id );
   }
-  
+  */
   
   
 

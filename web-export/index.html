@@ -67,11 +67,6 @@
 			else
 				document.getElementById('about').style.display = "none";
 		}
-
-		function HUI_debug( text )
-		{
-			document.getElementById('debug').value = text;
-		}
 		</script>
 
 
@@ -101,17 +96,36 @@
 			<div id="about">
 				<h1> About </h1>
 				<p> ...blah blah blah... </p>
-				<p>Two dimensional images of any kind, have long been stored and displayed digitally. To do so the image is broken down into a set of pixels, with a pre-defined color depth. So the digital representation of an image is essentially just a series of color values.</p>
-				<p>If we look at this the other way, we can say that any given digital canvas has a certain number of possible combinations of color values among its pixels. [ie a small image with a resolution of 4?4 pixels and 2 colors has 2^16=65536 possible color combinations.] So since any kind of image can be digitized, we could also assume that every single representation can be found in one of these possible combinations, as long as the canvas has enough resolution and color definition.</p>
-				<p>The number of possible combinations are increasing in an exponential rate in relation to the amount of pixels. This means that the possible combinations of a digital canvas of a substantial resolution, may be an astronomical number, but never the less a finite number.</p>
-				<p>This simple one button software, gives the ability to the user to iterate through all the color combinations and effectively generate every possible image within a given canvas. No artistic skill is required what so ever, just enough time to go through all these combinations. The grand majority of the results will be nondescript, but the user will eventually come to see meaningful images.</p>
-				<p>Of course this software and experiment only works in a theoretical level, as in practise the age of the known universe (14 billion years) is just about enough time to iterate through a 8?8 pixels image with only 2 colors. The tool can also run in the 'explore' mode and to allow the user to take a look into this vast universe of possible combinations.</p>
-				<p>The first thing the user notices in the 'explore' mode is the index number which represents the current color combination and increases with every iteration. This number can be copied, shared and paste back to the program. The user can specify the resolution and color depth of the digital canvas and that affects the total number of possibilities. He can adjust the step size of the increment to speed up the process, or even set it to the automatic mode and let it run indefinitely. Most interestingly, there are a few sample images to prove the point that a representation is just an iteration in this program. Just to clarify these images have not been generated in this program, they are just an indication of how many times the user has to iterate in order to get there. The slider at the bottom is a faster way to go through all the possible combinations and gives an rough estimate of how long it would take to get there and how much longer there is left to reach the end, when running at 60 iterations per second.</p>
-				<p>This experimental software, explores the vast amount of possibilities within a digital canvas. </p>
-				<p>Since we've proved that one of the sample images can be seen as an iteration index, theoretically every possible image of the universe can be found in there. It may be a photo of you, your parents, or even your kid that hasn't been born yet.</p>
-				<p>In a potential version 2 of this program, the output images can be fed into an image recognition algorithm, which will be responsible for identifying meaningful results. The process can run in parallel with a farm of computers and allow us to explore this vast amount of images faster. As the time passes, we will be able to retrieve sets of images that resemble known objects. And as the processing power of the computers gets faster and faster, such a brute force solution may become more and more feasible.</p>
-				<p>ImgGen also questions the intellectual property of digital content. Who would own the rights of the images generated with this program?</p>
-				<p>It also questions the...</p>
+				<p>
+Two dimensional images of any kind, have long been stored and displayed digitally. To do so, the image is broken down into a set of pixels, with a pre-defined color depth. So the digital representation of an image is essentially just a series of color values.
+
+If we look at this the other way, we can say that any given digital canvas has a certain number of possible color combinations among its pixels. [ie a small image with a resolution of 4?4 pixels and 2 colors has 2^16=65536 possible color combinations.] So since any kind of image can be digitized, we could also assume that every single representation can be found in one of these possible combinations, as long as the canvas has enough resolution and color definition to make the image readable.
+
+The possible color combinations within a digital canvas is described by the mathematical formula:
+
+combinations = colorDepth ^ pixels
+
+The number of possible combinations increase at an exponential rate in relation to the number of pixels, which means a digital canvas with enough resolution, may have an astronomical number of combinations, but never the less a finite amount.
+
+This simple one button software, gives the ability to the user to iterate through all the color combinations among the pixels and effectively generate every possible image within a given canvas. No artistic skill is required what so ever, just enough time and even though the grand majority of the results will be nondescript, the user will eventually come to see meaningful images.
+
+Of course this experimental software only works in a theoretical level, as in practice, even running at 60 iterations per second, it would require a little less than the known age of the universe (14 billion years), to display all the possible color combinations of a 8?8 pixels image with just 2 colors.
+
+The tool can also run in the 'explore' mode and to allow the user to take a look into this vast universe of possible combinations.
+
+The first thing the user notices in the 'explore' mode is the index number which represents the current color combination and increases with every iteration. This number can be copied, shared and paste back to the program. The user can specify the resolution and color depth of the digital canvas and that affects the total number of possibilities. He can adjust the step size of the increment to speed up the process, or even set it to the automatic mode and let it run indefinitely. Most interestingly, there are a few sample images to prove the point that a representation is just an iteration in this program. Just to clarify these images have not been generated in this program, they are just an indication of how many times the user has to iterate in order to get there. The slider at the bottom is a faster way to go through all the possible combinations and gives an rough estimate of how long it would take to get there and how much longer there is left to reach the end, when running at 60 iterations per second.
+
+As the processing power of computers still keeps doubling every two years based on Moore's law, there may be a time in future, when we will be able to brute force and filter all the meaningful images out of the chaos. In a potential version 2 of this program, the output images can be passed into an image recognition algorithm, which will be identifying human recognizable results. The process can be parallelized in an array of computers and with upgrades over time, may allow us to explore this vast amount of images faster. As the time passes, the software will aggregate sets of images that resemble known pictorial elements.
+
+tech
+
+Each image in this software is represented by its index number, which is the number of iterations it took to get there. The association of this index and the resulting image is simple. If we convert this decimal number index into a different numeric system, where the base is the color depth, then we end up with a number where each of its digits corresponds to the color value of each pixel of the image.
+
+Questions raised
+
+Intellectual property of digital content - Who would own the rights of the images generated with this program?
+Will processing power get so powerful to explore the cosmos through these algorithmic means?
+</p>
 				<p> ...blah blah blah... </p>
 
 				<p>Q&A:</p>
@@ -139,10 +153,6 @@
 				and <a href="http://processingjs.org" title="Processing.js">Processing.js</a>
 				</p>
 			</div>
-			<div>
-				<textarea id="debug"></textarea>
-			</div>
-
 		</div>
 	</body>
 </html>

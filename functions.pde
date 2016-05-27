@@ -166,11 +166,11 @@ void ui_explore()
   
   
   // Slider range
-  
+  /*
   UI_Info.get("sliderA").update();
   UI_Info.get("sliderA").label = duration(Img.id);
   UI_Info.get("sliderA").draw();
-  
+  */
   
   
   
