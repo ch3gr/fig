@@ -1,5 +1,5 @@
 
-VImage Img = new VImage(64,64,4); //(100,100,2) tooooo much
+VImage Img = new VImage(25,25,3); //(100,100,2) tooooo much
 
 PImage[] ImgFile = new PImage[4];
 
