@@ -472,8 +472,10 @@ String compactBig( bigInt n )
   if( nStr.length() > 9 )
   {
     String out = nStr.charAt(0);
-    out += " * 10 ^ ";
+    out += " * 10";
+    out += "<span class=sup>";
     out += commas(str(nStr.length()-1));
+    out += "</span>";
     return out;
   }
   else

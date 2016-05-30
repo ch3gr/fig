@@ -8,7 +8,7 @@ body {
 }
 
 body.is-reveal-open {
-  padding-right: 17px;
+  padding-right: 16px;
 }
 
 a:link {
@@ -49,27 +49,28 @@ h1 {
   background: #3d3d3d;
   color: #d1d1d1;
 
+  
   border: 1px solid black;
 
 
-  border-radius: 3px;
+  border-radius: 2px;
   text-align: center;
   transition: background-color 0.0s ease-out, color 0.0s ease-out;
 }
 
 
-.button:hover{
+.button:hover, .button:focus{
   background: #525252;
 }
 
-.button:active{
-  background: #242424;
-}
+
+
+
 
 .toggled {
   color: red;
 }
-.toggled:hover {
+.toggled:hover, .toggled:focus {
   color: red;
 }
 
@@ -156,7 +157,7 @@ legend {
 /* About */
 
 #about-modal.reveal {
-  background-color: #f1f1f1;
+  background-color: #d1d1d1;
   font-size: 16px; font-weight: normal; text-decoration: none;
 
 }
