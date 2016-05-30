@@ -8,6 +8,8 @@ boolean Values = false;
 boolean About = false;
 //boolean Explore = true;
 boolean HUI_Update = true;
+boolean URL_Update = false;
+int URL_UpdateMillis = 0;
 
 int Sample = -1;
 
@@ -108,14 +110,32 @@ void draw()
     HUI_updateId( Img.getId() );
     HUI_updateToggle( AutoMode, Values, Sample );
     HUI_Update = false;
-    
   }
   
   
   
   
+  
+  //// update URL # if needed
+  //URL_Update = true;
+  //if( URL_Update )
+  //if( millis() > URL_UpdateMillis + 500 )
+  if(0)
+  {
+
+   
+    URL_change(createURL());
+    
+    URL_UpURL_Update = false;
+    URL_UpdateMillis = millis();
+  }
+  
+  
+  
+  
+  
   //// Temp text
-  /*
+  
   textAlign(LEFT, BOTTOM);
   fill(color(1,0,0));
   textSize(18);
@@ -124,7 +144,8 @@ void draw()
   text("Sample: "+Sample, 50, 560);
   text("Msg: "+Img.msg, 50, 590);
   text("values: "+Values, 50, 620);
-  */
+  text("URL: "+URL_Update, 50, 120);
+  
   
 }
 
@@ -186,7 +207,6 @@ void keyPressed()
   if(key=='v')
     showValues();
   
-  
 }
 
 
@@ -196,8 +216,8 @@ void keyPressed()
 
 void mousePressed()
 {
- next(); 
-}
+  next();
+  }
 
 
 

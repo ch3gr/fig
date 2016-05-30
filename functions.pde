@@ -157,12 +157,24 @@ void setIdFromTextField( String inId )
   
 
 
+String createURL()
+{
+  //  fig.ch3.gr/#/a/25/25/6/ldksahflsalrn438
+    
+  String url = "http://fig.ch3.gr/#";
+  url += "/" + Img.w;
+  url += "/" + Img.h;
+  url += "/" + Img.cDepth;
+  url += "/" + Img.id.toString(36);
+  
+  return url;
+}
 
 
-
-
-
-
+void updateLink()
+{
+  HUI_updateLinkNodal( createURL() );
+}
 
 
 
@@ -176,35 +188,6 @@ void applySample(int sample)
 
 
 
-
-
-/*
-
-void popUp(String info)
-{
-  String hor, ver;
-  if( mouseX > width/2 )
-    hor = RIGHT;
-  else
-    hor = LEFT;
-  
-  if( mouseY < 20 )
-    ver = TOP;
-  else
-    hour = BOTTOM;
-
-
-  
-  textAlign(hor, ver);
-  textSize(16);
-  fill(0);
-  text( info, mouseX+1, mouseY+1 );
-  fill(1);
-  text( info, mouseX, mouseY );
-  
-}
-     
-*/
 
 
 

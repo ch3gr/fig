@@ -156,8 +156,9 @@ legend {
 
 /* About */
 
-#about-modal.reveal {
+#about-modal.reveal, #link-modal {
   background-color: #d1d1d1;
+  color: black;
   font-size: 16px; font-weight: normal; text-decoration: none;
 
 }

@@ -166,25 +166,27 @@
 						<fieldset>
 							<legend>Step Size</legend>
 
-							<div class="small-12 columns">
-								<div class="row" >
-									<p></p>
-									<div class="large-12 columns">
-										<div onclick="processingCall('incUp')" class="small expanded button">
-											<span data-tooltip aria-haspopup="true" class="has-tip" title="Double the step size">+
-											</span>
+							<div class="row">
+								<div class="small-12 columns">
+									<div class="row" >
+										<p></p>
+										<div class="large-12 columns">
+											<div onclick="processingCall('incUp')" class="small expanded button">
+												<span data-tooltip aria-haspopup="true" class="has-tip" title="Double the step size">+
+												</span>
+											</div>
 										</div>
-									</div>
-									<div class="large-12 columns">
-										<p class="text-center">
-											<span id="stepSize" data-tooltip aria-haspopup="true" class="has-tip" title="How many images to skip on each iteration">Step size
-											</span>
-										</p>
-									</div>
-									<div class="large-12 columns">
-										<div onclick="processingCall('incDown')" class="small expanded button">
-											<span data-tooltip aria-haspopup="true" class="has-tip" title="Half the step size">-
-											</span>
+										<div class="large-12 columns">
+											<p class="text-center">
+												<span id="stepSize" data-tooltip aria-haspopup="true" class="has-tip" title="How many images to skip on each iteration">Step size
+												</span>
+											</p>
+										</div>
+										<div class="large-12 columns">
+											<div onclick="processingCall('incDown')" class="small expanded button">
+												<span data-tooltip aria-haspopup="true" class="has-tip" title="Half the step size">-
+												</span>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -269,21 +271,29 @@
 				<div class="row">
 					<div class="small-12 medium-6 large-12 columns">
 						<fieldset>
-							<legend>Options</legend>
+							<legend>
+								Options
+							</legend>
+
 							<div class="row">
-								<div class="small-4 columns">
+								<div class="small-3 columns">
 									<div onclick="processingCall('randomize')" class="small expanded button">
 										<span data-tooltip aria-haspopup="true" class="has-tip" title="Feeling like a luckly monkey? Pick a randeom iteration">Random</span>
 									</div>
 								</div>
-								<div class="small-4 columns">
+								<div class="small-3 columns">
 									<div onclick="processingCall('clearCanvas')" class="small expanded button">
 										<span data-tooltip aria-haspopup="true" class="has-tip" title="Clear the canvas">Clear</span>
 									</div>
 								</div>
-								<div class="small-4 columns">
+								<div class="small-3 columns">
 									<div id="buttonValues" onclick="processingCall('showValues')" class="small expanded button">
 										<span data-tooltip aria-haspopup="true" class="has-tip" title="Toggle pixel color value">Values</span>
+									</div>
+								</div>
+								<div class="small-3 columns">
+									<div onclick="processingCall('getLink')" class="small expanded button" data-open="link-modal">
+										<span data-tooltip aria-haspopup="true" class="has-tip" title="Toggle pixel color value">Link</span>
 									</div>
 								</div>
 							</div>
@@ -297,25 +307,27 @@
 								</span>
 							</legend>
 
-								<div class="small-3 columns">
-									<div id="buttonS1" onclick="processingCall('sample1')" class="small expanded button single ">
-										<span data-tooltip aria-haspopup="true" class="has-tip" title="Georgios">1</span>
-									</div>
-								</div>
-								<div class="small-3 columns">
-									<div id="buttonS2" onclick="processingCall('sample2')" class="small expanded button single">
-										<span data-tooltip aria-haspopup="true" class="has-tip" title="Lisa">2</span>
-									</div>
-								</div>
-								<div class="small-3 columns">
-									<div id="buttonS3" onclick="processingCall('sample3')" class="small expanded button single">
-										<span data-tooltip aria-haspopup="true" class="has-tip" title="A cat">3</span>
-									</div>
-								</div>
-								<div class="small-3 columns">
-									<div id="buttonS4" onclick="processingCall('sample4')" class="small expanded button single">
-										<span data-tooltip aria-haspopup="true" class="has-tip" title="E = mc2">4</span>
+								<div class="row">
+									<div class="small-3 columns">
+										<div id="buttonS1" onclick="processingCall('sample1')" class="small expanded button single ">
+											<span data-tooltip aria-haspopup="true" class="has-tip" title="Georgios">1</span>
 										</div>
+									</div>
+									<div class="small-3 columns">
+										<div id="buttonS2" onclick="processingCall('sample2')" class="small expanded button single">
+											<span data-tooltip aria-haspopup="true" class="has-tip" title="Lisa">2</span>
+										</div>
+									</div>
+									<div class="small-3 columns">
+										<div id="buttonS3" onclick="processingCall('sample3')" class="small expanded button single">
+											<span data-tooltip aria-haspopup="true" class="has-tip" title="A cat">3</span>
+										</div>
+									</div>
+									<div class="small-3 columns">
+										<div id="buttonS4" onclick="processingCall('sample4')" class="small expanded button single">
+											<span data-tooltip aria-haspopup="true" class="has-tip" title="E = mc2">4</span>
+											</div>
+									</div>
 								</div>
 						</fieldset>
 					</div>
@@ -409,6 +421,25 @@
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
+
+
+
+
+
+		<div id="link-modal" class="reveal large text-justify" data-reveal>
+			<h2> Unique URL </h2>
+			<hr>
+			<textarea id="link" rows="5" wrap="soft">
+				http://fig.ch3.gr/
+			</textarea>
+
+			<button class="close-button" data-close aria-label="Close modal" type="button">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+
+
 
 		<script src="js/vendor/jquery.js"></script>
 		<script src="js/vendor/what-input.js"></script>

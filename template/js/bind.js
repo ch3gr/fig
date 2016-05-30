@@ -1,3 +1,5 @@
+// Minimize UI
+
 var Minimal = false;
 function HUI_minimalToggle()
 {
@@ -34,6 +36,19 @@ function HUI_minimalToggle()
 
   //console.log("Minimal :" + Minimal);
 }
+
+
+
+
+
+// URL # functions
+
+
+function URL_change( inHash )
+{
+	window.location.hash = inHash;
+}
+
 
 
 
@@ -188,8 +203,24 @@ function processingCall( func )
     Processing.getInstanceById("imgGen").sample(3);
   else if( func === "sample4" )
     Processing.getInstanceById("imgGen").sample(4);
+  else if( func === "getLink" )
+  {
+  	"use strict";
+
+  	console.log("lalaa");
+    
+    Processing.getInstanceById("imgGen").updateLink();
+
+  	//document.getElementById('link').innerHTML = "lal";
+
+  }
+
 
 }
 
 
 
+function HUI_updateLinkNodal( inUrl )
+{
+  document.getElementById('link').value = inUrl;
+}
